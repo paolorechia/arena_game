@@ -5,8 +5,10 @@ Para iniciar o APP:
 Dependências:
   nodejs
   npm
+  typescript
 
 
 Para instalar as dependências
 
-  $: npm install (na raiz)
+  $: npm install (na raiz) (dependencias do projeto)
+  #: npm install -g typescript (dependencia de compilador TS)
