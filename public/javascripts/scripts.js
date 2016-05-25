@@ -1,0 +1,1 @@
+require('./teste_game.js');
