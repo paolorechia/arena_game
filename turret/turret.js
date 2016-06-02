@@ -12,6 +12,9 @@ for (i = 0; i < 80; i++){
         array[i] = [];
 }
 
+// vetor de coorenadas X, Y
+
+var coord = [];
 //redesenha o background
 function blitBackground(background){
     ctx.putImageData(background, 0, 0);
@@ -57,6 +60,8 @@ function rotacionaCanhao(ctx, raio, angulo){
     ctx.stroke();
     ctx.restore();
 }
+
+// desenha o circulo e o canhao
 function desenhaTurret(ctx, raio, angulo){
     ctx.beginPath();
     ctx.arc(width/2, height/2, raio, 0, 2*Math.PI);
@@ -67,12 +72,38 @@ function desenhaTurret(ctx, raio, angulo){
     rotacionaCanhao(ctx, raio, angulo);
 }
 
+// funcao para pegar as coordenadas
+function pegaCoordenadas(event){
+    coord[0] = event.clientX;
+    coord[1] = event.clientY;
+    logCoordenadas(coord);
+    return coord;
+}
+
+function logCoordenadas(coord){
+    var x = coord[0].toString();
+    var y = coord[1].toString();
+    var string = "x = ";
+    string = string.concat(x);
+    string = string.concat("; y = ");
+    string = string.concat(y);
+    console.log(string);
+}
+
+function giraCanhao(){
+    console.log("trololo");
+}
+
+// imprimir coordenadas pro console
+    
 
 // testando firebug
 console.log("1 c4n 7yp3 t0 c0ns0l3!");
     
 // canvas
 var c = document.getElementById("canvas_turret");
+c.addEventListener("mousemove", pegaCoordenadas, false);
+c.addEventListener("mousemove", giraCanhao, false);
 var ctx = c.getContext("2d");
 
 // Preenche background com preto
@@ -88,6 +119,6 @@ var background = ctx.getImageData(0,0,800,600)
 var raio = 15;
 desenhaTurret(ctx, raio);
 for (i=0; i< 10; i++)
-    blitBackground(background);   // blita background
+    blitBackground(background);     // redesenha o background
     desenhaTurret(ctx, raio, i * 10);
 
