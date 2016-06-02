@@ -28,21 +28,37 @@ function populaEstrelas(ctx, num){
 // desenha o turret pela primeira vez (Apenas!)
 // nas próximas vezes imagino que deve ser usado uma rotação
 
-function desenhaCanhao(ctx, raio){
+function desenhaCanhao(ctx, raio, angulo){
     ctx.strokeStyle = "#f0470e";
     ctx.moveTo(width/2, height/2);
     ctx.lineWidth = raio * 0.2;
     ctx.lineTo(width/2, height/2 - raio * 2);
     ctx.stroke();
 }
-function desenhaTurret(ctx, raio){
+function desenhaTurret(ctx, raio, angulo){
     ctx.beginPath();
     ctx.arc(width/2, height/2, raio, 0, 2*Math.PI);
     ctx.strokeStyle = "#f0470e";
     ctx.stroke();
     ctx.fillStyle = "#005252";
     ctx.fill();
-    desenhaCanhao(ctx, raio);
+    rotacionaCanhao(ctx, raio, angulo);
+}
+
+
+// a funcao "rotate" rotaciona o Canvas INTEIRO
+// dah para implementar coisas legais com isso
+// tentativa de rotacionar o canhao
+
+function rotacionaCanhao(ctx, raio, angulo){
+    ctx.save();
+    ctx.translate(width/2, height/2);
+    ctx.rotate(angulo);
+    ctx.moveTo(0, 0)
+    ctx.lineWidth = raio * 0.2;
+    ctx.lineTo(0, raio * 2);
+    ctx.stroke();
+    ctx.restore();
 }
 
 // testando firebug
@@ -61,4 +77,6 @@ populaEstrelas(ctx, 200);
 // desenha turret
 var raio = 15;
 desenhaTurret(ctx, raio);
+for (i=0; i< 10; i++)
+    desenhaTurret(ctx, raio, i * 10);
 
