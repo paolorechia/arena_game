@@ -13,8 +13,10 @@ for (i = 0; i < 80; i++){
 }
 
 // vetor de coorenadas X, Y
+var coord = []; 
+coord[0] = 0;
+coord[1] = 0;
 
-var coord = [];
 //redesenha o background
 function blitBackground(background){
     ctx.putImageData(background, 0, 0);
@@ -31,32 +33,18 @@ function populaEstrelas(ctx, num){
     }
 }
 
-// desenha o turret pela primeira vez (Apenas!)
-// nas próximas vezes imagino que deve ser usado uma rotação
-
-
-// funcao desenha esta em desuso, mantida no codigo soh para reverter se algo der errado
-function desenhaCanhao(ctx, raio, angulo){
-    ctx.strokeStyle = "#f0470e";
-    ctx.moveTo(width/2, height/2);
-    ctx.lineWidth = raio * 0.2;
-    ctx.lineTo(width/2, height/2 - raio * 2);
-    ctx.stroke();
-}
-
 // a funcao "rotate" rotaciona o Canvas INTEIRO
 // dah para implementar coisas legais com isso
 
-// rotacionaCanhao na realidade desenha
-// o canhao no angulo dado
+// desenhaCanhao mesclada com a antiga "rotacionaCanhao"
 
-function rotacionaCanhao(ctx, raio, angulo){
+function desenhaCanhao(ctx, raio, angulo){
     ctx.save();
     ctx.translate(width/2, height/2);
     ctx.rotate(angulo);
     ctx.moveTo(0, 0)
     ctx.lineWidth = raio * 0.2;
-    ctx.lineTo(0, raio * 2);
+    ctx.lineTo(raio * 2, 0);
     ctx.stroke();
     ctx.restore();
 }
@@ -69,18 +57,18 @@ function desenhaTurret(ctx, raio, angulo){
     ctx.stroke();
     ctx.fillStyle = "#005252";
     ctx.fill();
-    rotacionaCanhao(ctx, raio, angulo);
+    desenhaCanhao(ctx, raio, angulo);
 }
 
-// funcao para pegar as coordenadas
+// funcao para pegar as coordenadas do mouse
 function pegaCoordenadas(event){
     coord[0] = event.clientX;
     coord[1] = event.clientY;
-    logCoordenadas(coord);
-    return coord;
+//    return coord;
 }
 
-function logCoordenadas(coord){
+// imprimir coordenadas pro console
+function logCoordenadas(){
     var x = coord[0].toString();
     var y = coord[1].toString();
     var string = "x = ";
@@ -90,11 +78,24 @@ function logCoordenadas(coord){
     console.log(string);
 }
 
+// acho que o calculo do angulo pode ser feito com trigonometria
+// CoordCanhao(x,y) - CoordMouse(x,y)
+// x1 - x2 = cateto adjacente
+// y1 - y2 = cateto oposto
+// CO/CA = tanO = senO / cos0
+
+// tem algo errado nisso
+
 function giraCanhao(){
-    console.log("trololo");
+    var ca = width/2 - coord[0];
+    var co = height/2 - coord[1];
+    tangente = (co/ca);
+    console.log(tangente);  
+    blitBackground(background);     // redesenha o background
+    desenhaTurret(ctx, raio, tangente);
 }
 
-// imprimir coordenadas pro console
+
     
 
 // testando firebug
@@ -104,6 +105,7 @@ console.log("1 c4n 7yp3 t0 c0ns0l3!");
 var c = document.getElementById("canvas_turret");
 c.addEventListener("mousemove", pegaCoordenadas, false);
 c.addEventListener("mousemove", giraCanhao, false);
+c.addEventListener("mousemove", logCoordenadas, false);
 var ctx = c.getContext("2d");
 
 // Preenche background com preto
@@ -115,10 +117,7 @@ populaEstrelas(ctx, 200);
 // salva background criado
 var background = ctx.getImageData(0,0,800,600)
 
+
 // desenha turret
 var raio = 15;
 desenhaTurret(ctx, raio);
-for (i=0; i< 10; i++)
-    blitBackground(background);     // redesenha o background
-    desenhaTurret(ctx, raio, i * 10);
-
