@@ -102,6 +102,7 @@ function giraCanhao(){
     var ca = (width/2 - coord[0]);
     var co = (height/2 - coord[1]);
     tangente = (co/ca);
+    tangente = Math.atan(tangente);
     console.log(tangente);  
     blitBackground(background);     // redesenha o background
     desenhaTurret(ctx, raio, tangente);
