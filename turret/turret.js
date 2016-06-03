@@ -5,7 +5,7 @@
 var width = 800;
 var height = 600;
 
-var array = [];       
+var array = [];
 
 var i;
 for (i = 0; i < 80; i++){
@@ -13,7 +13,7 @@ for (i = 0; i < 80; i++){
 }
 
 // vetor de coorenadas X, Y
-var coord = []; 
+var coord = [];
 coord[0] = 0;
 coord[1] = 0;
 
@@ -99,23 +99,49 @@ function logCoordenadas(){
 // tem algo errado nisso
 
 function giraCanhao(){
+
     var ca = (width/2 - coord[0]);
     var co = (height/2 - coord[1]);
+
     tangente = (co/ca);
-    tangente = Math.atan(tangente);
-    console.log(tangente);  
+    atan = Math.round(Math.atan(tangente)*100)/100;
+
+    deg = atan * 180/3.14;
+    console.log(deg);
+    //Falta tratar quando coord = height
+    if(coord[0] > width/2) {
+        if(coord[1] >= height/2) {
+            console.log('DireitaBaixo');
+        } else if(coord[0] < width/2){
+            console.log('DireitaCima');
+        }
+    } else {
+        atan+=4*180/3.14;
+        if(coord[1] >= height/2) {
+            console.log('EsquerdaBaixo');
+        } else {
+            console.log('EsquerdaCima');
+        }
+    }
+
+
+
+
+
+
     blitBackground(background);     // redesenha o background
-    desenhaTurret(ctx, raio, tangente);
+
+    desenhaTurret(ctx, raio, atan);
 }
 
 
-// execucao principal aqui    
+// execucao principal aqui
 
 var ctx = c.getContext("2d");
 
 // testando firebug
 console.log("1 c4n 7yp3 t0 c0ns0l3!");
-    
+
 // Preenche background com preto
 ctx.fillStyle = "#000000";
 ctx.fillRect(0,0,800,600);
