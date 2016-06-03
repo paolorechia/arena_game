@@ -17,6 +17,16 @@ var coord = [];
 coord[0] = 0;
 coord[1] = 0;
 
+// canvas
+var c = document.getElementById("canvas_turret");
+
+
+//event listeners
+c.addEventListener("mousemove", pegaCoordenadas, false);
+c.addEventListener("mousemove", giraCanhao, false);
+c.addEventListener("mousemove", logCoordenadas, false);
+
+
 //redesenha o background
 function blitBackground(background){
     ctx.putImageData(background, 0, 0);
@@ -63,7 +73,9 @@ function desenhaTurret(ctx, raio, angulo){
 // funcao para pegar as coordenadas do mouse
 function pegaCoordenadas(event){
     coord[0] = event.clientX;
+    coord[0] -= c.offsetLeft;
     coord[1] = event.clientY;
+    coord[1] -= c.offsetTop;
 //    return coord;
 }
 
@@ -78,7 +90,7 @@ function logCoordenadas(){
     console.log(string);
 }
 
-// acho que o calculo do angulo pode ser feito com trigonometria
+// acho que o calculo do angulo pode sgonometriaer feito com trigonometria
 // CoordCanhao(x,y) - CoordMouse(x,y)
 // x1 - x2 = cateto adjacente
 // y1 - y2 = cateto oposto
@@ -87,8 +99,8 @@ function logCoordenadas(){
 // tem algo errado nisso
 
 function giraCanhao(){
-    var ca = width/2 - coord[0];
-    var co = height/2 - coord[1];
+    var ca = (width/2 - coord[0]);
+    var co = (height/2 - coord[1]);
     tangente = (co/ca);
     console.log(tangente);  
     blitBackground(background);     // redesenha o background
@@ -96,18 +108,13 @@ function giraCanhao(){
 }
 
 
-    
+// execucao principal aqui    
+
+var ctx = c.getContext("2d");
 
 // testando firebug
 console.log("1 c4n 7yp3 t0 c0ns0l3!");
     
-// canvas
-var c = document.getElementById("canvas_turret");
-c.addEventListener("mousemove", pegaCoordenadas, false);
-c.addEventListener("mousemove", giraCanhao, false);
-c.addEventListener("mousemove", logCoordenadas, false);
-var ctx = c.getContext("2d");
-
 // Preenche background com preto
 ctx.fillStyle = "#000000";
 ctx.fillRect(0,0,800,600);
