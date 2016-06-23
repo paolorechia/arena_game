@@ -32,8 +32,10 @@ c.addEventListener("mousemove", pegaCoordenadas, false);
 //c.addEventListener("mousemove", giraCanhao, false);
 //c.addEventListener("mousemove", logCoordenadas, false);
 c.addEventListener("mousemove", calculaVersor, false);
+
 //c.addEventListener("click", atiraCanhao, false);
-c.addEventListener("click", atirou, false);
+c.addEventListener("mousedown", function(){ atirou(1)}, false);
+c.addEventListener("mouseup", function(){ atirou(0)}, false);
 
 
 
@@ -139,7 +141,7 @@ function calculaVersor(){
 
     // calcula versor
     versor[0] = x * a;
-    versor[1] = y * a; 
+    versor[1] = y * a;
 
 }
 
@@ -153,19 +155,21 @@ function atiraCanhao(){
               height/2 + versor[1] * raio * 2);
     ctx.lineWidth=raio*0.2;
     ctx.strokeStyle="#00FF00";
-    ctx.lineTo(width/2 + (versor[0] * raio * 16), 
+    ctx.lineTo(width/2 + (versor[0] * raio * 16),
                height/2 +(versor[1] * raio * 16));
+
     ctx.stroke();
+
 }
 
-var bool = 0;    
+var bool = 0;
 
-function atirou(){
-    bool = 1;
+function atirou(status_tiro){
+    bool = status_tiro;
 }
 
 var lastFrameTimeMs = 0;
-var maxFPS = 30; 
+var maxFPS = 30;
 function mainLoop(timestamp){
 //    console.log(timestamp);
     if (timestamp < lastFrameTimeMs + (1000/maxFPS)){
@@ -175,9 +179,11 @@ function mainLoop(timestamp){
     lastFrameTimeMs = timestamp;
     blitBackground(background);
     giraCanhao();
-    if (bool)
+    if (bool) {
+
         atiraCanhao();
-    bool = 0;
+
+    }
     requestAnimationFrame(mainLoop);
 }
 
