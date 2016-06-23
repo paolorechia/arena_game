@@ -69,9 +69,9 @@ function desenhaCanhao(ctx, raio, angulo){
 
 // desenha o circulo e o canhao
 function desenhaTurret(ctx, raio, angulo){
+    ctx.strokeStyle = "#f0470e";
     ctx.beginPath();
     ctx.arc(width/2, height/2, raio, 0, 2*Math.PI);
-    ctx.strokeStyle = "#f0470e";
     ctx.stroke();
     ctx.fillStyle = "#005252";
     ctx.fill();
@@ -111,16 +111,16 @@ function giraCanhao(){
     //Falta tratar quando coord = height
     if(coord[0] > width/2) {
         if(coord[1] >= height/2) {
-            console.log('DireitaBaixo');
+//            console.log('DireitaBaixo');
         } else if(coord[0] < width/2){
-            console.log('DireitaCima');
+//            console.log('DireitaCima');
         }
     } else {
         atan+=4*180/3.14;
         if(coord[1] >= height/2) {
-            console.log('EsquerdaBaixo');
+//            console.log('EsquerdaBaixo');
         } else {
-           console.log('EsquerdaCima');
+//           console.log('EsquerdaCima');
         }
     }
     desenhaTurret(ctx, raio, atan);
@@ -146,13 +146,15 @@ function calculaVersor(){
 function atiraCanhao(){
     // desenha linha usando versor (apenas para ilustrar)
 
-    console.log("atirei");
-    ctx.moveTo(width/2, height/2)
+//    console.log("atirei");
+
+    ctx.beginPath();
+    ctx.moveTo(width/2 + versor[0] * raio * 2,
+              height/2 + versor[1] * raio * 2);
     ctx.lineWidth=raio*0.2;
-    ctx.lineTo(width/2 + (versor[0] * raio * 8), 
-               height/2 +(versor[1] * raio * 8));
-    console.log(width/2  + (versor[0] * raio * 8));
-    console.log(height/2 + (versor[1] * raio * 8));
+    ctx.strokeStyle="#00FF00";
+    ctx.lineTo(width/2 + (versor[0] * raio * 16), 
+               height/2 +(versor[1] * raio * 16));
     ctx.stroke();
 }
 
@@ -162,16 +164,21 @@ function atirou(){
     bool = 1;
 }
 
-function mainLoop(){
+var lastFrameTimeMs = 0;
+var maxFPS = 30; 
+function mainLoop(timestamp){
+//    console.log(timestamp);
+    if (timestamp < lastFrameTimeMs + (1000/maxFPS)){
+        requestAnimationFrame(mainLoop);
+        return;
+    }
+    lastFrameTimeMs = timestamp;
     blitBackground(background);
     giraCanhao();
-    if (bool){
+    if (bool)
         atiraCanhao();
-        var i;
-        for (i=0;i<1000;i++);
-    }
-    requestAnimationFrame(mainLoop);
     bool = 0;
+    requestAnimationFrame(mainLoop);
 }
 
 // execucao principal aqui
