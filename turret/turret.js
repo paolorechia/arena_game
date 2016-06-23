@@ -2,6 +2,7 @@
 // matriz 80x60 - quadrados de 10x10 pixels
 // ainda não é usado
 
+// variaveis globais
 var width = 800;
 var height = 600;
 
@@ -17,14 +18,23 @@ var coord = [];
 coord[0] = 0;
 coord[1] = 0;
 
+// vetor versor do canhao
+var versor = [];
+versor[0] = 0;
+versor[1] = 0;
+
 // canvas
 var c = document.getElementById("canvas_turret");
 
 
 //event listeners
 c.addEventListener("mousemove", pegaCoordenadas, false);
-c.addEventListener("mousemove", giraCanhao, false);
-c.addEventListener("mousemove", logCoordenadas, false);
+//c.addEventListener("mousemove", giraCanhao, false);
+//c.addEventListener("mousemove", logCoordenadas, false);
+c.addEventListener("mousemove", calculaVersor, false);
+//c.addEventListener("click", atiraCanhao, false);
+c.addEventListener("click", atirou, false);
+
 
 
 //redesenha o background
@@ -45,8 +55,6 @@ function populaEstrelas(ctx, num){
 
 // a funcao "rotate" rotaciona o Canvas INTEIRO
 // dah para implementar coisas legais com isso
-
-// desenhaCanhao mesclada com a antiga "rotacionaCanhao"
 
 function desenhaCanhao(ctx, raio, angulo){
     ctx.save();
@@ -87,16 +95,8 @@ function logCoordenadas(){
     string = string.concat(x);
     string = string.concat("; y = ");
     string = string.concat(y);
-    console.log(string);
+    // console.log(string);
 }
-
-// acho que o calculo do angulo pode sgonometriaer feito com trigonometria
-// CoordCanhao(x,y) - CoordMouse(x,y)
-// x1 - x2 = cateto adjacente
-// y1 - y2 = cateto oposto
-// CO/CA = tanO = senO / cos0
-
-// tem algo errado nisso
 
 function giraCanhao(){
 
@@ -107,7 +107,7 @@ function giraCanhao(){
     atan = Math.round(Math.atan(tangente)*100)/100;
 
     deg = atan * 180/3.14;
-    console.log(deg);
+    // console.log(deg);
     //Falta tratar quando coord = height
     if(coord[0] > width/2) {
         if(coord[1] >= height/2) {
@@ -120,20 +120,59 @@ function giraCanhao(){
         if(coord[1] >= height/2) {
             console.log('EsquerdaBaixo');
         } else {
-            console.log('EsquerdaCima');
+           console.log('EsquerdaCima');
         }
     }
-
-
-
-
-
-
-    blitBackground(background);     // redesenha o background
-
     desenhaTurret(ctx, raio, atan);
 }
 
+
+function calculaVersor(){
+
+    // pega coordenadas e desloca origem para o centro
+    var x = coord[0] - width/2;
+    var y = coord[1] - height/2;
+
+    // calcula modulo do vetor (x,y)
+    var mod = Math.sqrt((Math.pow(x, 2) + Math.pow(y, 2)));
+    var a = 1 / mod;
+
+    // calcula versor
+    versor[0] = x * a;
+    versor[1] = y * a; 
+
+}
+
+function atiraCanhao(){
+    // desenha linha usando versor (apenas para ilustrar)
+
+    console.log("atirei");
+    ctx.moveTo(width/2, height/2)
+    ctx.lineWidth=raio*0.2;
+    ctx.lineTo(width/2 + (versor[0] * raio * 8), 
+               height/2 +(versor[1] * raio * 8));
+    console.log(width/2  + (versor[0] * raio * 8));
+    console.log(height/2 + (versor[1] * raio * 8));
+    ctx.stroke();
+}
+
+var bool = 0;    
+
+function atirou(){
+    bool = 1;
+}
+
+function mainLoop(){
+    blitBackground(background);
+    giraCanhao();
+    if (bool){
+        atiraCanhao();
+        var i;
+        for (i=0;i<1000;i++);
+    }
+    requestAnimationFrame(mainLoop);
+    bool = 0;
+}
 
 // execucao principal aqui
 
@@ -150,8 +189,8 @@ populaEstrelas(ctx, 200);
 
 // salva background criado
 var background = ctx.getImageData(0,0,800,600)
-
-
 // desenha turret
 var raio = 15;
 desenhaTurret(ctx, raio);
+
+requestAnimationFrame(mainLoop);
