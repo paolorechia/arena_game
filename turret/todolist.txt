@@ -1,0 +1,19 @@
+ASTEROIDES
+1. limitar area de spawn dos asteroides;
+2. adicionar velocidade variavel aos asteroides;
+3. atualizar a posicao deles quadro a quadro;
+4. limitar criacao de asteroide a cada X quadros;
+5. utilizar uma cor mais apropriada
+6. (opcional) criar uma aparencia mais rebuscada para eles
+-------------------------------------------------------------
+CANHAO
+1. adicionar tiro de projetil (vai ser semelhante a criar um asteroide);
+2. colocar projetil em um botao; laser no outro;
+3. adicionar limite de tempo de uso no laser;
+
+-------------------------------------------------------------
+COLISOES
+1. calcular area do laser 
+2. verificar se algum asteroide atravessou a area do laser OU de um projetil
+-------------------------------------------------------------
+Mon Jun 27 01:25:01 BRT 2016

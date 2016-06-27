@@ -168,23 +168,50 @@ function atiraCanhao(){
 
 var vetorAsteroide = [];
 
-function asteroide(posicao, velocidade, tamanho, versor_x, versor_y){
-    this.pos = posicao;
+function asteroide(x, y, velocidade, tamanho, versor){
+    this.x = x;
+    this.y = y;
     this.vel = velocidade;
-    this.v_x = versor_x;
-    this.v_y = versor_y;
     this.tam = tamanho;
+    this.v = versor;
 }
 
 function criaAsteroide(){
     var x = Math.floor((Math.random() * width) + 1);
     var y = Math.floor((Math.random() * height) + 1);
-    vetorAsteroide.push = new asteroide();
-}
-function desenhaAsteroide(asteroide){
-    var x = 10;    
+    var versor = new tipoVersor(0, 0);
+    vetorAsteroide[vetorAsteroide.length] = new asteroide(x, y, 10, 5, versor);
 }
 
+function destroiAsteroide(indice){
+    vetorAsteroide.splice(indice, 1);
+}
+
+function desenhaAst(ast){
+    ctx.strokeStyle = "#FFFFFF";
+    ctx.beginPath();
+    ctx.arc(ast.x, 
+            ast.y, 
+            ast.tam * 5, 0, 2*Math.PI);
+    ctx.stroke();
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fill();
+}
+
+function desenhaAsteroides(){
+    var i, astLen;
+    for (i = 0; i < vetorAsteroide.length; i++){
+        desenhaAst(vetorAsteroide[i]);
+    }
+
+}
+function limpaAsteroides(){
+    var i;
+    for (i = 0; i < vetorAsteroide.length; i++){
+        destroiAsteroide(i, 1);
+    }
+}
+        
 
 var bool = 0;
 
@@ -204,9 +231,12 @@ function mainLoop(timestamp){
     blitBackground(background);
     calculaVersor(versor);
     giraCanhao();
+    criaAsteroide()
     if (bool) {
         atiraCanhao();
+        limpaAsteroides();
     }
+    desenhaAsteroides();
     requestAnimationFrame(mainLoop);
 }
 
@@ -228,5 +258,4 @@ var background = ctx.getImageData(0,0,800,600)
 // desenha turret
 var raio = 15;
 desenhaTurret(ctx, raio);
-
 requestAnimationFrame(mainLoop);
