@@ -20,13 +20,13 @@ var coord = {
 }
 
 
-function criaVersor(){
+function tipoVersor(){
     this.x = 0;
     this.y = 0;
 }
 
 // versor do canhao
-var versor = new criaVersor();
+var versor = new tipoVersor();
 
 
 // canvas
@@ -135,7 +135,7 @@ function giraCanhao(){
 }
 
 
-function calculaVersor(){
+function calculaVersor(v){
     // pega coordenadas e desloca origem para o centro
     var x = coord.x - width/2;
     var y = coord.y - height/2;
@@ -145,8 +145,8 @@ function calculaVersor(){
     var a = 1 / mod;
 
     // calcula versor
-    versor.x = x * a;
-    versor.y = y * a;
+    v.x = x * a;
+    v.y = y * a;
 }
 
 function atiraCanhao(){
@@ -202,7 +202,7 @@ function mainLoop(timestamp){
     }
     lastFrameTimeMs = timestamp;
     blitBackground(background);
-    calculaVersor(versor.x, versor.y);
+    calculaVersor(versor);
     giraCanhao();
     if (bool) {
         atiraCanhao();
