@@ -13,15 +13,21 @@ for (i = 0; i < 80; i++){
         array[i] = [];
 }
 
-// vetor de coorenadas X, Y
-var coord = [];
-coord[0] = 0;
-coord[1] = 0;
+// obj coorenadas X, Y
+var coord = {
+    x:0,
+    y:0
+}
 
-// vetor versor do canhao
-var versor = [];
-versor[0] = 0;
-versor[1] = 0;
+
+function criaVersor(){
+    this.x = 0;
+    this.y = 0;
+}
+
+// versor do canhao
+var versor = new criaVersor();
+
 
 // canvas
 var c = document.getElementById("canvas_turret");
@@ -31,7 +37,7 @@ var c = document.getElementById("canvas_turret");
 c.addEventListener("mousemove", pegaCoordenadas, false);
 //c.addEventListener("mousemove", giraCanhao, false);
 //c.addEventListener("mousemove", logCoordenadas, false);
-c.addEventListener("mousemove", calculaVersor, false);
+//c.addEventListener("mousemove", calculaVersor, false);
 
 //c.addEventListener("click", atiraCanhao, false);
 c.addEventListener("mousedown", function(){ atirou(1)}, false);
@@ -82,28 +88,28 @@ function desenhaTurret(ctx, raio, angulo){
 
 // funcao para pegar as coordenadas do mouse
 function pegaCoordenadas(event){
-    coord[0] = event.clientX;
-    coord[0] -= c.offsetLeft;
-    coord[1] = event.clientY;
-    coord[1] -= c.offsetTop;
+    coord.x = event.clientX;
+    coord.x -= c.offsetLeft;
+    coord.y = event.clientY;
+    coord.y -= c.offsetTop;
 //    return coord;
 }
 
 // imprimir coordenadas pro console
 function logCoordenadas(){
-    var x = coord[0].toString();
-    var y = coord[1].toString();
+    var x = coord.x.toString();
+    var y = coord.y.toString();
     var string = "x = ";
     string = string.concat(x);
     string = string.concat("; y = ");
     string = string.concat(y);
-    // console.log(string);
+    console.log(string);
 }
 
 function giraCanhao(){
 
-    var ca = (width/2 - coord[0]);
-    var co = (height/2 - coord[1]);
+    var ca = (width/2 - coord.x);
+    var co = (height/2 - coord.y);
 
     tangente = (co/ca);
     atan = Math.round(Math.atan(tangente)*100)/100;
@@ -111,15 +117,15 @@ function giraCanhao(){
     deg = atan * 180/3.14;
     // console.log(deg);
     //Falta tratar quando coord = height
-    if(coord[0] > width/2) {
-        if(coord[1] >= height/2) {
+    if(coord.x > width/2) {
+        if(coord.y >= height/2) {
 //            console.log('DireitaBaixo');
-        } else if(coord[0] < width/2){
+        } else if(coord.x < width/2){
 //            console.log('DireitaCima');
         }
     } else {
         atan+=4*180/3.14;
-        if(coord[1] >= height/2) {
+        if(coord.y >= height/2) {
 //            console.log('EsquerdaBaixo');
         } else {
 //           console.log('EsquerdaCima');
@@ -130,19 +136,17 @@ function giraCanhao(){
 
 
 function calculaVersor(){
-
     // pega coordenadas e desloca origem para o centro
-    var x = coord[0] - width/2;
-    var y = coord[1] - height/2;
+    var x = coord.x - width/2;
+    var y = coord.y - height/2;
 
     // calcula modulo do vetor (x,y)
     var mod = Math.sqrt((Math.pow(x, 2) + Math.pow(y, 2)));
     var a = 1 / mod;
 
     // calcula versor
-    versor[0] = x * a;
-    versor[1] = y * a;
-
+    versor.x = x * a;
+    versor.y = y * a;
 }
 
 function atiraCanhao(){
@@ -151,16 +155,36 @@ function atiraCanhao(){
 //    console.log("atirei");
 
     ctx.beginPath();
-    ctx.moveTo(width/2 + versor[0] * raio * 2,
-              height/2 + versor[1] * raio * 2);
+    ctx.moveTo(width/2 + versor.x * raio * 2,
+              height/2 + versor.y * raio * 2);
     ctx.lineWidth=raio*0.2;
     ctx.strokeStyle="#00FF00";
-    ctx.lineTo(width/2 + (versor[0] * raio * 16),
-               height/2 +(versor[1] * raio * 16));
+    ctx.lineTo(width/2 + (versor.x * raio * 16),
+               height/2 +(versor.y * raio * 16));
 
     ctx.stroke();
 
 }
+
+var vetorAsteroide = [];
+
+function asteroide(posicao, velocidade, tamanho, versor_x, versor_y){
+    this.pos = posicao;
+    this.vel = velocidade;
+    this.v_x = versor_x;
+    this.v_y = versor_y;
+    this.tam = tamanho;
+}
+
+function criaAsteroide(){
+    var x = Math.floor((Math.random() * width) + 1);
+    var y = Math.floor((Math.random() * height) + 1);
+    vetorAsteroide.push = new asteroide();
+}
+function desenhaAsteroide(asteroide){
+    var x = 10;    
+}
+
 
 var bool = 0;
 
@@ -178,11 +202,10 @@ function mainLoop(timestamp){
     }
     lastFrameTimeMs = timestamp;
     blitBackground(background);
+    calculaVersor(versor.x, versor.y);
     giraCanhao();
     if (bool) {
-
         atiraCanhao();
-
     }
     requestAnimationFrame(mainLoop);
 }
