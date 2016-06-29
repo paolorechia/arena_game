@@ -177,11 +177,28 @@ function asteroide(x, y, velocidade, tamanho, versor){
 }
 
 function criaAsteroide(){
-    var x = Math.floor((Math.random() * width) + 1);
+    var x = 1;
     var y = Math.floor((Math.random() * height) + 1);
-    var versor = new tipoVersor(0, 0);
-    vetorAsteroide[vetorAsteroide.length] = new asteroide(x, y, 10, 5, versor);
+    var i = vetorAsteroide.length;
+    var versor = new tipoVersor();
+    vetorAsteroide[i] = new asteroide(x, y, 1, 5, versor);
+    versor.x=1;
+    versor.y=0;
 }
+function atualizaAsteroides(){
+    var i = 0;
+    var len = vetorAsteroide.length;
+    for (i = 0; i < len; i++){
+        vetorAsteroide[i].x += vetorAsteroide[i].v.x * vetorAsteroide[i].vel;
+        vetorAsteroide[i].y += vetorAsteroide[i].v.y * vetorAsteroide[i].vel;
+    /*
+        console.log(vetorAsteroide[i]);
+        console.log(vetorAsteroide[i]);
+    */
+    }
+    
+}
+        
 
 function destroiAsteroide(indice){
     vetorAsteroide.splice(indice, 1);
@@ -199,15 +216,17 @@ function desenhaAst(ast){
 }
 
 function desenhaAsteroides(){
-    var i, astLen;
-    for (i = 0; i < vetorAsteroide.length; i++){
+    var i;
+    var len = vetorAsteroide.length;
+    for (i = 0; i < len; i++){
         desenhaAst(vetorAsteroide[i]);
     }
 
 }
 function limpaAsteroides(){
     var i;
-    for (i = 0; i < vetorAsteroide.length; i++){
+    var len = vetorAsteroide.length;
+    for (i = 0; i < len; i++){
         destroiAsteroide(i, 1);
     }
 }
@@ -221,22 +240,28 @@ function atirou(status_tiro){
 
 var lastFrameTimeMs = 0;
 var maxFPS = 30;
+var tempo = 0;
+criaAsteroide();
+atualizaAsteroides();
 function mainLoop(timestamp){
-//    console.log(timestamp);
+    tempo++;
+    console.log(tempo);
     if (timestamp < lastFrameTimeMs + (1000/maxFPS)){
         requestAnimationFrame(mainLoop);
         return;
     }
     lastFrameTimeMs = timestamp;
     blitBackground(background);
+    atualizaAsteroides();
+    desenhaAsteroides();
     calculaVersor(versor);
     giraCanhao();
-    criaAsteroide()
+        if ((tempo % 100) == 0)
+        criaAsteroide();
     if (bool) {
         atiraCanhao();
-        limpaAsteroides();
+//        limpaAsteroides();
     }
-    desenhaAsteroides();
     requestAnimationFrame(mainLoop);
 }
 
