@@ -176,14 +176,30 @@ function asteroide(x, y, velocidade, tamanho, versor){
     this.v = versor;
 }
 
-function criaAsteroide(){
+function criaEsq(){
     var x = 1;
     var y = Math.floor((Math.random() * height) + 1);
     var i = vetorAsteroide.length;
+    var vel = Math.floor((Math.random() * 10) + 1);
     var versor = new tipoVersor();
-    vetorAsteroide[i] = new asteroide(x, y, 1, 5, versor);
+    vetorAsteroide[i] = new asteroide(x, y, vel, 5, versor);
     versor.x=1;
     versor.y=0;
+}
+
+function criaAsteroide(){
+//    var randomize = Math.floor((Math.random() * 4 + 1));
+    var randomize = 0;
+    if (randomize == 0){
+        criaEsq();
+    }
+    else if (randomize == 1){
+        criaDir;
+    }
+    else if (randomize == 2){
+        criaSup;
+    }
+    else criaInf;
 }
 function atualizaAsteroides(){
     var i = 0;
@@ -197,6 +213,21 @@ function atualizaAsteroides(){
     */
     }
     
+}
+
+function confereColisoes(){
+    var i = 0;
+    var x, y;
+    var len = vetorAsteroide.length; 
+    for (i = 0; i < len; i++){
+        x = vetorAsteroide[i].x;
+        y = vetorAsteroide[i].y;
+        // testa se asteroide saiu do board
+        if (x > width || x < 0 || y > height || y < 0){
+            destroiAsteroide(i, 1);
+            return;
+        }
+    }
 }
         
 
@@ -245,7 +276,7 @@ criaAsteroide();
 atualizaAsteroides();
 function mainLoop(timestamp){
     tempo++;
-    console.log(tempo);
+//    console.log(tempo);
     if (timestamp < lastFrameTimeMs + (1000/maxFPS)){
         requestAnimationFrame(mainLoop);
         return;
@@ -256,12 +287,14 @@ function mainLoop(timestamp){
     desenhaAsteroides();
     calculaVersor(versor);
     giraCanhao();
-        if ((tempo % 100) == 0)
+        if ((tempo % 50) == 0)
         criaAsteroide();
     if (bool) {
         atiraCanhao();
 //        limpaAsteroides();
     }
+    confereColisoes();
+    console.log(vetorAsteroide.length);
     requestAnimationFrame(mainLoop);
 }
 
