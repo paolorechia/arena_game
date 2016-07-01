@@ -176,30 +176,61 @@ function asteroide(x, y, velocidade, tamanho, versor){
     this.v = versor;
 }
 
-function criaEsq(){
+function criaEsq(vel, tam){
     var x = 1;
     var y = Math.floor((Math.random() * height) + 1);
-    var i = vetorAsteroide.length;
-    var vel = Math.floor((Math.random() * 10) + 1);
+    var len = vetorAsteroide.length;
     var versor = new tipoVersor();
-    vetorAsteroide[i] = new asteroide(x, y, vel, 5, versor);
+    vetorAsteroide[len] = new asteroide(x, y, vel, tam, versor);
     versor.x=1;
-    versor.y=0;
+    var vy = (Math.random() - 0.5);
+    versor.y=vy;
+}
+function criaDir(vel, tam){
+    var x = width;
+    var y = Math.floor((Math.random() * height) + 1);
+    var len = vetorAsteroide.length;
+    var versor = new tipoVersor();
+    vetorAsteroide[len] = new asteroide(x, y, vel, tam, versor);
+    versor.x=-1;
+    var vy = (Math.random() - 0.5);
+    versor.y=vy;
+}
+function criaSup(vel, tam){
+    var x = Math.floor((Math.random() * height) + 1);
+    var y = 1;
+    var len = vetorAsteroide.length;
+    var versor = new tipoVersor();
+    vetorAsteroide[len] = new asteroide(x, y, vel, tam, versor);
+    versor.y=1;
+    var vx = (Math.random() - 0.5);
+    versor.x=vx;
+}
+function criaInf(vel, tam){
+    var x = Math.floor((Math.random() * height) + 1);
+    var y = height;
+    var len = vetorAsteroide.length;
+    var versor = new tipoVersor();
+    vetorAsteroide[len] = new asteroide(x, y, vel, tam, versor);
+    versor.y=-1;
+    var vx = (Math.random() - 0.5);
+    versor.x=vx;
 }
 
 function criaAsteroide(){
-//    var randomize = Math.floor((Math.random() * 4 + 1));
-    var randomize = 0;
+    var randomize = Math.floor((Math.random())* 4);
+    var vel = Math.floor((Math.random() * 10) + 1);
+    var tam = Math.floor((Math.random() * 5) + 2);
     if (randomize == 0){
-        criaEsq();
+        criaEsq(vel, tam);
     }
     else if (randomize == 1){
-        criaDir;
+        criaDir(vel, tam);
     }
     else if (randomize == 2){
-        criaSup;
+        criaSup(vel, tam);
     }
-    else criaInf;
+    else criaInf(vel, tam);
 }
 function atualizaAsteroides(){
     var i = 0;
@@ -287,7 +318,7 @@ function mainLoop(timestamp){
     desenhaAsteroides();
     calculaVersor(versor);
     giraCanhao();
-        if ((tempo % 50) == 0)
+        if ((tempo % 10) == 0)
         criaAsteroide();
     if (bool) {
         atiraCanhao();
