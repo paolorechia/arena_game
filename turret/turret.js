@@ -149,21 +149,34 @@ function calculaVersor(v){
     v.y = y * a;
 }
 
+var vetorLaser = [];
+function laser(x, y){
+    this.x;
+    this.y;
+}
+
 function atiraCanhao(){
     // desenha linha usando versor (apenas para ilustrar)
 
 //    console.log("atirei");
-
+    var tam = 14;
+    var base = 2;
+    var x0 = width/2 + versor.x * raio * base;
+    var x1 = width/2 + versor.x * raio * (tam + base);
+    var y0 = height/2 + versor.y * raio * base;
+    var y1 = height/2 +versor.y * raio * (tam + base);
     ctx.beginPath();
-    ctx.moveTo(width/2 + versor.x * raio * 2,
-              height/2 + versor.y * raio * 2);
+    ctx.moveTo(x0,y0);
     ctx.lineWidth=raio*0.2;
     ctx.strokeStyle="#00FF00";
-    ctx.lineTo(width/2 + (versor.x * raio * 16),
-               height/2 +(versor.y * raio * 16));
-
+    ctx.lineTo(x1, y1);
     ctx.stroke();
-
+    var i;
+    for (i = 0; i< tam; i++){
+        vetorLaser[i] = new laser(0,0);
+        vetorLaser[i].x = (x0 + versor.x * raio * i);
+        vetorLaser[i].y = (y0 + versor.y * raio * i);
+    }
 }
 
 var vetorAsteroide = [];
@@ -246,10 +259,19 @@ function atualizaAsteroides(){
     
 }
 
+function distGeometrica(x0, y0, x1, y1){
+    var x = Math.pow((x0 - x1), 2);
+    var y = Math.pow((y0 - y1), 2);
+    return Math.sqrt(x + y);
+} 
+
 function confereColisoes(){
     var i = 0;
     var x, y;
+    var x1, y1;
+    var dist;
     var len = vetorAsteroide.length; 
+    var tam = vetorLaser.length;
     for (i = 0; i < len; i++){
         x = vetorAsteroide[i].x;
         y = vetorAsteroide[i].y;
@@ -257,6 +279,15 @@ function confereColisoes(){
         if (x > width || x < 0 || y > height || y < 0){
             destroiAsteroide(i, 1);
             return;
+        }
+        for (j = 0; j < tam; j++){
+            x1 = vetorLaser[j].x;
+            y1 = vetorLaser[j].y;
+            dist = distGeometrica(x, y, x1, y1)
+            if (dist < (vetorAsteroide[i].tam * 5)){
+                destroiAsteroide(i, 1);
+                return;
+            }
         }
     }
 }
@@ -318,14 +349,16 @@ function mainLoop(timestamp){
     desenhaAsteroides();
     calculaVersor(versor);
     giraCanhao();
-        if ((tempo % 10) == 0)
+            if ((tempo % 10) == 0)
         criaAsteroide();
     if (bool) {
         atiraCanhao();
 //        limpaAsteroides();
     }
+//    console.log(vetorLaser);
     confereColisoes();
-    console.log(vetorAsteroide.length);
+    vetorLaser.length = 0;
+//    console.log(vetorAsteroide.length);
     requestAnimationFrame(mainLoop);
 }
 

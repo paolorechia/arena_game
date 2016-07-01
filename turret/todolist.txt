@@ -11,7 +11,7 @@ CANHAO
 
 -------------------------------------------------------------
 COLISOES
-1. calcular area do laser 
-2. verificar se algum asteroide atravessou a area do laser OU de um projetil OU bateu no turret
+2. verificar se algum asteroide atravessou um OU bateu no turret
+3. (opcional) criar colisao entre os asteroides
 -------------------------------------------------------------
 Fri Jul 1 00:50:20 BRT 2016
