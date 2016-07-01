@@ -31,6 +31,7 @@ var versor = new tipoVersor();
 
 // canvas
 var c = document.getElementById("canvas_turret");
+var ctx = c.getContext("2d");
 
 
 //event listeners
@@ -84,6 +85,15 @@ function desenhaTurret(ctx, raio, angulo){
     ctx.fillStyle = "#005252";
     ctx.fill();
     desenhaCanhao(ctx, raio, angulo);
+
+    //------Exemplo--------
+    var hud_stats =  {
+      vida: 10,
+      kills: 0,
+      energy: 100
+    }
+    //----------------------
+
 }
 
 // funcao para pegar as coordenadas do mouse
@@ -256,21 +266,21 @@ function atualizaAsteroides(){
         console.log(vetorAsteroide[i]);
     */
     }
-    
+
 }
 
 function distGeometrica(x0, y0, x1, y1){
     var x = Math.pow((x0 - x1), 2);
     var y = Math.pow((y0 - y1), 2);
     return Math.sqrt(x + y);
-} 
+}
 
 function confereColisoes(){
     var i = 0;
     var x, y;
     var x1, y1;
     var dist;
-    var len = vetorAsteroide.length; 
+    var len = vetorAsteroide.length;
     var tam = vetorLaser.length;
     for (i = 0; i < len; i++){
         x = vetorAsteroide[i].x;
@@ -286,12 +296,18 @@ function confereColisoes(){
             dist = distGeometrica(x, y, x1, y1)
             if (dist < (vetorAsteroide[i].tam * 5)){
                 destroiAsteroide(i, 1);
+
+
+                //------Exemplo--------
+                hud_stats.kills += 1;
+                //----------------------
+
                 return;
             }
         }
     }
 }
-        
+
 
 function destroiAsteroide(indice){
     vetorAsteroide.splice(indice, 1);
@@ -300,8 +316,8 @@ function destroiAsteroide(indice){
 function desenhaAst(ast){
     ctx.strokeStyle = "#FFFFFF";
     ctx.beginPath();
-    ctx.arc(ast.x, 
-            ast.y, 
+    ctx.arc(ast.x,
+            ast.y,
             ast.tam * 5, 0, 2*Math.PI);
     ctx.stroke();
     ctx.fillStyle = "#FFFFFF";
@@ -323,7 +339,7 @@ function limpaAsteroides(){
         destroiAsteroide(i, 1);
     }
 }
-        
+
 
 var bool = 0;
 
@@ -332,7 +348,7 @@ function atirou(status_tiro){
 }
 
 var lastFrameTimeMs = 0;
-var maxFPS = 30;
+var maxFPS = 60;
 var tempo = 0;
 criaAsteroide();
 atualizaAsteroides();
@@ -349,6 +365,9 @@ function mainLoop(timestamp){
     desenhaAsteroides();
     calculaVersor(versor);
     giraCanhao();
+    desenhaHud(hud_stats);
+
+
             if ((tempo % 10) == 0)
         criaAsteroide();
     if (bool) {
@@ -364,7 +383,6 @@ function mainLoop(timestamp){
 
 // execucao principal aqui
 
-var ctx = c.getContext("2d");
 
 // testando firebug
 console.log("1 c4n 7yp3 t0 c0ns0l3!");
