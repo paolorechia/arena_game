@@ -1,6 +1,6 @@
 ASTEROIDES
 1. tornar area de spawn dos asteroides dinâmica;
-2. adicionar velocidade variavel aos asteroides;
+2. versor dinâmico
 5. utilizar uma cor mais apropriada
 6. (opcional) criar uma aparencia mais rebuscada para eles
 -------------------------------------------------------------
@@ -12,6 +12,6 @@ CANHAO
 -------------------------------------------------------------
 COLISOES
 1. calcular area do laser 
-2. verificar se algum asteroide atravessou a area do laser OU de um projetil
+2. verificar se algum asteroide atravessou a area do laser OU de um projetil OU bateu no turret
 -------------------------------------------------------------
 Mon Jun 27 01:25:01 BRT 2016
