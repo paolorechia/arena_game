@@ -74,6 +74,7 @@ function desenhaCanhao(ctx, raio, angulo){
     ctx.lineTo(raio * 2, 0);
     ctx.stroke();
     ctx.restore();
+
 }
 
 // desenha o circulo e o canhao
@@ -85,14 +86,16 @@ function desenhaTurret(ctx, raio, angulo){
     ctx.fillStyle = "#005252";
     ctx.fill();
     desenhaCanhao(ctx, raio, angulo);
+    //Se tem shield, desenha o shield----------
+    if(hud_stats.shield > 0) {
+      ctx.strokeStyle = "#1244AA";
+      ctx.beginPath();
+      ctx.arc(width/2, height/2, raio*1.3, 0, 2*Math.PI);
+      ctx.stroke();
 
-    //------Exemplo--------
-    var hud_stats =  {
-      vida: 10,
-      kills: 0,
-      energy: 100
     }
-    //----------------------
+    //------------------------------------------
+
 
 }
 
@@ -290,6 +293,25 @@ function confereColisoes(){
             destroiAsteroide(i, 1);
             return;
         }
+
+
+        //console.log(Math.sqrt(Math.pow(x,2)+Math.pow(width/2,2)));
+        //console.log(Math.sqrt(Math.pow(y,2)+Math.pow(height/2,2)));
+
+        if( Math.sqrt(Math.pow(x-(width/2),2)) < raio*2  && Math.sqrt(Math.pow(y-(height/2),2)) < raio*2) {
+          destroiAsteroide(i,1);
+
+          if(hud_stats.shield > 0) {
+            hud_stats.shield -=1;
+          } else {
+            hud_stats.vida -=1;
+          }
+
+          return;
+        }
+
+        //----------------------
+
         for (j = 0; j < tam; j++){
             x1 = vetorLaser[j].x;
             y1 = vetorLaser[j].y;
@@ -352,6 +374,9 @@ var maxFPS = 60;
 var tempo = 0;
 criaAsteroide();
 atualizaAsteroides();
+
+
+
 function mainLoop(timestamp){
     tempo++;
 //    console.log(tempo);
@@ -368,7 +393,7 @@ function mainLoop(timestamp){
     desenhaHud(hud_stats);
 
 
-            if ((tempo % 10) == 0)
+    if ((tempo % 10) == 0)
         criaAsteroide();
     if (bool) {
         atiraCanhao();
@@ -380,6 +405,8 @@ function mainLoop(timestamp){
 //    console.log(vetorAsteroide.length);
     requestAnimationFrame(mainLoop);
 }
+
+
 
 // execucao principal aqui
 

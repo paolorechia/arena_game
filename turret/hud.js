@@ -10,7 +10,6 @@ var hud_stats =  {
 //----------------------
 
 function desenhaHud (stats) {
-  console.log(stats);
   ctx.font = "30px Arial";
   ctx.fillStyle="green";
   ctx.fillText("HP: " + stats.vida, 30, 35)
