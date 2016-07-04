@@ -138,12 +138,7 @@ function confereColisoes(){
 
         if( Math.sqrt(Math.pow(x-(width/2),2)) < raio*2  && Math.sqrt(Math.pow(y-(height/2),2)) < raio*2) {
           destroiAsteroide(i,1);
-
-          if(hud.stats.shield > 0) {
-            hud.stats.shield -=1;
-          } else {
-            hud.stats.vida -=1;
-          }
+          hud.tomar_dano(1);
 
           return;
         }

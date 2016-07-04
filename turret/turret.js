@@ -60,7 +60,7 @@ function giraCanhao(){
 }
 function atiraCanhao(){
     // desenha linha usando versor (apenas para ilustrar)
-
+    hud.descarregar_energia(1);
 //    console.log("atirei");
     var tam = 14;
     var base = 2;
