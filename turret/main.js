@@ -196,14 +196,14 @@ function mainLoop(timestamp){
     atualizaAsteroides();
     desenhaAsteroides();
     calculaVersor(versor);
-    giraCanhao();
+    turret.gira();
     hud.desenhar(hud.stats);
 
 
     if ((tempo % 10) == 0)
         criaAsteroide();
     if (bool) {
-        atiraCanhao();
+        turret.atira();
 //        limpaAsteroides();
     }
 //    console.log(vetorLaser);
@@ -231,5 +231,4 @@ populaEstrelas(ctx, 200);
 var background = ctx.getImageData(0,0,800,600)
 // desenha turret
 var raio = 15;
-desenhaTurret(ctx, raio);
 requestAnimationFrame(mainLoop);
