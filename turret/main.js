@@ -116,55 +116,6 @@ function distGeometrica(x0, y0, x1, y1){
     return Math.sqrt(x + y);
 }
 
-function confereColisoes(){
-    var i = 0;
-    var x, y;
-    var x1, y1;
-    var dist;
-    var len = vetorAsteroide.length;
-    var tam = vetorLaser.length;
-    for (i = 0; i < len; i++){
-        x = vetorAsteroide[i].x;
-        y = vetorAsteroide[i].y;
-        // testa se asteroide saiu do board
-        if (x > width || x < 0 || y > height || y < 0){
-            destroiAsteroide(i, 1);
-            return;
-        }
-
-
-        //console.log(Math.sqrt(Math.pow(x,2)+Math.pow(width/2,2)));
-        //console.log(Math.sqrt(Math.pow(y,2)+Math.pow(height/2,2)));
-
-        if( Math.sqrt(Math.pow(x-(width/2),2)) < raio*2  && Math.sqrt(Math.pow(y-(height/2),2)) < raio*2) {
-          destroiAsteroide(i,1);
-          hud.tomar_dano(1);
-
-          return;
-        }
-
-        //----------------------
-
-        for (j = 0; j < tam; j++){
-            x1 = vetorLaser[j].x;
-            y1 = vetorLaser[j].y;
-            dist = distGeometrica(x, y, x1, y1)
-            if (dist < (vetorAsteroide[i].tam * 5)){
-                destroiAsteroide(i, 1);
-
-
-                //------Exemplo--------
-                hud.stats.kills += 1;
-                //----------------------
-
-                return;
-            }
-        }
-    }
-}
-
-
-
 var bool = 0;
 
 function atirou(status_tiro){
@@ -174,8 +125,8 @@ function atirou(status_tiro){
 var lastFrameTimeMs = 0;
 var maxFPS = 60;
 var tempo = 0;
-criaAsteroide();
-atualizaAsteroides();
+asteroides.cria();
+asteroides.atualiza();
 
 
 
@@ -188,27 +139,25 @@ function mainLoop(timestamp){
     }
     lastFrameTimeMs = timestamp;
     blitBackground(background);
-    atualizaAsteroides();
-    desenhaAsteroides();
+    asteroides.atualiza();
+    asteroides.desenhaTodos();
     calculaVersor(versor);
-    giraCanhao();
+    turret.gira();
     hud.desenhar(hud.stats);
 
 
     if ((tempo % 10) == 0)
-        criaAsteroide();
+        asteroides.cria();
     if (bool) {
-        atiraCanhao();
+        turret.atira();
 //        limpaAsteroides();
     }
 //    console.log(vetorLaser);
-    confereColisoes();
+    colisoes.confere();
     vetorLaser.length = 0;
 //    console.log(vetorAsteroide.length);
     requestAnimationFrame(mainLoop);
 }
-
-
 
 // execucao principal aqui
 
@@ -226,5 +175,4 @@ populaEstrelas(ctx, 200);
 var background = ctx.getImageData(0,0,800,600)
 // desenha turret
 var raio = 15;
-desenhaTurret(ctx, raio);
 requestAnimationFrame(mainLoop);
