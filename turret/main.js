@@ -139,10 +139,10 @@ function confereColisoes(){
         if( Math.sqrt(Math.pow(x-(width/2),2)) < raio*2  && Math.sqrt(Math.pow(y-(height/2),2)) < raio*2) {
           destroiAsteroide(i,1);
 
-          if(hud_stats.shield > 0) {
-            hud_stats.shield -=1;
+          if(hud.stats.shield > 0) {
+            hud.stats.shield -=1;
           } else {
-            hud_stats.vida -=1;
+            hud.stats.vida -=1;
           }
 
           return;
@@ -159,7 +159,7 @@ function confereColisoes(){
 
 
                 //------Exemplo--------
-                hud_stats.kills += 1;
+                hud.stats.kills += 1;
                 //----------------------
 
                 return;
@@ -197,7 +197,7 @@ function mainLoop(timestamp){
     desenhaAsteroides();
     calculaVersor(versor);
     giraCanhao();
-    desenhaHud(hud_stats);
+    hud.desenhar(hud.stats);
 
 
     if ((tempo % 10) == 0)
