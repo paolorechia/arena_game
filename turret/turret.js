@@ -13,16 +13,46 @@ var turret = {
     x : background.width/2,
     y : background.height/2,
     vel : 0,
+    acel: 0.2,
+    max_speed : 0.6,
+    vx : 0,
+    vy : 0,
     
-    'move' : function (event){
+    'atualizaDirecao' : function (event){
         if (event.key == 'w'){
-            turret.y = turret.y + 1;;
-            console.log(turret.y);
+            turret.vy = turret.vy - turret.acel;
+            turret.vel += turret.acel;
+        }
+        if (event.key == 's'){
+            turret.vy = turret.vy + turret.acel;
+            turret.vel += turret.acel;
+        }
+        if (event.key == 'd'){
+            turret.vx = turret.vx + turret.acel;
+            turret.vel += turret.acel;
+        }
+        if (event.key == 'a'){
+            turret.vx = turret.vx - turret.acel;
+            turret.vel += turret.acel;
+        }
+    },
+    'move' : function(){
+        if (turret.vel >= turret.max_speed){
+            turret.vel = turret.max_speed;
+        }
+        if (turret.vel > 0){
+            turret.x += turret.vx * turret.vel;
+            turret.y += turret.vy * turret.vel;
+        //    turret.vel -= turret.acel/1.1;
+        }
+        if (turret.vel <= 0){
+            turret.vx = 0;
+            turret.vy = 0;
         }
     },
     'desenhaCanhao' : function (ctx, raio, angulo){
         ctx.save();
-        ctx.translate(background.width/2, background.height/2);
+        ctx.translate(turret.x, turret.y);
         ctx.rotate(angulo);
         ctx.moveTo(0, 0)
         ctx.lineWidth = raio * 0.2;
@@ -34,7 +64,7 @@ var turret = {
     'desenha' : function (ctx, raio, angulo){
         ctx.strokeStyle = "#f0470e";
         ctx.beginPath();
-        ctx.arc(background.width/2, background.height/2, raio, 0, 2*Math.PI);
+        ctx.arc(turret.x, turret.y, raio, 0, 2*Math.PI);
         ctx.stroke();
         ctx.fillStyle = "#005252";
         ctx.fill();
@@ -43,15 +73,15 @@ var turret = {
         if(this.hud.stats.shield > 0) {
           ctx.strokeStyle = "#1244AA";
           ctx.beginPath();
-          ctx.arc(background.width/2, background.height/2, raio*1.3, 0, 2*Math.PI);
+          ctx.arc(turret.x, turret.y, raio*1.3, 0, 2*Math.PI);
           ctx.stroke();
         }
     },
 
     'gira' : function (){
 
-        var ca = (background.width/2 - coord.x);
-        var co = (background.height/2 - coord.y);
+        var ca = (turret.x - coord.x);
+        var co = (turret.y - coord.y);
 
         tangente = (co/ca);
         atan = Math.round(Math.atan(tangente)*100)/100;
@@ -59,15 +89,15 @@ var turret = {
         deg = atan * 180/3.14;
         // console.log(deg);
         //Falta tratar quando coord = background.height
-        if(coord.x > background.width/2) {
-            if(coord.y >= background.height/2) {
+        if(coord.x > turret.x) {
+            if(coord.y >= turret.y) {
     //            console.log('DireitaBaixo');
-            } else if(coord.x < background.width/2){
+            } else if(coord.x < turret.x){
     //            console.log('DireitaCima');
             }
         } else {
             atan+=4*180/3.14;
-            if(coord.y >= background.height/2) {
+            if(coord.y >= turret.y) {
     //            console.log('EsquerdaBaixo');
             } else {
     //           console.log('EsquerdaCima');
@@ -100,10 +130,10 @@ var turret = {
     //    console.log("atirei");
         var tam = 14;
         var base = 2;
-        var x0 = background.width/2 + turret.versor.x * turret.raio * base;
-        var x1 = background.width/2 + turret.versor.x * turret.raio * (tam + base);
-        var y0 = background.height/2 + turret.versor.y * turret.raio * base;
-        var y1 = background.height/2 +turret.versor.y * turret.raio * (tam + base);
+        var x0 = turret.x + turret.versor.x * turret.raio * base;
+        var x1 = turret.x + turret.versor.x * turret.raio * (tam + base);
+        var y0 = turret.y + turret.versor.y * turret.raio * base;
+        var y1 = turret.y + turret.versor.y * turret.raio * (tam + base);
         ctx.beginPath();
         ctx.moveTo(x0,y0);
         ctx.lineWidth=turret.raio*0.2;

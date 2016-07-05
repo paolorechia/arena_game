@@ -33,8 +33,8 @@ function Versor(){
 var calculo = {
     versor : function (v){
         // pega coordenadas e desloca origem para o centro
-        var x = coord.x - background.width/2;
-        var y = coord.y - background.height/2;
+        var x = coord.x - turret.x;
+        var y = coord.y - turret.y;
 
         // calcula modulo do vetor (x,y)
         var mod = Math.sqrt((Math.pow(x, 2) + Math.pow(y, 2)));

@@ -1,8 +1,8 @@
 var background = {
     //redesenha o background
     imagem : 0,
-    width : 0,
-    height : 0,
+    width : 800,
+    height : 600,
     'grava' : function(ctx, width, height){
         this.imagem = ctx.getImageData(0,0,width, height);
     },
