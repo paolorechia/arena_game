@@ -42,7 +42,6 @@ var turret = {
                 turret.vx = (turret.vx - turret.turn_rate);
             }
             turret.vel += turret.acel;
-            console.log(turret.vx);
         }
     },
     'move' : function(){
