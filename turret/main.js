@@ -15,8 +15,8 @@ background.grava(ctx, background.width, background.height);
 
 //event listeners
 c.addEventListener("mousemove", pegaCoordenadas, false);
-c.addEventListener("mousedown", function(){ atirou(1)}, false);
-c.addEventListener("mouseup", function(){ atirou(0)}, false);
+c.addEventListener("mousedown", function(){ turret.atirou(1)}, false);
+c.addEventListener("mouseup", function(){ turret.atirou(0)}, false);
 
 var bool = 0;
 

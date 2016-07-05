@@ -7,9 +7,7 @@ function laser(x, y){
     this.y;
 }
 
-function atirou(status_tiro){
-    bool = status_tiro;
-}
+
 
 var turret = {
     'desenhaCanhao' : function (ctx, raio, angulo){
@@ -72,6 +70,8 @@ var turret = {
         // desenha linha usando versor (apenas para ilustrar)
         this.hud.descarregar_energia(1);
 
+
+
     //    console.log("atirei");
         var tam = 14;
         var base = 2;
@@ -91,7 +91,18 @@ var turret = {
             vetorLaser[i].x = (x0 + versor.x * raio * i);
             vetorLaser[i].y = (y0 + versor.y * raio * i);
         }
-    }, 'hud' : {
+    },
+
+    "atirou" : function(status_tiro){
+      //mudar para this
+      var cooldown_time = true;
+      if(turret.hud.stats.energy == 0) {
+
+      }
+        bool = status_tiro;
+    },
+
+     'hud' : {
       'stats' : {
         vida: 10,
         shield: 2,
