@@ -7,9 +7,8 @@ background.inicia(ctx);
 c.addEventListener("mousemove", pegaCoordenadas, false);
 c.addEventListener("mousedown", function(){ turret.atirou(1)}, false);
 c.addEventListener("mouseup", function(){ turret.atirou(0)}, false);
-
-var bool = 0;
-
+window.addEventListener("keydown", function(event){ turret.move(event)}, false);
+var bool;
 var lastFrameTimeMs = 0;
 var maxFPS = 60;
 var tempo = 0;
