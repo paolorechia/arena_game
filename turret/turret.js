@@ -13,27 +13,36 @@ var turret = {
     x : background.width/2,
     y : background.height/2,
     vel : 0,
-    acel: 0.2,
-    max_speed : 0.6,
+    acel: 0.3,
+    turn_rate: 1,
+    max_speed : 4,
     vx : 0,
     vy : 0,
     
     'atualizaDirecao' : function (event){
         if (event.key == 'w'){
-            turret.vy = turret.vy - turret.acel;
+            if (turret.vy > -1)
+                turret.vy = (turret.vy - turret.turn_rate);
             turret.vel += turret.acel;
         }
         if (event.key == 's'){
-            turret.vy = turret.vy + turret.acel;
+            if (turret.vy < 1)
+                turret.vy = (turret.vy + turret.turn_rate);
             turret.vel += turret.acel;
         }
         if (event.key == 'd'){
-            turret.vx = turret.vx + turret.acel;
+            if (turret.vx < 1)
+            {
+                turret.vx = (turret.vx + turret.turn_rate);
+            }
             turret.vel += turret.acel;
         }
         if (event.key == 'a'){
-            turret.vx = turret.vx - turret.acel;
+            if (turret.vx > -1){ 
+                turret.vx = (turret.vx - turret.turn_rate);
+            }
             turret.vel += turret.acel;
+            console.log(turret.vx);
         }
     },
     'move' : function(){
@@ -43,12 +52,15 @@ var turret = {
         if (turret.vel > 0){
             turret.x += turret.vx * turret.vel;
             turret.y += turret.vy * turret.vel;
-        //    turret.vel -= turret.acel/1.1;
         }
         if (turret.vel <= 0){
+            turret.para();
+        }
+    },
+    'para' : function(){
+            turret.vel = 0;
             turret.vx = 0;
             turret.vy = 0;
-        }
     },
     'desenhaCanhao' : function (ctx, raio, angulo){
         ctx.save();

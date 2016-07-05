@@ -14,14 +14,32 @@ var colisoes = {
                 asteroides.destroi(i, 1);
                 return;
             }
+            // testa se turret saiu do board
+            // inverte direcao e diminui velocidade pela metade
+            if (turret.x >= background.width || turret.x <= 0){
+                turret.vx = - turret.vx;
+                turret.x = turret.x + (turret.vx * turret.vel);
+                turret.vel= turret.vel/2;
+            }
+            if (turret.y >= background.height || turret.y <= 0){
+                turret.vy = - turret.vy;
+                turret.y = turret.y + (turret.vy * turret.vel);
+                turret.vel= turret.vel/2;
+            }
+            
 
 
             //console.log(Math.sqrt(Math.pow(x,2)+Math.pow(background.width/2,2)));
             //console.log(Math.sqrt(Math.pow(y,2)+Math.pow(background.height/2,2)));
 
+            // testa se turret acertou asteroide
             if( Math.sqrt(Math.pow(x-(turret.x),2)) < turret.raio*2  && Math.sqrt(Math.pow(y-(turret.y),2)) < turret.raio*2) {
+              //mata asteroide
               asteroides.destroi(i,1);
-
+    
+              //corta velocidade
+              turret.vel = turret.vel/2;
+              // diminui escudo e vida
               if(turret.hud.stats.shield > 0) {
                 turret.hud.stats.shield -=1;
               } else {
