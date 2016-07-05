@@ -13,7 +13,7 @@ var turret = {
     x : background.width/2,
     y : background.height/2,
     vel : 0,
-    acel: 0.3,
+    acel: 4,
     turn_rate: 1,
     max_speed : 4,
     vx : 0,
