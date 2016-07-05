@@ -19,7 +19,6 @@ var coord = {
     y:0
 }
 
-
 function tipoVersor(){
     this.x = 0;
     this.y = 0;
@@ -43,24 +42,6 @@ c.addEventListener("mousemove", pegaCoordenadas, false);
 //c.addEventListener("click", atiraCanhao, false);
 c.addEventListener("mousedown", function(){ atirou(1)}, false);
 c.addEventListener("mouseup", function(){ atirou(0)}, false);
-
-
-
-//redesenha o background
-function blitBackground(background){
-    ctx.putImageData(background, 0, 0);
-}
-
-// preenche background com pontos brancos que representam estrelas
-function populaEstrelas(ctx, num){
-    var i;
-    ctx.fillStyle = "#FFFFFF";
-    for (i=0; i<num; i++){
-        var x = Math.floor((Math.random() * width) + 1);
-        var y = Math.floor((Math.random() * height) + 1);
-        ctx.fillRect(x, y, 1, 1);
-    }
-}
 
 // a funcao "rotate" rotaciona o Canvas INTEIRO
 // dah para implementar coisas legais com isso
@@ -138,7 +119,7 @@ function mainLoop(timestamp){
         return;
     }
     lastFrameTimeMs = timestamp;
-    blitBackground(background);
+    background.blit(background_imagem);
     asteroides.atualiza();
     asteroides.desenhaTodos();
     calculaVersor(versor);
@@ -169,10 +150,9 @@ console.log("1 c4n 7yp3 t0 c0ns0l3!");
 ctx.fillStyle = "#000000";
 ctx.fillRect(0,0,800,600);
 // e com estrelas
-populaEstrelas(ctx, 200);
+background.populaEstrelas(ctx, 200);
 
 // salva background criado
-var background = ctx.getImageData(0,0,800,600)
 // desenha turret
 var raio = 15;
 requestAnimationFrame(mainLoop);
