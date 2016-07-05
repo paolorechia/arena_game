@@ -2,17 +2,7 @@
 var c = document.getElementById("canvas_turret");
 var ctx = c.getContext("2d");
 
-background.width = 800;
-background.height = 600;
-// Preenche background com preto
-ctx.fillStyle = "#000000";
-ctx.fillRect(0,0,background.width,background.height);
-// e com estrelas
-background.populaEstrelas(ctx, 200);
-// salva background criado
-background.grava(ctx, background.width, background.height);
-
-
+background.inicia(ctx);
 //event listeners
 c.addEventListener("mousemove", pegaCoordenadas, false);
 c.addEventListener("mousedown", function(){ turret.atirou(1)}, false);
@@ -35,7 +25,7 @@ function mainLoop(timestamp){
     background.blit(background.imagem);
     asteroides.atualiza();
     asteroides.desenhaTodos();
-    calculo.versor(versor);
+    calculo.versor(turret.versor);
     turret.hud.desenhar(turret.hud.stats);
     turret.gira();
 
@@ -45,10 +35,10 @@ function mainLoop(timestamp){
         turret.atira();
 //        limpaAsteroides();
     }
-//    console.log(vetorLaser);
+//    console.log(turret.vetorLaser);
     colisoes.confere();
-    vetorLaser.length = 0;
-//    console.log(vetorAsteroide.length);
+    turret.vetorLaser.length = 0;
+//    console.log(asteroides.vetor.length);
     requestAnimationFrame(mainLoop);
 }
 

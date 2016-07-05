@@ -6,8 +6,8 @@ ASTEROIDES
 -------------------------------------------------------------
 CANHAO
 1. adicionar tiro de projetil (vai ser semelhante a criar um asteroide);
-2. colocar projetil em um botao; laser no outro;
-3. adicionar limite de tempo de uso no laser;
+2. colocar projetil em um botao; Laser no outro;
+3. adicionar limite de tempo de uso no Laser;
 
 -------------------------------------------------------------
 COLISOES

@@ -1,7 +1,5 @@
-// versor do canhao
-var versor = new Versor();
-var vetorLaser = [];
-function laser(x, y){
+// turret.versor do canhao
+function Laser(x, y){
     this.x;
     this.y;
 }
@@ -9,6 +7,8 @@ function laser(x, y){
 
 
 var turret = {
+    versor : new Versor(),
+    vetorLaser : [],
     raio : 15,
     'desenhaCanhao' : function (ctx, raio, angulo){
         ctx.save();
@@ -80,8 +80,8 @@ var turret = {
         if (this.hud.cooldown_time) {
           return;
         }
-        
-        // desenha linha usando versor (apenas para ilustrar)
+
+        // desenha linha usando turret.versor (apenas para ilustrar)
         this.hud.descarregar_energia(1);
 
         if(bool == 0)
@@ -90,10 +90,10 @@ var turret = {
     //    console.log("atirei");
         var tam = 14;
         var base = 2;
-        var x0 = background.width/2 + versor.x * turret.raio * base;
-        var x1 = background.width/2 + versor.x * turret.raio * (tam + base);
-        var y0 = background.height/2 + versor.y * turret.raio * base;
-        var y1 = background.height/2 +versor.y * turret.raio * (tam + base);
+        var x0 = background.width/2 + turret.versor.x * turret.raio * base;
+        var x1 = background.width/2 + turret.versor.x * turret.raio * (tam + base);
+        var y0 = background.height/2 + turret.versor.y * turret.raio * base;
+        var y1 = background.height/2 +turret.versor.y * turret.raio * (tam + base);
         ctx.beginPath();
         ctx.moveTo(x0,y0);
         ctx.lineWidth=turret.raio*0.2;
@@ -102,9 +102,9 @@ var turret = {
         ctx.stroke();
         var i;
         for (i = 0; i< tam; i++){
-            vetorLaser[i] = new laser(0,0);
-            vetorLaser[i].x = (x0 + versor.x * turret.raio * i);
-            vetorLaser[i].y = (y0 + versor.y * turret.raio * i);
+            turret.vetorLaser[i] = new Laser(0,0);
+            turret.vetorLaser[i].x = (x0 + turret.versor.x * turret.raio * i);
+            turret.vetorLaser[i].y = (y0 + turret.versor.y * turret.raio * i);
         }
     },
 
@@ -154,7 +154,7 @@ var turret = {
         if(this.stats.energy > min_energy) {
           this.stats.energy -= 1*rate;
         } else {
-            //bloqueia laser até chegar em x% energia.
+            //bloqueia Laser até chegar em x% energia.
 
         }
       },

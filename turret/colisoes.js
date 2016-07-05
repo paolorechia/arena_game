@@ -4,11 +4,11 @@ var colisoes = {
         var x, y;
         var x1, y1;
         var dist;
-        var len = vetorAsteroide.length;
-        var tam = vetorLaser.length;
+        var len = asteroides.vetor.length;
+        var tam = turret.vetorLaser.length;
         for (i = 0; i < len; i++){
-            x = vetorAsteroide[i].x;
-            y = vetorAsteroide[i].y;
+            x = asteroides.vetor[i].x;
+            y = asteroides.vetor[i].y;
             // testa se asteroide saiu do board
             if (x > background.width || x < 0 || y > background.height || y < 0){
                 asteroides.destroi(i, 1);
@@ -33,10 +33,10 @@ var colisoes = {
             //----------------------
 
             for (j = 0; j < tam; j++){
-                x1 = vetorLaser[j].x;
-                y1 = vetorLaser[j].y;
+                x1 = turret.vetorLaser[j].x;
+                y1 = turret.vetorLaser[j].y;
                 dist = calculo.distGeometrica(x, y, x1, y1)
-                if (dist < (vetorAsteroide[i].tam * 5)){
+                if (dist < (asteroides.vetor[i].tam * 5)){
                     asteroides.destroi(i, 1);
 
 
