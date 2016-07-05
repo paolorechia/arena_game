@@ -1,7 +1,8 @@
 var background = {
     //redesenha o background
-    'grava' : function(imagem, width, height){
-        imagem = ctx.getImageData(0,0,width, height);
+    'grava' : function(ctx, width, height){
+        var imagem = ctx.getImageData(0,0,width, height);
+        return imagem;
     },
     'blit' : function(background){
         ctx.putImageData(background, 0, 0);
@@ -16,6 +17,4 @@ var background = {
             ctx.fillRect(x, y, 1, 1);
         }
     },
-    this.imagem = this.grava(imagem, width, height);
 }
-

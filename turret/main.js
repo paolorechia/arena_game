@@ -119,7 +119,7 @@ function mainLoop(timestamp){
         return;
     }
     lastFrameTimeMs = timestamp;
-    background.blit(background_imagem);
+    background.blit(bg);
     asteroides.atualiza();
     asteroides.desenhaTodos();
     calculaVersor(versor);
@@ -151,6 +151,7 @@ ctx.fillStyle = "#000000";
 ctx.fillRect(0,0,800,600);
 // e com estrelas
 background.populaEstrelas(ctx, 200);
+var bg = background.grava(ctx, width, height);
 
 // salva background criado
 // desenha turret
