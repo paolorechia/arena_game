@@ -13,7 +13,7 @@ var turret = {
     x : background.width/2,
     y : background.height/2,
     vel : 0,
-    acel: 0.2,
+    acel: 0.3,
     max_speed : 0.6,
     vx : 0,
     vy : 0,
@@ -43,12 +43,15 @@ var turret = {
         if (turret.vel > 0){
             turret.x += turret.vx * turret.vel;
             turret.y += turret.vy * turret.vel;
-        //    turret.vel -= turret.acel/1.1;
         }
         if (turret.vel <= 0){
+            turret.para();
+        }
+    },
+    'para' : function(){
+            turret.vel = 0;
             turret.vx = 0;
             turret.vy = 0;
-        }
     },
     'desenhaCanhao' : function (ctx, raio, angulo){
         ctx.save();
@@ -107,10 +110,25 @@ var turret = {
     },
 
     'atira' : function (){
+
+        if(this.hud.stats.energy <= 1) {
+          this.hud.cooldown_time = true;
+          bool = 0;
+        }
+
+        if(this.hud.stats.energy >= 20 && this.hud.cooldown_time ==true) {
+          this.hud.cooldown_time = false;
+        }
+
+        if (this.hud.cooldown_time) {
+          return;
+        }
+
         // desenha linha usando turret.versor (apenas para ilustrar)
         this.hud.descarregar_energia(1);
 
-
+        if(bool == 0)
+          return;
 
     //    console.log("atirei");
         var tam = 14;
@@ -119,8 +137,6 @@ var turret = {
         var x1 = turret.x + turret.versor.x * turret.raio * (tam + base);
         var y0 = turret.y + turret.versor.y * turret.raio * base;
         var y1 = turret.y + turret.versor.y * turret.raio * (tam + base);
-        console.log(x0, y0);
-        console.log(x1, y1);
         ctx.beginPath();
         ctx.moveTo(x0,y0);
         ctx.lineWidth=turret.raio*0.2;
@@ -136,12 +152,7 @@ var turret = {
     },
 
     "atirou" : function(status_tiro){
-      //mudar para this
-      var cooldown_time = true;
-      if(turret.hud.stats.energy == 0) {
-
-      }
-        bool = status_tiro;
+      bool = status_tiro;
     },
 
      'hud' : {
@@ -233,6 +244,7 @@ var turret = {
 
       },
       prevent_shield : true,
-      prevent_energy : true
+      prevent_energy : true,
+      cooldown_time : false
     }
 }
