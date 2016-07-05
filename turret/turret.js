@@ -13,8 +13,8 @@ var turret = {
     x : background.width/2,
     y : background.height/2,
     vel : 0,
-    acel: 0.5,
-    turnrate: 0.2,
+    acel: 0.2,
+    max_speed : 0.6,
     vx : 0,
     vy : 0,
     
@@ -23,27 +23,27 @@ var turret = {
             turret.vy = turret.vy - turret.acel;
             turret.vel += turret.acel;
         }
-        else if (event.key == 's'){
+        if (event.key == 's'){
             turret.vy = turret.vy + turret.acel;
             turret.vel += turret.acel;
         }
-        else if (event.key == 'd'){
+        if (event.key == 'd'){
             turret.vx = turret.vx + turret.acel;
             turret.vel += turret.acel;
         }
-        else if (event.key == 'a'){
+        if (event.key == 'a'){
             turret.vx = turret.vx - turret.acel;
             turret.vel += turret.acel;
         }
     },
     'move' : function(){
+        if (turret.vel >= turret.max_speed){
+            turret.vel = turret.max_speed;
+        }
         if (turret.vel > 0){
-            console.log(turret.vel);
-            console.log(turret.vx);
-            console.log(turret.vy);
             turret.x += turret.vx * turret.vel;
             turret.y += turret.vy * turret.vel;
-            turret.vel -= turret.acel/1.1;
+        //    turret.vel -= turret.acel/1.1;
         }
         if (turret.vel <= 0){
             turret.vx = 0;
