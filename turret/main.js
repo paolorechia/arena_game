@@ -35,7 +35,7 @@ function mainLoop(timestamp){
     background.blit(background.imagem);
     asteroides.atualiza();
     asteroides.desenhaTodos();
-    calculo.versor(versor);
+    calculo.versor(turret.versor);
     turret.hud.desenhar(turret.hud.stats);
     turret.gira();
 
@@ -46,9 +46,9 @@ function mainLoop(timestamp){
         turret.atira();
 //        limpaAsteroides();
     }
-//    console.log(vetorLaser);
+//    console.log(turret.vetorLaser);
     colisoes.confere();
-    vetorLaser.length = 0;
+    turret.vetorLaser.length = 0;
 //    console.log(vetorAsteroide.length);
     requestAnimationFrame(mainLoop);
 }
