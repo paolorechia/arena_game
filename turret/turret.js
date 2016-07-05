@@ -13,16 +13,46 @@ var turret = {
     x : background.width/2,
     y : background.height/2,
     vel : 0,
+    acel: 0.5,
+    turnrate: 0.2,
+    vx : 0,
+    vy : 0,
     
-    'move' : function (event){
+    'atualizaDirecao' : function (event){
         if (event.key == 'w'){
-            turret.y = turret.y + 1;;
-            console.log(turret.y);
+            turret.vy = turret.vy - turret.acel;
+            turret.vel += turret.acel;
+        }
+        else if (event.key == 's'){
+            turret.vy = turret.vy + turret.acel;
+            turret.vel += turret.acel;
+        }
+        else if (event.key == 'd'){
+            turret.vx = turret.vx + turret.acel;
+            turret.vel += turret.acel;
+        }
+        else if (event.key == 'a'){
+            turret.vx = turret.vx - turret.acel;
+            turret.vel += turret.acel;
+        }
+    },
+    'move' : function(){
+        if (turret.vel > 0){
+            console.log(turret.vel);
+            console.log(turret.vx);
+            console.log(turret.vy);
+            turret.x += turret.vx * turret.vel;
+            turret.y += turret.vy * turret.vel;
+            turret.vel -= turret.acel/1.1;
+        }
+        if (turret.vel <= 0){
+            turret.vx = 0;
+            turret.vy = 0;
         }
     },
     'desenhaCanhao' : function (ctx, raio, angulo){
         ctx.save();
-        ctx.translate(background.width/2, background.height/2);
+        ctx.translate(turret.x, turret.y);
         ctx.rotate(angulo);
         ctx.moveTo(0, 0)
         ctx.lineWidth = raio * 0.2;
@@ -34,7 +64,7 @@ var turret = {
     'desenha' : function (ctx, raio, angulo){
         ctx.strokeStyle = "#f0470e";
         ctx.beginPath();
-        ctx.arc(background.width/2, background.height/2, raio, 0, 2*Math.PI);
+        ctx.arc(turret.x, turret.y, raio, 0, 2*Math.PI);
         ctx.stroke();
         ctx.fillStyle = "#005252";
         ctx.fill();
@@ -43,7 +73,7 @@ var turret = {
         if(this.hud.stats.shield > 0) {
           ctx.strokeStyle = "#1244AA";
           ctx.beginPath();
-          ctx.arc(background.width/2, background.height/2, raio*1.3, 0, 2*Math.PI);
+          ctx.arc(turret.x, turret.y, raio*1.3, 0, 2*Math.PI);
           ctx.stroke();
         }
     },

@@ -7,11 +7,12 @@ background.inicia(ctx);
 c.addEventListener("mousemove", pegaCoordenadas, false);
 c.addEventListener("mousedown", function(){ turret.atirou(1)}, false);
 c.addEventListener("mouseup", function(){ turret.atirou(0)}, false);
-window.addEventListener("keydown", function(event){ turret.move(event)}, false);
-var bool;
+window.addEventListener("keydown", function(event){ turret.atualizaDirecao(event)}, false);
+
 var lastFrameTimeMs = 0;
 var maxFPS = 60;
 var tempo = 0;
+var bool = 0;
 
 function mainLoop(timestamp){
     tempo++;
@@ -38,6 +39,7 @@ function mainLoop(timestamp){
 //    console.log(turret.vetorLaser);
     colisoes.confere();
     turret.vetorLaser.length = 0;
+    turret.move();
 //    console.log(asteroides.vetor.length);
     requestAnimationFrame(mainLoop);
 }
