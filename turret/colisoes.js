@@ -35,7 +35,7 @@ var colisoes = {
             for (j = 0; j < tam; j++){
                 x1 = vetorLaser[j].x;
                 y1 = vetorLaser[j].y;
-                dist = distGeometrica(x, y, x1, y1)
+                dist = calculo.distGeometrica(x, y, x1, y1)
                 if (dist < (vetorAsteroide[i].tam * 5)){
                     asteroides.destroi(i, 1);
 

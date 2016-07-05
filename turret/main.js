@@ -16,14 +16,6 @@ var coord = {
     y:0
 }
 
-function Versor(){
-    this.x = 0;
-    this.y = 0;
-}
-
-// versor do canhao
-var versor = new Versor();
-
 
 // canvas
 var c = document.getElementById("canvas_turret");
@@ -45,7 +37,7 @@ background.grava(ctx, background.width, background.height);
 c.addEventListener("mousemove", pegaCoordenadas, false);
 //c.addEventListener("mousemove", giraCanhao, false);
 //c.addEventListener("mousemove", logCoordenadas, false);
-//c.addEventListener("mousemove", calculaVersor, false);
+//c.addEventListener("mousemove", calculo.versor, false);
 
 //c.addEventListener("click", atiraCanhao, false);
 c.addEventListener("mousedown", function(){ atirou(1)}, false);
@@ -76,19 +68,6 @@ function logCoordenadas(){
     console.log(string);
 }
 
-function calculaVersor(v){
-    // pega coordenadas e desloca origem para o centro
-    var x = coord.x - background.width/2;
-    var y = coord.y - background.height/2;
-
-    // calcula modulo do vetor (x,y)
-    var mod = Math.sqrt((Math.pow(x, 2) + Math.pow(y, 2)));
-    var a = 1 / mod;
-
-    // calcula versor
-    v.x = x * a;
-    v.y = y * a;
-}
 
 var vetorLaser = [];
 function laser(x, y){
@@ -97,14 +76,6 @@ function laser(x, y){
 }
 
 var vetorAsteroide = [];
-
-
-function distGeometrica(x0, y0, x1, y1){
-    var x = Math.pow((x0 - x1), 2);
-    var y = Math.pow((y0 - y1), 2);
-    return Math.sqrt(x + y);
-}
-
 var bool = 0;
 
 function atirou(status_tiro){
@@ -130,7 +101,7 @@ function mainLoop(timestamp){
     background.blit(background.imagem);
     asteroides.atualiza();
     asteroides.desenhaTodos();
-    calculaVersor(versor);
+    calculo.versor(versor);
     turret.gira();
     hud.desenhar(hud.stats);
 
