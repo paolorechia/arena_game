@@ -1,7 +1,7 @@
 var turret = {
     'desenhaCanhao' : function (ctx, raio, angulo){
         ctx.save();
-        ctx.translate(width/2, height/2);
+        ctx.translate(background.width/2, background.height/2);
         ctx.rotate(angulo);
         ctx.moveTo(0, 0)
         ctx.lineWidth = raio * 0.2;
@@ -13,7 +13,7 @@ var turret = {
     'desenha' : function (ctx, raio, angulo){
         ctx.strokeStyle = "#f0470e";
         ctx.beginPath();
-        ctx.arc(width/2, height/2, raio, 0, 2*Math.PI);
+        ctx.arc(background.width/2, background.height/2, raio, 0, 2*Math.PI);
         ctx.stroke();
         ctx.fillStyle = "#005252";
         ctx.fill();
@@ -22,31 +22,31 @@ var turret = {
         if(hud.stats.shield > 0) {
           ctx.strokeStyle = "#1244AA";
           ctx.beginPath();
-          ctx.arc(width/2, height/2, raio*1.3, 0, 2*Math.PI);
+          ctx.arc(background.width/2, background.height/2, raio*1.3, 0, 2*Math.PI);
           ctx.stroke();
         }
     },
 
     'gira' : function (){
 
-        var ca = (width/2 - coord.x);
-        var co = (height/2 - coord.y);
+        var ca = (background.width/2 - coord.x);
+        var co = (background.height/2 - coord.y);
 
         tangente = (co/ca);
         atan = Math.round(Math.atan(tangente)*100)/100;
 
         deg = atan * 180/3.14;
         // console.log(deg);
-        //Falta tratar quando coord = height
-        if(coord.x > width/2) {
-            if(coord.y >= height/2) {
+        //Falta tratar quando coord = background.height
+        if(coord.x > background.width/2) {
+            if(coord.y >= background.height/2) {
     //            console.log('DireitaBaixo');
-            } else if(coord.x < width/2){
+            } else if(coord.x < background.width/2){
     //            console.log('DireitaCima');
             }
         } else {
             atan+=4*180/3.14;
-            if(coord.y >= height/2) {
+            if(coord.y >= background.height/2) {
     //            console.log('EsquerdaBaixo');
             } else {
     //           console.log('EsquerdaCima');
@@ -62,10 +62,10 @@ var turret = {
     //    console.log("atirei");
         var tam = 14;
         var base = 2;
-        var x0 = width/2 + versor.x * raio * base;
-        var x1 = width/2 + versor.x * raio * (tam + base);
-        var y0 = height/2 + versor.y * raio * base;
-        var y1 = height/2 +versor.y * raio * (tam + base);
+        var x0 = background.width/2 + versor.x * raio * base;
+        var x1 = background.width/2 + versor.x * raio * (tam + base);
+        var y0 = background.height/2 + versor.y * raio * base;
+        var y1 = background.height/2 +versor.y * raio * (tam + base);
         ctx.beginPath();
         ctx.moveTo(x0,y0);
         ctx.lineWidth=raio*0.2;

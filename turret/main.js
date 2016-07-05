@@ -3,9 +3,6 @@
 // ainda não é usado
 
 // variaveis globais
-var width = 800;
-var height = 600;
-
 var array = [];
 
 var i;
@@ -31,6 +28,17 @@ var versor = new tipoVersor();
 // canvas
 var c = document.getElementById("canvas_turret");
 var ctx = c.getContext("2d");
+
+background.width = 800;
+background.height = 600;
+// Preenche background com preto
+ctx.fillStyle = "#000000";
+ctx.fillRect(0,0,background.width,background.height);
+// e com estrelas
+background.populaEstrelas(ctx, 200);
+background.grava(ctx, background.width, background.height);
+
+// salva background criado
 
 
 //event listeners
@@ -70,8 +78,8 @@ function logCoordenadas(){
 
 function calculaVersor(v){
     // pega coordenadas e desloca origem para o centro
-    var x = coord.x - width/2;
-    var y = coord.y - height/2;
+    var x = coord.x - background.width/2;
+    var y = coord.y - background.height/2;
 
     // calcula modulo do vetor (x,y)
     var mod = Math.sqrt((Math.pow(x, 2) + Math.pow(y, 2)));
@@ -119,7 +127,7 @@ function mainLoop(timestamp){
         return;
     }
     lastFrameTimeMs = timestamp;
-    background.blit(bg);
+    background.blit(background.imagem);
     asteroides.atualiza();
     asteroides.desenhaTodos();
     calculaVersor(versor);
@@ -146,14 +154,6 @@ function mainLoop(timestamp){
 // testando firebug
 console.log("1 c4n 7yp3 t0 c0ns0l3!");
 
-// Preenche background com preto
-ctx.fillStyle = "#000000";
-ctx.fillRect(0,0,800,600);
-// e com estrelas
-background.populaEstrelas(ctx, 200);
-var bg = background.grava(ctx, width, height);
-
-// salva background criado
 // desenha turret
 var raio = 15;
 requestAnimationFrame(mainLoop);

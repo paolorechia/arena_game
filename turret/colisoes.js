@@ -10,16 +10,16 @@ var colisoes = {
             x = vetorAsteroide[i].x;
             y = vetorAsteroide[i].y;
             // testa se asteroide saiu do board
-            if (x > width || x < 0 || y > height || y < 0){
+            if (x > background.width || x < 0 || y > background.height || y < 0){
                 asteroides.destroi(i, 1);
                 return;
             }
         
 
-            //console.log(Math.sqrt(Math.pow(x,2)+Math.pow(width/2,2)));
-            //console.log(Math.sqrt(Math.pow(y,2)+Math.pow(height/2,2)));
+            //console.log(Math.sqrt(Math.pow(x,2)+Math.pow(background.width/2,2)));
+            //console.log(Math.sqrt(Math.pow(y,2)+Math.pow(background.height/2,2)));
 
-            if( Math.sqrt(Math.pow(x-(width/2),2)) < raio*2  && Math.sqrt(Math.pow(y-(height/2),2)) < raio*2) {
+            if( Math.sqrt(Math.pow(x-(background.width/2),2)) < raio*2  && Math.sqrt(Math.pow(y-(background.height/2),2)) < raio*2) {
               asteroides.destroi(i,1);
 
               if(hud.stats.shield > 0) {

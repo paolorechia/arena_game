@@ -8,7 +8,7 @@ function Asteroide(x, y, velocidade, tamanho, versor){
 var asteroides = {
     'criaEsq' : function(vel, tam){
         var x = 1;
-        var y = Math.floor((Math.random() * height) + 1);
+        var y = Math.floor((Math.random() * background.height) + 1);
         var len = vetorAsteroide.length;
         var versor = new tipoVersor();
         vetorAsteroide[len] = new Asteroide(x, y, vel, tam, versor);
@@ -17,8 +17,8 @@ var asteroides = {
         versor.y=vy;
     },
     'criaDir' : function(vel, tam){
-        var x = width;
-        var y = Math.floor((Math.random() * height) + 1);
+        var x = background.width;
+        var y = Math.floor((Math.random() * background.height) + 1);
         var len = vetorAsteroide.length;
         var versor = new tipoVersor();
         vetorAsteroide[len] = new Asteroide(x, y, vel, tam, versor);
@@ -27,7 +27,7 @@ var asteroides = {
         versor.y=vy;
     },
     'criaSup' : function(vel, tam){
-        var x = Math.floor((Math.random() * height) + 1);
+        var x = Math.floor((Math.random() * background.height) + 1);
         var y = 1;
         var len = vetorAsteroide.length;
         var versor = new tipoVersor();
@@ -37,8 +37,8 @@ var asteroides = {
         versor.x=vx;
     },
     'criaInf' : function(vel, tam){
-        var x = Math.floor((Math.random() * height) + 1);
-        var y = height;
+        var x = Math.floor((Math.random() * background.height) + 1);
+        var y = background.height;
         var len = vetorAsteroide.length;
         var versor = new tipoVersor();
         vetorAsteroide[len] = new Asteroide(x, y, vel, tam, versor);
