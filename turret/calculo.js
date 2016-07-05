@@ -1,3 +1,29 @@
+// obj coorenadas X, Y
+var coord = {
+    x:0,
+    y:0
+}
+
+// funcao para pegar as coordenadas do mouse
+function pegaCoordenadas(event){
+    coord.x = event.clientX;
+    coord.x -= c.offsetLeft;
+    coord.y = event.clientY;
+    coord.y -= c.offsetTop;
+//    return coord;
+}
+
+// imprimir coordenadas pro console
+function logCoordenadas(){
+    var x = coord.x.toString();
+    var y = coord.y.toString();
+    var string = "x = ";
+    string = string.concat(x);
+    string = string.concat("; y = ");
+    string = string.concat(y);
+    console.log(string);
+}
+
 
 function Versor(){
     this.x = 0;
