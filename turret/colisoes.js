@@ -19,7 +19,7 @@ var colisoes = {
             //console.log(Math.sqrt(Math.pow(x,2)+Math.pow(background.width/2,2)));
             //console.log(Math.sqrt(Math.pow(y,2)+Math.pow(background.height/2,2)));
 
-            if( Math.sqrt(Math.pow(x-(background.width/2),2)) < turret.raio*2  && Math.sqrt(Math.pow(y-(background.height/2),2)) < turret.raio*2) {
+            if( Math.sqrt(Math.pow(x-(turret.x),2)) < turret.raio*2  && Math.sqrt(Math.pow(y-(turret.y),2)) < turret.raio*2) {
               asteroides.destroi(i,1);
 
               if(turret.hud.stats.shield > 0) {

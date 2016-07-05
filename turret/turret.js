@@ -80,8 +80,8 @@ var turret = {
 
     'gira' : function (){
 
-        var ca = (background.width/2 - coord.x);
-        var co = (background.height/2 - coord.y);
+        var ca = (turret.x - coord.x);
+        var co = (turret.y - coord.y);
 
         tangente = (co/ca);
         atan = Math.round(Math.atan(tangente)*100)/100;
@@ -89,15 +89,15 @@ var turret = {
         deg = atan * 180/3.14;
         // console.log(deg);
         //Falta tratar quando coord = background.height
-        if(coord.x > background.width/2) {
-            if(coord.y >= background.height/2) {
+        if(coord.x > turret.x) {
+            if(coord.y >= turret.y) {
     //            console.log('DireitaBaixo');
-            } else if(coord.x < background.width/2){
+            } else if(coord.x < turret.x){
     //            console.log('DireitaCima');
             }
         } else {
             atan+=4*180/3.14;
-            if(coord.y >= background.height/2) {
+            if(coord.y >= turret.y) {
     //            console.log('EsquerdaBaixo');
             } else {
     //           console.log('EsquerdaCima');
@@ -115,10 +115,12 @@ var turret = {
     //    console.log("atirei");
         var tam = 14;
         var base = 2;
-        var x0 = background.width/2 + turret.versor.x * turret.raio * base;
-        var x1 = background.width/2 + turret.versor.x * turret.raio * (tam + base);
-        var y0 = background.height/2 + turret.versor.y * turret.raio * base;
-        var y1 = background.height/2 +turret.versor.y * turret.raio * (tam + base);
+        var x0 = turret.x + turret.versor.x * turret.raio * base;
+        var x1 = turret.x + turret.versor.x * turret.raio * (tam + base);
+        var y0 = turret.y + turret.versor.y * turret.raio * base;
+        var y1 = turret.y + turret.versor.y * turret.raio * (tam + base);
+        console.log(x0, y0);
+        console.log(x1, y1);
         ctx.beginPath();
         ctx.moveTo(x0,y0);
         ctx.lineWidth=turret.raio*0.2;
