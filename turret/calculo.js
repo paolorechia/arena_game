@@ -30,9 +30,6 @@ function Versor(){
     this.y = 0;
 }
 
-// versor do canhao
-var versor = new Versor();
-
 var calculo = {
     versor : function (v){
         // pega coordenadas e desloca origem para o centro

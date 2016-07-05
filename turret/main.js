@@ -2,7 +2,6 @@
 var c = document.getElementById("canvas_turret");
 var ctx = c.getContext("2d");
 
-// seta resolucao
 background.width = 800;
 background.height = 600;
 // Preenche background com preto
@@ -19,20 +18,7 @@ c.addEventListener("mousemove", pegaCoordenadas, false);
 c.addEventListener("mousedown", function(){ atirou(1)}, false);
 c.addEventListener("mouseup", function(){ atirou(0)}, false);
 
-// variaveis e vetores globais
-
-var vetorLaser = [];
-function laser(x, y){
-    this.x;
-    this.y;
-}
-
-var vetorAsteroide = [];
 var bool = 0;
-
-function atirou(status_tiro){
-    bool = status_tiro;
-}
 
 var lastFrameTimeMs = 0;
 var maxFPS = 60;
@@ -50,8 +36,8 @@ function mainLoop(timestamp){
     asteroides.atualiza();
     asteroides.desenhaTodos();
     calculo.versor(versor);
-    turret.gira();
     hud.desenhar(hud.stats);
+    turret.gira();
 
 
     if ((tempo % 10) == 0)
@@ -69,10 +55,7 @@ function mainLoop(timestamp){
 
 // execucao principal aqui
 
-
 // testando firebug
 console.log("1 c4n 7yp3 t0 c0ns0l3!");
 
-// desenha turret
-var raio = 15;
 requestAnimationFrame(mainLoop);

@@ -1,3 +1,16 @@
+// versor do canhao
+var raio = 15;
+var versor = new Versor();
+var vetorLaser = [];
+function laser(x, y){
+    this.x;
+    this.y;
+}
+
+function atirou(status_tiro){
+    bool = status_tiro;
+}
+
 var turret = {
     'desenhaCanhao' : function (ctx, raio, angulo){
         ctx.save();

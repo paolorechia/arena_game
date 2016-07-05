@@ -1,3 +1,5 @@
+var vetorAsteroide = [];
+
 function Asteroide(x, y, velocidade, tamanho, versor){
     this.x = x;
     this.y = y;
