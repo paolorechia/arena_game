@@ -1,5 +1,4 @@
 // versor do canhao
-var raio = 15;
 var versor = new Versor();
 var vetorLaser = [];
 function laser(x, y){
@@ -10,6 +9,7 @@ function laser(x, y){
 
 
 var turret = {
+    raio : 15,
     'desenhaCanhao' : function (ctx, raio, angulo){
         ctx.save();
         ctx.translate(background.width/2, background.height/2);
@@ -63,7 +63,7 @@ var turret = {
     //           console.log('EsquerdaCima');
             }
         }
-        turret.desenha(ctx, raio, atan);
+        turret.desenha(ctx, turret.raio, atan);
     },
 
     'atira' : function (){
@@ -75,21 +75,21 @@ var turret = {
     //    console.log("atirei");
         var tam = 14;
         var base = 2;
-        var x0 = background.width/2 + versor.x * raio * base;
-        var x1 = background.width/2 + versor.x * raio * (tam + base);
-        var y0 = background.height/2 + versor.y * raio * base;
-        var y1 = background.height/2 +versor.y * raio * (tam + base);
+        var x0 = background.width/2 + versor.x * turret.raio * base;
+        var x1 = background.width/2 + versor.x * turret.raio * (tam + base);
+        var y0 = background.height/2 + versor.y * turret.raio * base;
+        var y1 = background.height/2 +versor.y * turret.raio * (tam + base);
         ctx.beginPath();
         ctx.moveTo(x0,y0);
-        ctx.lineWidth=raio*0.2;
+        ctx.lineWidth=turret.raio*0.2;
         ctx.strokeStyle="#00FF00";
         ctx.lineTo(x1, y1);
         ctx.stroke();
         var i;
         for (i = 0; i< tam; i++){
             vetorLaser[i] = new laser(0,0);
-            vetorLaser[i].x = (x0 + versor.x * raio * i);
-            vetorLaser[i].y = (y0 + versor.y * raio * i);
+            vetorLaser[i].x = (x0 + versor.x * turret.raio * i);
+            vetorLaser[i].y = (y0 + versor.y * turret.raio * i);
         }
     },
 
