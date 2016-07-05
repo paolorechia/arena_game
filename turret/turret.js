@@ -14,26 +14,35 @@ var turret = {
     y : background.height/2,
     vel : 0,
     acel: 0.3,
-    max_speed : 0.6,
+    turn_rate: 1,
+    max_speed : 4,
     vx : 0,
     vy : 0,
     
     'atualizaDirecao' : function (event){
         if (event.key == 'w'){
-            turret.vy = turret.vy - turret.acel;
+            if (turret.vy > -1)
+                turret.vy = (turret.vy - turret.turn_rate);
             turret.vel += turret.acel;
         }
         if (event.key == 's'){
-            turret.vy = turret.vy + turret.acel;
+            if (turret.vy < 1)
+                turret.vy = (turret.vy + turret.turn_rate);
             turret.vel += turret.acel;
         }
         if (event.key == 'd'){
-            turret.vx = turret.vx + turret.acel;
+            if (turret.vx < 1)
+            {
+                turret.vx = (turret.vx + turret.turn_rate);
+            }
             turret.vel += turret.acel;
         }
         if (event.key == 'a'){
-            turret.vx = turret.vx - turret.acel;
+            if (turret.vx > -1){ 
+                turret.vx = (turret.vx - turret.turn_rate);
+            }
             turret.vel += turret.acel;
+            console.log(turret.vx);
         }
     },
     'move' : function(){
