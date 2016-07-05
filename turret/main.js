@@ -16,13 +16,13 @@ var coord = {
     y:0
 }
 
-function tipoVersor(){
+function Versor(){
     this.x = 0;
     this.y = 0;
 }
 
 // versor do canhao
-var versor = new tipoVersor();
+var versor = new Versor();
 
 
 // canvas
