@@ -39,7 +39,6 @@ function mainLoop(timestamp){
     turret.hud.desenhar(turret.hud.stats);
     turret.gira();
 
-
     if ((tempo % 10) == 0)
         asteroides.cria();
     if (bool) {

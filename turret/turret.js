@@ -67,10 +67,25 @@ var turret = {
     },
 
     'atira' : function (){
+
+        if(this.hud.stats.energy <= 1) {
+          this.hud.cooldown_time = true;
+          bool = 0;
+        }
+
+        if(this.hud.stats.energy >= 20 && this.hud.cooldown_time ==true) {
+          this.hud.cooldown_time = false;
+        }
+
+        if (this.hud.cooldown_time) {
+          return;
+        }
+        
         // desenha linha usando versor (apenas para ilustrar)
         this.hud.descarregar_energia(1);
 
-
+        if(bool == 0)
+          return;
 
     //    console.log("atirei");
         var tam = 14;
@@ -94,12 +109,7 @@ var turret = {
     },
 
     "atirou" : function(status_tiro){
-      //mudar para this
-      var cooldown_time = true;
-      if(turret.hud.stats.energy == 0) {
-
-      }
-        bool = status_tiro;
+      bool = status_tiro;
     },
 
      'hud' : {
@@ -191,6 +201,7 @@ var turret = {
 
       },
       prevent_shield : true,
-      prevent_energy : true
+      prevent_energy : true,
+      cooldown_time : false
     }
 }
