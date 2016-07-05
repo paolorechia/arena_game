@@ -1,4 +1,3 @@
-var vetorAsteroide = [];
 
 function Asteroide(x, y, velocidade, tamanho, versor){
     this.x = x;
@@ -8,12 +7,13 @@ function Asteroide(x, y, velocidade, tamanho, versor){
     this.v = versor;
 }
 var asteroides = {
+    vetor : [],
     'criaEsq' : function(vel, tam){
         var x = 1;
         var y = Math.floor((Math.random() * background.height) + 1);
-        var len = vetorAsteroide.length;
+        var len = asteroides.vetor.length;
         var versor = new Versor();
-        vetorAsteroide[len] = new Asteroide(x, y, vel, tam, versor);
+        asteroides.vetor[len] = new Asteroide(x, y, vel, tam, versor);
         versor.x=1;
         var vy = (Math.random() - 0.5);
         versor.y=vy;
@@ -21,9 +21,9 @@ var asteroides = {
     'criaDir' : function(vel, tam){
         var x = background.width;
         var y = Math.floor((Math.random() * background.height) + 1);
-        var len = vetorAsteroide.length;
+        var len = asteroides.vetor.length;
         var versor = new Versor();
-        vetorAsteroide[len] = new Asteroide(x, y, vel, tam, versor);
+        asteroides.vetor[len] = new Asteroide(x, y, vel, tam, versor);
         versor.x=-1;
         var vy = (Math.random() - 0.5);
         versor.y=vy;
@@ -31,9 +31,9 @@ var asteroides = {
     'criaSup' : function(vel, tam){
         var x = Math.floor((Math.random() * background.height) + 1);
         var y = 1;
-        var len = vetorAsteroide.length;
+        var len = asteroides.vetor.length;
         var versor = new Versor();
-        vetorAsteroide[len] = new Asteroide(x, y, vel, tam, versor);
+        asteroides.vetor[len] = new Asteroide(x, y, vel, tam, versor);
         versor.y=1;
         var vx = (Math.random() - 0.5);
         versor.x=vx;
@@ -41,9 +41,9 @@ var asteroides = {
     'criaInf' : function(vel, tam){
         var x = Math.floor((Math.random() * background.height) + 1);
         var y = background.height;
-        var len = vetorAsteroide.length;
+        var len = asteroides.vetor.length;
         var versor = new Versor();
-        vetorAsteroide[len] = new Asteroide(x, y, vel, tam, versor);
+        asteroides.vetor[len] = new Asteroide(x, y, vel, tam, versor);
         versor.y=-1;
         var vx = (Math.random() - 0.5);
         versor.x=vx;
@@ -65,19 +65,19 @@ var asteroides = {
     },
     'atualiza' : function(){
         var i = 0;
-        var len = vetorAsteroide.length;
+        var len = asteroides.vetor.length;
         for (i = 0; i < len; i++){
-            vetorAsteroide[i].x += vetorAsteroide[i].v.x * vetorAsteroide[i].vel;
-            vetorAsteroide[i].y += vetorAsteroide[i].v.y * vetorAsteroide[i].vel;
+            asteroides.vetor[i].x += asteroides.vetor[i].v.x * asteroides.vetor[i].vel;
+            asteroides.vetor[i].y += asteroides.vetor[i].v.y * asteroides.vetor[i].vel;
         /*
-            console.log(vetorAsteroide[i]);
-            console.log(vetorAsteroide[i]);
+            console.log(asteroides.vetor[i]);
+            console.log(asteroides.vetor[i]);
         */
         }
     },
 
     'destroi' : function(indice){
-        vetorAsteroide.splice(indice, 1);
+        asteroides.vetor.splice(indice, 1);
     },
     'desenha' : function(ast){
         ctx.strokeStyle = "#FFFFFF";
@@ -91,15 +91,15 @@ var asteroides = {
     },
     'desenhaTodos' : function(){
         var i;
-        var len = vetorAsteroide.length;
+        var len = asteroides.vetor.length;
         for (i = 0; i < len; i++){
-            asteroides.desenha(vetorAsteroide[i]);
+            asteroides.desenha(asteroides.vetor[i]);
         }
 
     },
     'limpa' : function(){
         var i;
-        var len = vetorAsteroide.length;
+        var len = asteroides.vetor.length;
         for (i = 0; i < len; i++){
             asteroides.destroi(i, 1);
         }

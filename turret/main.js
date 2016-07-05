@@ -49,7 +49,7 @@ function mainLoop(timestamp){
 //    console.log(turret.vetorLaser);
     colisoes.confere();
     turret.vetorLaser.length = 0;
-//    console.log(vetorAsteroide.length);
+//    console.log(asteroides.vetor.length);
     requestAnimationFrame(mainLoop);
 }
 
