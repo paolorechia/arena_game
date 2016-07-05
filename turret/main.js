@@ -8,6 +8,12 @@ c.addEventListener("mousemove", pegaCoordenadas, false);
 c.addEventListener("mousedown", function(){ turret.atirou(1)}, false);
 c.addEventListener("mouseup", function(){ turret.atirou(0)}, false);
 
+window.addEventListener('keydown', function(e) {
+
+  console.log(e);
+
+})
+
 var bool = 0;
 
 var lastFrameTimeMs = 0;
