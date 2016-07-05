@@ -14,7 +14,7 @@ var colisoes = {
                 asteroides.destroi(i, 1);
                 return;
             }
-        
+
 
             //console.log(Math.sqrt(Math.pow(x,2)+Math.pow(background.width/2,2)));
             //console.log(Math.sqrt(Math.pow(y,2)+Math.pow(background.height/2,2)));
@@ -22,10 +22,10 @@ var colisoes = {
             if( Math.sqrt(Math.pow(x-(background.width/2),2)) < raio*2  && Math.sqrt(Math.pow(y-(background.height/2),2)) < raio*2) {
               asteroides.destroi(i,1);
 
-              if(hud.stats.shield > 0) {
-                hud.stats.shield -=1;
+              if(turret.hud.stats.shield > 0) {
+                turret.hud.stats.shield -=1;
               } else {
-                hud.stats.vida -=1;
+                turret.hud.stats.vida -=1;
               }
               return;
             }
@@ -41,7 +41,7 @@ var colisoes = {
 
 
                     //------Exemplo--------
-                    hud.stats.kills += 1;
+                    turret.hud.stats.kills += 1;
                     //----------------------
 
                     return;

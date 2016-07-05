@@ -32,7 +32,7 @@ var turret = {
         ctx.fill();
         turret.desenhaCanhao(ctx, raio, angulo);
         //Se tem shield, desenha o shield----------
-        if(hud.stats.shield > 0) {
+        if(this.hud.stats.shield > 0) {
           ctx.strokeStyle = "#1244AA";
           ctx.beginPath();
           ctx.arc(background.width/2, background.height/2, raio*1.3, 0, 2*Math.PI);
@@ -70,7 +70,7 @@ var turret = {
 
     'atira' : function (){
         // desenha linha usando versor (apenas para ilustrar)
-        hud.descarregar_energia(1);
+        this.hud.descarregar_energia(1);
 
     //    console.log("atirei");
         var tam = 14;
@@ -91,5 +91,95 @@ var turret = {
             vetorLaser[i].x = (x0 + versor.x * raio * i);
             vetorLaser[i].y = (y0 + versor.y * raio * i);
         }
+    }, 'hud' : {
+      'stats' : {
+        vida: 10,
+        shield: 2,
+        kills: 0,
+        energy: 100
+      },
+      'desenhar' : function(stats) {
+        ctx.font = "30px Arial";
+        ctx.fillStyle="green";
+        ctx.fillText("HP: " + this.stats.vida, 30, 35)
+        ctx.fillStyle='red';
+        ctx.fillText('Kills: '+ this.stats.kills, 350, 35)
+        ctx.fillStyle='blue';
+        ctx.fillText('SH: ' + this.stats.shield, 30,65)
+        ctx.fillStyle='#1244AA';
+        ctx.fillText('Energy: ' + this.stats.energy, 350, 570)
+        this.passivos();
+      },
+      carregar_energia : function(rate) {
+        var min_energy = 0;
+        var max_energy = 100;
+        var that = this;
+        if(that.stats.energy >= min_energy && that.stats.energy < max_energy) {
+            if(that.prevent_energy == true) {
+              that.prevent_energy = false;
+              //setTimeout workaround
+
+              window.setTimeout(function(){
+                that.stats.energy+=1*rate;
+                that.prevent_energy = true;
+              }, 100);
+            }
+        }
+
+      },
+      descarregar_energia : function(rate) {
+        var max_energy = 100;
+        var min_energy = 0;
+        if(this.stats.energy > min_energy) {
+          this.stats.energy -= 1*rate;
+        } else {
+            //bloqueia laser até chegar em x% energia.
+
+        }
+      },
+      carregar_shield : function(rate){
+        var max_shield = 2;
+        var min_shield = 0;
+        var that = this;
+
+        if(that.stats.shield >= min_shield && that.stats.shield < max_shield) {
+            if(that.prevent_shield == true) {
+              that.prevent_shield = false;
+
+              window.setTimeout(function(){
+                that.stats.shield+=1*rate;
+                that.prevent_shield = true;
+
+              }, 5000);
+            }
+        }
+      },
+      descarregar_shield : function(quantidade) {
+        var max_shield = 3;
+        var min_shield = 0;
+        if(this.stats.shield <= max_shield && this.stats.shield > min_shield) {
+          this.stats.shield -= quantidade;
+        }
+
+      },
+      descarregar_vida : function(quantidade){
+        this.stats.vida -= quantidade;
+      },
+      tomar_dano : function(quantidade) {
+        if(quantidade <= this.stats.shield) {
+          this.descarregar_shield(quantidade);
+        } else {
+          this.descarregar_vida(quantidade - this.stats.shield);
+          this.descarregar_shield(this.stats.shield);
+        }
+      },
+      passivos : function() {
+
+        this.carregar_shield(1);
+        this.carregar_energia(1);
+
+      },
+      prevent_shield : true,
+      prevent_energy : true
     }
 }

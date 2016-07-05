@@ -36,7 +36,7 @@ function mainLoop(timestamp){
     asteroides.atualiza();
     asteroides.desenhaTodos();
     calculo.versor(versor);
-    hud.desenhar(hud.stats);
+    turret.hud.desenhar(turret.hud.stats);
     turret.gira();
 
 
