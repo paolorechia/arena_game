@@ -10,6 +10,16 @@ var turret = {
     versor : new Versor(),
     vetorLaser : [],
     raio : 15,
+    x : background.width/2,
+    y : background.height/2,
+    vel : 0,
+    
+    'move' : function (event){
+        if (event.key == 'w'){
+            turret.y = turret.y + 1;;
+            console.log(turret.y);
+        }
+    },
     'desenhaCanhao' : function (ctx, raio, angulo){
         ctx.save();
         ctx.translate(background.width/2, background.height/2);
