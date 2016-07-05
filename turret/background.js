@@ -19,4 +19,15 @@ var background = {
             ctx.fillRect(x, y, 1, 1);
         }
     },
+    inicia : function(ctx){
+        background.width = 800;
+        background.height = 600;
+        // Preenche background com preto
+        ctx.fillStyle = "#000000";
+        ctx.fillRect(0,0,background.width,background.height);
+        // e com estrelas
+        background.populaEstrelas(ctx, 200);
+        // salva background criado
+        background.grava(ctx, background.width, background.height);
+    },
 }
