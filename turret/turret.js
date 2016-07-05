@@ -54,9 +54,10 @@ var turret = {
         }
         turret.desenha(ctx, raio, atan);
     },
-    
+
     'atira' : function (){
         // desenha linha usando versor (apenas para ilustrar)
+        hud.descarregar_energia(1);
 
     //    console.log("atirei");
         var tam = 14;
@@ -79,5 +80,3 @@ var turret = {
         }
     }
 }
-
-
