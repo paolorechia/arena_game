@@ -4,7 +4,10 @@ var c_turret = document.getElementById("canvas_turret");
 var ctx_background = c_background.getContext("2d");
 var ctx_turret = c_turret.getContext("2d");
 
-background.inicia(ctx_background);
+background.inicia(ctx_background, c_background);
+camera.inicia(ctx_turret, c_turret);
+turret.inicia();
+
 //event listeners
 c_turret.addEventListener("mousemove", pegaCoordenadas, false);
 c_turret.addEventListener("mousedown", function(){ turret.atirou(1)}, false);
@@ -51,5 +54,6 @@ function mainLoop(timestamp){
 
 // testando firebug
 console.log("1 c4n 7yp3 t0 c0ns0l3!");
+console.log(background.width, background.height);
 
 requestAnimationFrame(mainLoop);

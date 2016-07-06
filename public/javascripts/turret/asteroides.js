@@ -80,10 +80,10 @@ var asteroides = {
         asteroides.vetor.splice(indice, 1);
     },
     'desenha' : function(ast){
-        var borda_esq = turret.x - 400;
-        var borda_dir = turret.x + 400;
-        var borda_sup = turret.y - 300;
-        var borda_inf = turret.y + 300;
+        var borda_esq = turret.x - camera.width/2;
+        var borda_dir = turret.x + camera.width/2;
+        var borda_sup = turret.y - camera.height/2;
+        var borda_inf = turret.y + camera.height/2;
 /*
         console.log(borda_esq, borda_dir, borda_sup, borda_inf);
         console.log(ast.x, ast.y);

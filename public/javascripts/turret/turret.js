@@ -5,19 +5,22 @@ function Laser(x, y){
 }
 
 
-
 var turret = {
     versor : new Versor(),
     vetorLaser : [],
     raio : 15,
-    x : background.width/2,
-    y : background.height/2,
     vel : 0,
     acel: 4,
     turn_rate: 1,
     max_speed : 4,
     vx : 0,
     vy : 0,
+    x : 0,
+    y : 0,
+    'inicia' : function(){
+        turret.x = background.width/2;
+        turret.y = background.height/2;
+     },
     
     'atualizaDirecao' : function (event){
         if (event.key == 'w'){
@@ -62,8 +65,8 @@ var turret = {
             turret.vy = 0;
     },
     'desenhaCanhao' : function (ctx, raio, angulo){
-        var x = 800/2;
-        var y = 600/2;
+        var x = camera.width/2;
+        var y = camera.height/2;
         ctx.save();
         ctx.translate(x, y);
         ctx.rotate(angulo);
@@ -75,8 +78,8 @@ var turret = {
     },
 
     'desenha' : function (ctx, raio, angulo){
-        var x = 800/2;
-        var y = 600/2;
+        var x = camera.width/2;
+        var y = camera.height/2;
         ctx.strokeStyle = "#f0470e";
         ctx.beginPath();
         ctx.arc(x, y, raio, 0, 2*Math.PI);
@@ -162,8 +165,8 @@ var turret = {
             turret.vetorLaser[i].x = (x0 + turret.versor.x * turret.raio * i);
             turret.vetorLaser[i].y = (y0 + turret.versor.y * turret.raio * i);
         }
-        var x = 400;
-        var y = 300;
+        var x = camera.width/2;
+        var y = camera.height/2;
         x0 = x + turret.versor.x * turret.raio * base;
         x1 = x + turret.versor.x * turret.raio * (tam + base);
         y0 = y + turret.versor.y * turret.raio * base;
@@ -185,13 +188,13 @@ var turret = {
       'desenhar' : function(stats) {
         ctx_turret.font = "30px Arial";
         ctx_turret.fillStyle="green";
-        ctx_turret.fillText("HP: " + this.stats.vida, 30, 35)
+        ctx_turret.fillText("HP: " + this.stats.vida, camera.width/22, camera.height/18)
         ctx_turret.fillStyle='red';
-        ctx_turret.fillText('Kills: '+ this.stats.kills, 350, 35)
+        ctx_turret.fillText('Kills: '+ this.stats.kills, camera.width/2.2, camera.height/18)
         ctx_turret.fillStyle='blue';
-        ctx_turret.fillText('SH: ' + this.stats.shield, 30,65)
+        ctx_turret.fillText('SH: ' + this.stats.shield, camera.width/22, camera.height/9)
         ctx_turret.fillStyle='#1244AA';
-        ctx_turret.fillText('Energy: ' + this.stats.energy, 350, 570)
+        ctx_turret.fillText('Energy: ' + this.stats.energy, camera.width/2.3, camera.height/1.05)
         this.passivos();
       },
       carregar_energia : function(rate) {
@@ -234,7 +237,7 @@ var turret = {
                 that.stats.shield+=1*rate;
                 that.prevent_shield = true;
 
-              }, 5000);
+              },5000);
             }
         }
       },

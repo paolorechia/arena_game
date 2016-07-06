@@ -8,10 +8,10 @@ var coord = {
 function pegaCoordenadas(event){
     coord.x = event.clientX;
     coord.x -= c_turret.offsetLeft;
-    coord.x += turret.x - 400;
+    coord.x += turret.x - camera.width/2;
     coord.y = event.clientY;
     coord.y -= c_turret.offsetTop;
-    coord.y += turret.y - 300;
+    coord.y += turret.y - camera.height/2;
 //    return coord;
 }
 

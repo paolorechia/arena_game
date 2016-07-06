@@ -2,10 +2,8 @@ var background = {
     //redesenha o background
     imagem : new Image(), 
     imagem2 : 0,
-    width : 5000,
-    height : 3000 ,
-    resx : 800,
-    resy: 600,
+    width : 0,
+    height : 0,
     'grava' : function(ctx, width, height){
         background.imagem.src = ctx.canvas.toDataURL("image/png");
     },
@@ -13,7 +11,7 @@ var background = {
         ctx_turret.drawImage(background, 0, 0);
     },
     'blit_turret' : function(){
-        ctx_turret.drawImage(background.imagem, turret.x-400, turret.y - 300, 800, 600,0, 0, 800, 600);
+        ctx_turret.drawImage(background.imagem, turret.x - camera.width/2, turret.y - camera.height/2, camera.width, camera.height,0, 0, camera.width, camera.height);
     },
     // preenche background com pontos brancos que representam estrelas
     'populaEstrelas' : function(ctx, num){
@@ -25,13 +23,24 @@ var background = {
             ctx.fillRect(x, y, 1, 1);
         }
     },
-    inicia : function(ctx){
+    inicia: function (ctx, canvas){
+        background.width = canvas.width;
+        background.height = canvas.height;
         // Preenche background com preto
         ctx.fillStyle = "#000000";
         ctx.fillRect(0,0,background.width,background.height);
         // e com estrelas
-        background.populaEstrelas(ctx, 800);
+        background.populaEstrelas(ctx, background.width/4);
         // salva background criado
         background.grava(ctx, background.width, background.height);
+    },    
+}
+
+var camera = {
+    width : 0,
+    height : 0,
+    inicia: function(ctx, canvas){
+        camera.width= canvas.width;
+        camera.height= canvas.height;
     },
 }

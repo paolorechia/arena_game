@@ -16,12 +16,12 @@ var colisoes = {
             }
             // testa se turret saiu do board
             // inverte direcao e diminui velocidade pela metade
-            if (turret.x >= background.width - 400 || turret.x <= 400){
+            if (turret.x >= background.width - camera.width/2 || turret.x <= camera.width/2){
                 turret.vx = - turret.vx;
                 turret.x = turret.x + (turret.vx * turret.vel);
                 turret.vel= turret.vel/2;
             }
-            if (turret.y >= background.height - 300 || turret.y <= 300){
+            if (turret.y >= background.height - camera.height/2 || turret.y <= camera.height/2){
                 turret.vy = - turret.vy;
                 turret.y = turret.y + (turret.vy * turret.vel);
                 turret.vel= turret.vel/2;
