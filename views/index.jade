@@ -1,6 +1,7 @@
 extends layout
 
 block content
+  canvas#background.unselectable(width='5000', height='3000')  
   canvas#canvas_turret.unselectable(width='800', height='600')  
   script(type='text/javascript', src='/javascripts/turret/background.js')
   script(type='text/javascript', src='/javascripts/turret/calculo.js')

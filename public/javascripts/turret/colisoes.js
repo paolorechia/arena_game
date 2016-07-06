@@ -16,12 +16,12 @@ var colisoes = {
             }
             // testa se turret saiu do board
             // inverte direcao e diminui velocidade pela metade
-            if (turret.x >= background.width || turret.x <= 0){
+            if (turret.x >= background.width - 400 || turret.x <= 400){
                 turret.vx = - turret.vx;
                 turret.x = turret.x + (turret.vx * turret.vel);
                 turret.vel= turret.vel/2;
             }
-            if (turret.y >= background.height || turret.y <= 0){
+            if (turret.y >= background.height - 300 || turret.y <= 300){
                 turret.vy = - turret.vy;
                 turret.y = turret.y + (turret.vy * turret.vel);
                 turret.vel= turret.vel/2;
@@ -50,6 +50,7 @@ var colisoes = {
 
             //----------------------
 
+            //confere se laser acertou algum asteroide
             for (j = 0; j < tam; j++){
                 x1 = turret.vetorLaser[j].x;
                 y1 = turret.vetorLaser[j].y;
