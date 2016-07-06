@@ -11,6 +11,10 @@ p {
   text-align:center;
 }
 
+#background {
+    display: none;
+}
+
 .unselectable {
   -webkit-user-select: none;
   -moz-user-select: none;

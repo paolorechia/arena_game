@@ -1,16 +1,18 @@
 // canvas
-var c = document.getElementById("canvas_turret");
-var ctx = c.getContext("2d");
+var c_background = document.getElementById("background");
+var c_turret = document.getElementById("canvas_turret");
+var ctx_background = c_background.getContext("2d");
+var ctx_turret = c_turret.getContext("2d");
 
-background.inicia(ctx);
+background.inicia(ctx_background);
 //event listeners
-c.addEventListener("mousemove", pegaCoordenadas, false);
-c.addEventListener("mousedown", function(){ turret.atirou(1)}, false);
-c.addEventListener("mouseup", function(){ turret.atirou(0)}, false);
+c_turret.addEventListener("mousemove", pegaCoordenadas, false);
+c_turret.addEventListener("mousedown", function(){ turret.atirou(1)}, false);
+c_turret.addEventListener("mouseup", function(){ turret.atirou(0)}, false);
 window.addEventListener("keydown", function(event){ turret.atualizaDirecao(event)}, false);
 var lastFrameTimeMs = 0;
 var bool = 0;
-var maxFPS = 60;
+var maxFPS = 90;
 var tempo = 0;
 var bool = 0;
 
@@ -22,11 +24,11 @@ function mainLoop(timestamp){
         return;
     }
     lastFrameTimeMs = timestamp;
-    background.blit(background.imagem);
+//    background.blit(background.imagem);
+    background.blit_turret();
     asteroides.atualiza();
     asteroides.desenhaTodos();
     calculo.versor(turret.versor);
-    turret.hud.desenhar(turret.hud.stats);
     turret.gira();
 
     if ((tempo % 10) == 0)
@@ -40,6 +42,8 @@ function mainLoop(timestamp){
     turret.vetorLaser.length = 0;
     turret.move();
 //    console.log(asteroides.vetor.length);
+    turret.hud.desenhar(turret.hud.stats);
+//    logCoordenadas();
     requestAnimationFrame(mainLoop);
 }
 

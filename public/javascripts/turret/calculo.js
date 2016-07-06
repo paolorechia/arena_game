@@ -7,9 +7,11 @@ var coord = {
 // funcao para pegar as coordenadas do mouse
 function pegaCoordenadas(event){
     coord.x = event.clientX;
-    coord.x -= c.offsetLeft;
+    coord.x -= c_turret.offsetLeft;
+    coord.x += turret.x - 400;
     coord.y = event.clientY;
-    coord.y -= c.offsetTop;
+    coord.y -= c_turret.offsetTop;
+    coord.y += turret.y - 300;
 //    return coord;
 }
 

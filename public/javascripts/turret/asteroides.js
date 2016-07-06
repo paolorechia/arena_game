@@ -80,14 +80,27 @@ var asteroides = {
         asteroides.vetor.splice(indice, 1);
     },
     'desenha' : function(ast){
-        ctx.strokeStyle = "#FFFFFF";
-        ctx.beginPath();
-        ctx.arc(ast.x,
-                ast.y,
-                ast.tam * 5, 0, 2*Math.PI);
-        ctx.stroke();
-        ctx.fillStyle = "#FFFFFF";
-        ctx.fill();
+        var borda_esq = turret.x - 400;
+        var borda_dir = turret.x + 400;
+        var borda_sup = turret.y - 300;
+        var borda_inf = turret.y + 300;
+/*
+        console.log(borda_esq, borda_dir, borda_sup, borda_inf);
+        console.log(ast.x, ast.y);
+*/
+        if (ast.x > borda_esq && ast.x < borda_dir && ast.y > borda_sup && ast.y < borda_inf){
+            //console.log("entrou no canvas");
+            var x = ast.x - borda_esq;
+            var y = ast.y - borda_sup;
+            ctx_turret.strokeStyle = "#FFFFFF";
+            ctx_turret.beginPath();
+            ctx_turret.arc(x,
+                    y,
+                    ast.tam * 5, 0, 2*Math.PI);
+            ctx_turret.stroke();
+            ctx_turret.fillStyle = "#FFFFFF";
+            ctx_turret.fill();
+        }
     },
     'desenhaTodos' : function(){
         var i;

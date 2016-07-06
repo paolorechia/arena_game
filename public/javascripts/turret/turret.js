@@ -62,8 +62,10 @@ var turret = {
             turret.vy = 0;
     },
     'desenhaCanhao' : function (ctx, raio, angulo){
+        var x = 800/2;
+        var y = 600/2;
         ctx.save();
-        ctx.translate(turret.x, turret.y);
+        ctx.translate(x, y);
         ctx.rotate(angulo);
         ctx.moveTo(0, 0)
         ctx.lineWidth = raio * 0.2;
@@ -73,9 +75,11 @@ var turret = {
     },
 
     'desenha' : function (ctx, raio, angulo){
+        var x = 800/2;
+        var y = 600/2;
         ctx.strokeStyle = "#f0470e";
         ctx.beginPath();
-        ctx.arc(turret.x, turret.y, raio, 0, 2*Math.PI);
+        ctx.arc(x, y, raio, 0, 2*Math.PI);
         ctx.stroke();
         ctx.fillStyle = "#005252";
         ctx.fill();
@@ -84,7 +88,7 @@ var turret = {
         if(this.hud.stats.shield > 0) {
           ctx.strokeStyle = "#1244AA";
           ctx.beginPath();
-          ctx.arc(turret.x, turret.y, raio*1.3, 0, 2*Math.PI);
+          ctx.arc(x, y, raio*1.3, 0, 2*Math.PI);
           ctx.stroke();
         }
     },
@@ -114,9 +118,16 @@ var turret = {
     //           console.log('EsquerdaCima');
             }
         }
-        turret.desenha(ctx, turret.raio, atan);
+        turret.desenha(ctx_turret, turret.raio, atan);
     },
-
+    'desenhaLaser' : function(x0, y0, x1, y1){
+        ctx_turret.beginPath();
+        ctx_turret.moveTo(x0,y0);
+        ctx_turret.lineWidth=turret.raio*0.2;
+        ctx_turret.strokeStyle="#00FF00";
+        ctx_turret.lineTo(x1, y1);
+        ctx_turret.stroke();
+    },
     'atira' : function (){
 
         if(this.hud.stats.energy <= 1) {
@@ -145,18 +156,19 @@ var turret = {
         var x1 = turret.x + turret.versor.x * turret.raio * (tam + base);
         var y0 = turret.y + turret.versor.y * turret.raio * base;
         var y1 = turret.y + turret.versor.y * turret.raio * (tam + base);
-        ctx.beginPath();
-        ctx.moveTo(x0,y0);
-        ctx.lineWidth=turret.raio*0.2;
-        ctx.strokeStyle="#00FF00";
-        ctx.lineTo(x1, y1);
-        ctx.stroke();
         var i;
         for (i = 0; i< tam; i++){
             turret.vetorLaser[i] = new Laser(0,0);
             turret.vetorLaser[i].x = (x0 + turret.versor.x * turret.raio * i);
             turret.vetorLaser[i].y = (y0 + turret.versor.y * turret.raio * i);
         }
+        var x = 400;
+        var y = 300;
+        x0 = x + turret.versor.x * turret.raio * base;
+        x1 = x + turret.versor.x * turret.raio * (tam + base);
+        y0 = y + turret.versor.y * turret.raio * base;
+        y1 = y + turret.versor.y * turret.raio * (tam + base);
+        turret.desenhaLaser(x0, y0, x1, y1);
     },
 
     "atirou" : function(status_tiro){
@@ -171,15 +183,15 @@ var turret = {
         energy: 100
       },
       'desenhar' : function(stats) {
-        ctx.font = "30px Arial";
-        ctx.fillStyle="green";
-        ctx.fillText("HP: " + this.stats.vida, 30, 35)
-        ctx.fillStyle='red';
-        ctx.fillText('Kills: '+ this.stats.kills, 350, 35)
-        ctx.fillStyle='blue';
-        ctx.fillText('SH: ' + this.stats.shield, 30,65)
-        ctx.fillStyle='#1244AA';
-        ctx.fillText('Energy: ' + this.stats.energy, 350, 570)
+        ctx_turret.font = "30px Arial";
+        ctx_turret.fillStyle="green";
+        ctx_turret.fillText("HP: " + this.stats.vida, 30, 35)
+        ctx_turret.fillStyle='red';
+        ctx_turret.fillText('Kills: '+ this.stats.kills, 350, 35)
+        ctx_turret.fillStyle='blue';
+        ctx_turret.fillText('SH: ' + this.stats.shield, 30,65)
+        ctx_turret.fillStyle='#1244AA';
+        ctx_turret.fillText('Energy: ' + this.stats.energy, 350, 570)
         this.passivos();
       },
       carregar_energia : function(rate) {
