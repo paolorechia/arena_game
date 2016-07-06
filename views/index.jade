@@ -1,7 +1,12 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
-  canvas(id="gameCanvas" width=400 height=400)
-  script(src="javascripts/teste_game.js")
+  canvas#canvas_turret.unselectable(width='800', height='600')  
+  script(type='text/javascript', src='/javascripts/turret/background.js')
+  script(type='text/javascript', src='/javascripts/turret/calculo.js')
+  script(type='text/javascript', src='/javascripts/turret/asteroides.js')
+  script(type='text/javascript', src='/javascripts/turret/turret.js')
+  script(type='text/javascript', src='/javascripts/turret/colisoes.js')
+  script(type='text/javascript', src='/javascripts/turret/main.js')
+  script(type='text/javascript', src='/build/js/scripts.js')
+  

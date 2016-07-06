@@ -60,8 +60,8 @@ app.use(function(err, req, res, next) {
   });
 });
 
-app.listen(process.env.PORT, process.env.IP, function(){
-    console.log('listening');
+app.listen(3000, function(){
+    console.log('listening on port 3000');
 });
 
 
