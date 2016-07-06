@@ -42,7 +42,7 @@ var colisoes = {
             //console.log(Math.sqrt(Math.pow(y,2)+Math.pow(background.height/2,2)));
 
             // testa se turret acertou asteroide
-            // ue, isso nao eh distancia geometrica??
+            // ue, isso nao eh distancia geometrica?? se sim, usar funcao
             if( Math.sqrt(Math.pow(x-(turret.x),2)) < turret.raio*2  && Math.sqrt(Math.pow(y-(turret.y),2)) < turret.raio*2) {
               //mata asteroide
               asteroides.destroi(i,1);
@@ -63,13 +63,14 @@ var colisoes = {
             // confere se laser acertou algum asteroide
             // laser = um conjunto de coordenadas armazenado num vetor
             // o teste consiste em calcular a distancia geometrica de cada ponto
-            // em relacao a cada vetor
+            // do vetorLaser em relacao ao centro de cada asteroide
             for (j = 0; j < tam; j++){
                 x1 = turret.vetorLaser[j].x;
                 y1 = turret.vetorLaser[j].y;
                 dist = calculo.distGeometrica(x, y, x1, y1)
+                // se a distancia for inferior ao diametro do asteroide
                 if (dist < (asteroides.vetor[i].tam * 5)){
-                    // se o laser acertou, BAM
+                    // o laser acertou, BAM
                     asteroides.destroi(i, 1);
                     // aumenta contador de kills
                     turret.hud.stats.kills += 1;
