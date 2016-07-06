@@ -1,20 +1,29 @@
+// objeto de funcoes de colisoes
+// hmm, isso daqui tah meio porco, eh tudo uma funcao soh
 var colisoes = {
     'confere' : function(){
+        // variaveis auxiliares 
         var i = 0;
         var x, y;
         var x1, y1;
         var dist;
+        // len = ultimo elemento do vetor de asteroides
         var len = asteroides.vetor.length;
+        // tam = idem do vetor de Laser
         var tam = turret.vetorLaser.length;
+        // percorre vetor de asteroides
         for (i = 0; i < len; i++){
+            // puxa coordenadas do asteroide
             x = asteroides.vetor[i].x;
             y = asteroides.vetor[i].y;
-            // testa se asteroide saiu do board
+            // testa se asteroide saiu do mapa
             if (x > background.width || x < 0 || y > background.height || y < 0){
+                // se sim, boom!
                 asteroides.destroi(i, 1);
                 return;
             }
-            // testa se turret saiu do board
+
+            // proximas condicionais testam se turret saiu do board
             // inverte direcao e diminui velocidade pela metade
             if (turret.x >= background.width - camera.width/2 || turret.x <= camera.width/2){
                 turret.vx = - turret.vx;
@@ -33,6 +42,7 @@ var colisoes = {
             //console.log(Math.sqrt(Math.pow(y,2)+Math.pow(background.height/2,2)));
 
             // testa se turret acertou asteroide
+            // ue, isso nao eh distancia geometrica??
             if( Math.sqrt(Math.pow(x-(turret.x),2)) < turret.raio*2  && Math.sqrt(Math.pow(y-(turret.y),2)) < turret.raio*2) {
               //mata asteroide
               asteroides.destroi(i,1);
@@ -50,19 +60,19 @@ var colisoes = {
 
             //----------------------
 
-            //confere se laser acertou algum asteroide
+            // confere se laser acertou algum asteroide
+            // laser = um conjunto de coordenadas armazenado num vetor
+            // o teste consiste em calcular a distancia geometrica de cada ponto
+            // em relacao a cada vetor
             for (j = 0; j < tam; j++){
                 x1 = turret.vetorLaser[j].x;
                 y1 = turret.vetorLaser[j].y;
                 dist = calculo.distGeometrica(x, y, x1, y1)
                 if (dist < (asteroides.vetor[i].tam * 5)){
+                    // se o laser acertou, BAM
                     asteroides.destroi(i, 1);
-
-
-                    //------Exemplo--------
+                    // aumenta contador de kills
                     turret.hud.stats.kills += 1;
-                    //----------------------
-
                     return;
                 }
             }
