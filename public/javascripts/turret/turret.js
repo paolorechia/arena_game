@@ -1,4 +1,5 @@
 // turret.versor do canhao
+// pseudo-classe
 function Laser(x, y){
     this.x;
     this.y;
@@ -6,6 +7,7 @@ function Laser(x, y){
 
 
 var turret = {
+    // declaracao/incializacao de variaveis
     versor : new Versor(),
     vetorLaser : [],
     raio : 15,
@@ -17,11 +19,14 @@ var turret = {
     vy : 0,
     x : 0,
     y : 0,
+    // inicializa posicao do turret
     'inicia' : function(){
         turret.x = background.width/2;
         turret.y = background.height/2;
      },
     
+    // pega o evento de teclado, confere qual eh, atualiza o versor do turret
+    // e incrementa velocidade
     'atualizaDirecao' : function (event){
         if (event.key == 'w'){
             if (turret.vy > -1)
@@ -47,6 +52,7 @@ var turret = {
             turret.vel += turret.acel;
         }
     },
+    // sempre executada no loop principal, move turret na direcao atual 
     'move' : function(){
         if (turret.vel >= turret.max_speed){
             turret.vel = turret.max_speed;
@@ -64,6 +70,7 @@ var turret = {
             turret.vx = 0;
             turret.vy = 0;
     },
+    // desenha o canhao (APENAS o canhao, o risco da onde sai o laser)
     'desenhaCanhao' : function (ctx, raio, angulo){
         var x = camera.width/2;
         var y = camera.height/2;
@@ -77,6 +84,7 @@ var turret = {
         ctx.restore();
     },
 
+    // desenha o corpo do turret e chama a funcao desenhaCanhao
     'desenha' : function (ctx, raio, angulo){
         var x = camera.width/2;
         var y = camera.height/2;
@@ -96,6 +104,9 @@ var turret = {
         }
     },
 
+    // atualiza o angulo utilizando trigonometria
+    // a partir das coordenadas do cursor do mouse
+    // e chama a função de desenhar o turret
     'gira' : function (){
 
         var ca = (turret.x - coord.x);
@@ -123,6 +134,7 @@ var turret = {
         }
         turret.desenha(ctx_turret, turret.raio, atan);
     },
+    // desenha laser (uma linha)
     'desenhaLaser' : function(x0, y0, x1, y1){
         ctx_turret.beginPath();
         ctx_turret.moveTo(x0,y0);
@@ -131,8 +143,11 @@ var turret = {
         ctx_turret.lineTo(x1, y1);
         ctx_turret.stroke();
     },
+    //atira o laser se a energia eh maior do que 0
     'atira' : function (){
 
+        // confere se a energia eh adequada
+        // e se nao estah em tempo de recarga
         if(this.hud.stats.energy <= 1) {
           this.hud.cooldown_time = true;
           bool = 0;
@@ -146,13 +161,12 @@ var turret = {
           return;
         }
 
-        // desenha linha usando turret.versor (apenas para ilustrar)
         this.hud.descarregar_energia(1);
 
         if(bool == 0)
           return;
 
-    //    console.log("atirei");
+        // se tudo estiver ok, atira
         var tam = 14;
         var base = 2;
         var x0 = turret.x + turret.versor.x * turret.raio * base;
@@ -160,11 +174,13 @@ var turret = {
         var y0 = turret.y + turret.versor.y * turret.raio * base;
         var y1 = turret.y + turret.versor.y * turret.raio * (tam + base);
         var i;
+        // cria um vetor de coordenadas para testar nas colisoes
         for (i = 0; i< tam; i++){
             turret.vetorLaser[i] = new Laser(0,0);
             turret.vetorLaser[i].x = (x0 + turret.versor.x * turret.raio * i);
             turret.vetorLaser[i].y = (y0 + turret.versor.y * turret.raio * i);
         }
+        // e passa coordenadas adaptadas pro canvas menor pra funcao de desenhar
         var x = camera.width/2;
         var y = camera.height/2;
         x0 = x + turret.versor.x * turret.raio * base;
@@ -174,17 +190,21 @@ var turret = {
         turret.desenhaLaser(x0, y0, x1, y1);
     },
 
+    // atualiza status do tiro de acordo com o evento de mouse
     "atirou" : function(status_tiro){
       bool = status_tiro;
     },
 
+    // hud
      'hud' : {
+      // stats deveria estar em outro lugar...
       'stats' : {
         vida: 10,
         shield: 2,
         kills: 0,
         energy: 100
       },
+      // desenha os stats na tela
       'desenhar' : function(stats) {
         ctx_turret.font = "30px Arial";
         ctx_turret.fillStyle="green";
@@ -197,6 +217,8 @@ var turret = {
         ctx_turret.fillText('Energy: ' + this.stats.energy, camera.width/2.3, camera.height/1.05)
         this.passivos();
       },
+      // funcoes abaixo nao sei como funcionam, nao li ainda
+      // mas parece que deveriam fazer parte do turret e nao do hud
       carregar_energia : function(rate) {
         var min_energy = 0;
         var max_energy = 100;
