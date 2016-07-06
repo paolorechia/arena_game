@@ -39,8 +39,10 @@ var background = {
 var camera = {
     width : 0,
     height : 0,
-    inicia: function(ctx, canvas){
-        camera.width= canvas.width;
-        camera.height= canvas.height;
+    setRes: function (width, height, canvas){
+        canvas.width = width;
+        canvas.height = height;
+        camera.width = width;
+        camera.height = height;
     },
 }

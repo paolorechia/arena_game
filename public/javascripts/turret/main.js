@@ -5,7 +5,7 @@ var ctx_background = c_background.getContext("2d");
 var ctx_turret = c_turret.getContext("2d");
 
 background.inicia(ctx_background, c_background);
-camera.inicia(ctx_turret, c_turret);
+camera.setRes(1600, 900, c_turret);
 turret.inicia();
 
 //event listeners
