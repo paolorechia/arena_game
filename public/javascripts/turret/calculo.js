@@ -1,10 +1,11 @@
-// obj coorenadas X, Y
+// objeto de coorenadas X, Y do cursor do mouse
 var coord = {
     x:0,
     y:0
 }
 
 // funcao para pegar as coordenadas do mouse
+// atualiza coord.x e coord.y
 function pegaCoordenadas(event){
     coord.x = event.clientX;
     coord.x -= c_turret.offsetLeft;
@@ -27,12 +28,19 @@ function logCoordenadas(){
 }
 
 
+// exemplo de pseudo-classe
+// ver funcao de atirar para exemplo de uso
+// versor = vetor de modulo unitario (conceito de GA)
 function Versor(){
     this.x = 0;
     this.y = 0;
 }
 
+
+// exemplo de objeto que contém apenas funcoes
+// invocado na forma "objeto.funcao()"
 var calculo = {
+    // recebe um versor e atualiza valor dele
     versor : function (v){
         // pega coordenadas e desloca origem para o centro
         var x = coord.x - turret.x;
