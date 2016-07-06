@@ -1,3 +1,5 @@
+"use strict";
+require('./turret/ts/main.ts');
 var Greeter = (function () {
     function Greeter(message) {
         this.greeting = message;

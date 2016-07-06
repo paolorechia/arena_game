@@ -1,3 +1,5 @@
+import './turret/ts/main.ts';
+
 
 class Greeter {
     greeting: string;

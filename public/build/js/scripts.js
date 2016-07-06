@@ -42,8 +42,10 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+	__webpack_require__(1);
 	var Greeter = (function () {
 	    function Greeter(message) {
 	        this.greeting = message;
@@ -55,6 +57,35 @@
 	}());
 	var g = new Greeter('asswit');
 	console.log(g.greet());
+
+
+/***/ },
+/* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	console.log("i'm the main");
+	var asteroide_ts_1 = __webpack_require__(2);
+	//Exemplo
+	var asteroide1 = new asteroide_ts_1.Asteroide(3, 10, 10, 2, [3, 2]);
+	console.log(asteroide1.show_position());
+
+
+/***/ },
+/* 2 */
+/***/ function(module, exports) {
+
+	"use strict";
+	var Asteroide = (function () {
+	    function Asteroide(x_inicial, y_inicial, velocidade, tamanho, versor) {
+	        this.position = "X: " + x_inicial + ", Y: " + y_inicial;
+	    }
+	    Asteroide.prototype.show_position = function () {
+	        return "My initial position is " + this.position + "!";
+	    };
+	    return Asteroide;
+	}());
+	exports.Asteroide = Asteroide;
 
 
 /***/ }
