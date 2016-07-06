@@ -112,11 +112,20 @@ var asteroides = {
             var y = ast.y - borda_sup;
 
             // desenha o asteroide
+            // strokeStyle = cor da linha
             ctx_turret.strokeStyle = "#FFFFFF";
+            // comeca desenho
             ctx_turret.beginPath();
+            // caminha um circulo nas coordenadas (x,y),
+            // de raio ast.tam * 5,
+            // 0??
+            // arco 2pi
             ctx_turret.arc(x, y, ast.tam * 5, 0, 2*Math.PI);
+            // desenha o caminho
             ctx_turret.stroke();
+            // fillStyle = cor de preenchimento
             ctx_turret.fillStyle = "#FFFFFF";
+            // preenche
             ctx_turret.fill();
         }
     },

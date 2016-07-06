@@ -74,13 +74,18 @@ var turret = {
     'desenhaCanhao' : function (ctx, raio, angulo){
         var x = camera.width/2;
         var y = camera.height/2;
+        // salva contexto (necessario em funcao da translacao)
         ctx.save();
+        // desloca origem para as coordendas (x,y)
         ctx.translate(x, y);
+        // rotaciona a imagem de acordo o angulo
         ctx.rotate(angulo);
+        // move para a origem (que agora eh (x, y))
         ctx.moveTo(0, 0)
         ctx.lineWidth = raio * 0.2;
         ctx.lineTo(raio * 2, 0);
         ctx.stroke();
+        // restaura contexto
         ctx.restore();
     },
 
@@ -137,10 +142,15 @@ var turret = {
     // desenha laser (uma linha)
     'desenhaLaser' : function(x0, y0, x1, y1){
         ctx_turret.beginPath();
+        // move para inicio da linha
         ctx_turret.moveTo(x0,y0);
+        // seta largura da linha
         ctx_turret.lineWidth=turret.raio*0.2;
+        // cor
         ctx_turret.strokeStyle="#00FF00";
+        // coordenada destino
         ctx_turret.lineTo(x1, y1);
+        // desenha
         ctx_turret.stroke();
     },
     //atira o laser se a energia eh maior do que 0
