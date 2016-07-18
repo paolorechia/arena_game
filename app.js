@@ -12,7 +12,6 @@ var users = require('./routes/users');
 var app = express();
 var server = http.createServer(app);
 var io = require('socket.io').listen(server);
-io.emit('testing');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -68,6 +67,13 @@ server.listen(3000, function(){
     console.log('listening on port 3000');
 });
 
+io.on('connection', function(socket){
+    socket.on('direcao', function(dir){
+        console.log("recebi direcao: " + dir);
+        socket.emit('direcao', (dir));
+    });
+});
+io.emit('testing');
 
 
 module.exports = app;
