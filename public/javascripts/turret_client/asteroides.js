@@ -1,5 +1,5 @@
 //outro exemplo de pseudo-classe
-function Asteroide(x, y, velocidade, tamanho, versor){
+Asteroide = function(x, y, velocidade, tamanho, versor){
     this.x = x;
     this.y = y;
     this.vel = velocidade;
@@ -9,7 +9,7 @@ function Asteroide(x, y, velocidade, tamanho, versor){
 var asteroides = {
     // declara vetor de asteroides
     vetor : [],
-    
+
     // as quatro funcoes abaixo sao chamadas
     // na criacao de um asteroide, de acordo com um numero aleatorio
     // que determina em que borda vai nascer (esquerda, direita, superior, inferior)
@@ -64,27 +64,23 @@ var asteroides = {
         var vel = Math.floor((Math.random() * 10) + 1);
         var tam = Math.floor((Math.random() * 5) + 2);
         if (randomize == 0){
-            asteroides.criaEsq(vel, tam);
+            this.criaEsq(vel, tam);
         }
         else if (randomize == 1){
-            asteroides.criaDir(vel, tam);
+            this.criaDir(vel, tam);
         }
         else if (randomize == 2){
-            asteroides.criaSup(vel, tam);
+            this.criaSup(vel, tam);
         }
-        else asteroides.criaInf(vel, tam);
+        else this.criaInf(vel, tam);
     },
     // atualiza posicao de todos os asteroides
     // simples iteracao em um loop
     'atualiza' : function(){
-        var i = 0;
-        var len = asteroides.vetor.length;
-        for (i = 0; i < len; i++){
-            // a cada interacao as coordenadas de um asteroide sao puxadas
-            // e multiplacadas pelo versor desse asteroide
-            asteroides.vetor[i].x += asteroides.vetor[i].v.x * asteroides.vetor[i].vel;
-            asteroides.vetor[i].y += asteroides.vetor[i].v.y * asteroides.vetor[i].vel;
-        }
+        socket.on('asteroides', function(novo){
+            asteroides.vetor = novo;
+            console.log("vetor atualizado" + asteroides.vetor);
+        });
     },
 
     // remove asteroide do vetor
@@ -147,3 +143,4 @@ var asteroides = {
         }
     }
 }
+//} // end of module exports

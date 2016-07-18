@@ -29,10 +29,12 @@ var turret = {
     // e incrementa velocidade
     'atualizaDirecao' : function (event){
         if (event.key == 'w'){
+            socket.emit('direcao', 'w');
+            /*
             if (turret.vy > -1)
                 turret.vy = (turret.vy - turret.turn_rate);
             turret.vel += turret.acel;
-            socket.emit('direcao', 'w');
+            */
         }
         if (event.key == 's'){
             if (turret.vy < 1)
@@ -56,6 +58,14 @@ var turret = {
     },
     // sempre executada no loop principal, move turret na direcao atual 
     'move' : function(){
+       socket.on('direcao', function(resp){
+            if (resp == 'w')
+            {
+                if (turret.vy > -1)
+                    turret.vy = (turret.vy - turret.turn_rate);
+                turret.vel += turret.acel;
+            }
+        });
         if (turret.vel >= turret.max_speed){
             turret.vel = turret.max_speed;
         }
