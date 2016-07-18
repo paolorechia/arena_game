@@ -77,6 +77,7 @@ var asteroides = {
     // atualiza posicao de todos os asteroides
     // simples iteracao em um loop
     'atualiza' : function(){
+/*
         socket.on('asteroides', function(novo){
             console.log("ATUALIZEI");
             console.log(novo);
@@ -84,6 +85,7 @@ var asteroides = {
             console.log("vetor atualizado" + asteroides.vetor);
             console.log(asteroides.vetor[0]);
         });
+*/
     },
 
     // remove asteroide do vetor

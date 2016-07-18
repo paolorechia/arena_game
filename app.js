@@ -98,20 +98,24 @@ console.log(background);
 var i = 0;
 var j = 0;
 function atualizaAst(){
+    ast.asteroides.atualiza();
     io.sockets.emit('asteroides', ast.asteroides.vetor);
-    console.log("enviando... " + ast.asteroides.vetor);
+//    console.log("enviando... " + ast.asteroides.vetor);
 }
 function infinite(){
     i++;
-    if (i % 100 == 0){
-        console.log("criei..." + ast.asteroides.vetor[ast.asteroides.vetor.length - 1]);
-        ast.asteroides.cria();
-        console.log(ast.asteroides.vetor);
+    if (i % 10 == 0){
+        if (ast.asteroides.vetor.length < 40){ 
+            console.log("criei..." + ast.asteroides.vetor[ast.asteroides.vetor.length - 1]);
+            ast.asteroides.cria();
+            console.log(ast.asteroides.vetor);
+        }
     }
-    if (i % 100 == 0){
+    if (i % 10 == 0){
         atualizaAst();
+        io.sockets.emit('message', i);
     }
-    setTimeout(infinite, 100);
+    setTimeout(infinite, 1);
 };
 infinite();
 
