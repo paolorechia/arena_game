@@ -4,7 +4,7 @@ o primeiro, background, eh usado para criar o espaco
 o segundo c_turret, eh onde o jogo eh efetivamente desenhado e em varios
 trechos do codigo eh referenciado como camera
 */
-var socket = io();
+var socket = io({transports: ['websocket']});
 var c_background = document.getElementById("background");
 var c_turret = document.getElementById("canvas_turret");
 var ctx_background = c_background.getContext("2d");
@@ -55,9 +55,6 @@ function mainLoop(timestamp){
     asteroides.desenhaTodos();          // desenha todos os asteroides do vetor
     calculo.versor(turret.versor);      // calcula vetor versor (de geometria analitica) do turret
     turret.gira();                      // desenha o turret atualizado com a rotacao
-
-    if ((tempo % 10) == 0)              // cria asteroide a cada 10 iteracoes de tempo
-        asteroides.cria();
     if (bool) {
         turret.atira();                 // apenas laser por enquanto
 //        limob demanda que puxa esse script (e taAsteroides();

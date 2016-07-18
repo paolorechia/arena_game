@@ -21,6 +21,7 @@ var users = require('./routes/users');
 var app = express();
 var server = http.createServer(app);
 var io = require('socket.io').listen(server);
+io.set('transports', ['websocket']);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -76,10 +77,11 @@ server.listen(3000, function(){
     console.log('listening on port 3000');
 });
 
-var players = 0;
+var players = [];
 
 io.on('connection', function(socket){
-    players++;
+    players[players.length] = socket.id; 
+    players.length++;
     console.log(socket.id + " has connected");
     socket.on('direcao', function(dir){
         console.log("recebi direcao: " + dir);
@@ -89,30 +91,27 @@ io.on('connection', function(socket){
         players--;
         console.log(socket.id + " has disconnected");
     });
-    socket.on('asteroides', function(){
-        socket.emit('asteroides', ast.asteroides.vetor);
-    });
+    console.log(players);
 });
 
-var counter = {
-    i:0,
-}
-counter.i = 0;
-function somaum(numero){
-    numero.i++;
-    console.log(numero.i);
-}
 console.log(background);
 var i = 0;
+var j = 0;
+function atualizaAst(){
+    io.sockets.emit('asteroides', ast.asteroides.vetor);
+    console.log("enviando... " + ast.asteroides.vetor);
+}
 function infinite(){
     i++;
-    if (i % 50 == 0){
+    if (i % 100 == 0){
+        console.log("criei..." + ast.asteroides.vetor[ast.asteroides.vetor.length - 1]);
         ast.asteroides.cria();
-    }
-    if (i % 5000 == 0){
         console.log(ast.asteroides.vetor);
     }
-    setTimeout(infinite, 1);
+    if (i % 100 == 0){
+        atualizaAst();
+    }
+    setTimeout(infinite, 100);
 };
 infinite();
 
