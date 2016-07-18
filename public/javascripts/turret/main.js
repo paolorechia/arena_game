@@ -4,6 +4,7 @@ o primeiro, background, eh usado para criar o espaco
 o segundo c_turret, eh onde o jogo eh efetivamente desenhado e em varios
 trechos do codigo eh referenciado como camera
 */
+var socket = io();
 var c_background = document.getElementById("background");
 var c_turret = document.getElementById("canvas_turret");
 var ctx_background = c_background.getContext("2d");

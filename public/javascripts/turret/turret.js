@@ -32,6 +32,7 @@ var turret = {
             if (turret.vy > -1)
                 turret.vy = (turret.vy - turret.turn_rate);
             turret.vel += turret.acel;
+            socket.emit('direcao', 'w');
         }
         if (event.key == 's'){
             if (turret.vy < 1)
