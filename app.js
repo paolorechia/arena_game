@@ -197,11 +197,11 @@ function infinite(){
     }
     if (i % 10 == 0){
         atualizaAsteroides();
+        atualizaTurrets();
         io.sockets.emit('message', i);
     }
 
     if (i % 20 == 0){
-        atualizaTurrets();
         enviaTurrets();
     }
 
