@@ -104,8 +104,7 @@ io.on('connection', function(socket){
 console.log(background);
 var i = 0;
 var j = 0;
-function atualizaAsteroides(){
-    ast.asteroides.atualiza();
+function enviaAsteroides(){
     io.sockets.emit('asteroides', ast.asteroides.vetor);
 //    console.log("enviando... " + ast.asteroides.vetor);
 }
@@ -196,13 +195,14 @@ function infinite(){
         }
     }
     if (i % 10 == 0){
-        atualizaAsteroides();
+        ast.asteroides.atualiza();
         atualizaTurrets();
         io.sockets.emit('message', i);
     }
 
     if (i % 20 == 0){
         enviaTurrets();
+        enviaAsteroides();
     }
 
     setTimeout(infinite, 1);
