@@ -78,19 +78,16 @@ server.listen(3000, function(){
     console.log('listening on port 3000');
 });
 
-function Player(){
-    id : 0;
-    turret: 0;
-}
 var players = {length : 0};
 io.on('connection', function(socket){
     players[socket.id] = turret.cria();
     players.length++;
     socket.emit('myid', socket.id);
     console.log(socket.id + " has connected");
-    socket.on('direcao', function(dir){
-        console.log("recebi direcao: " + dir);
-        socket.emit('direcao', (dir));
+    socket.on('direcao', function(key){
+        console.log("recebi direcao: " + key);
+        atualizaDirecao(key, socket.id);
+        socket.emit('direcao', (key));
     });
     socket.on('disconnect', function(){
         console.log(socket.id + " has disconnected");
@@ -113,13 +110,68 @@ function atualizaAsteroides(){
     io.sockets.emit('asteroides', ast.asteroides.vetor);
 //    console.log("enviando... " + ast.asteroides.vetor);
 }
-function atualizaTurrrets(){
-    var len = players.length;
-    for (var i = 0; i < len; i++){
+
+function atualizaDirecao(key, id){
+           turret = players[id];
+           console.log(turret);
+           if (key == 'w'){
+                if (turret.versor.y > -1)
+                    turret.versor.y = (turret.versor.y - turret.turn_rate);
+                turret.vel += turret.acel;
+            }
+            if (key == 's'){
+                if (turret.versor.y < 1)
+                    turret.versor.y = (turret.versor.y + turret.turn_rate);
+                turret.vel += turret.acel;
+            }
+            if (key == 'd'){
+                if (turret.versor.x < 1)
+                {
+                    turret.versor.x = (turret.versor.x + turret.turn_rate);
+                }
+                turret.vel += turret.acel;
+            }
+            if (key == 'a'){
+                if (turret.versor.x > -1){
+                    turret.versor.x = (turret.versor.x - turret.turn_rate);
+                }
+                turret.vel += turret.acel;
+            }
+}
+    
+function atualizaTurrets(){
+    for (var id in io.sockets.connected){ 
+            turret = players[id];
+            console.log(turret);
+            if (turret.versor.y > -1){
+                turret.versor.y = (turret.versor.y - turret.turn_rate);
+                turret.vel += turret.acel;
+            }
+            if (turret.vel >= turret.max_speed){
+                turret.vel = turret.max_speed;
+            }
+            if (turret.vel > 0){
+                turret.pos.x += turret.versor.x * turret.vel;
+                turret.pos.y += turret.versor.y * turret.vel;
+            }
+            if (turret.vel <= 0){
+                turret.para();
+            }
+/*
         socket = io.sockets.connected[player[i].id];
         turret.atualiza(players[i].turret.pos);
+*/
     }
 }        
+function enviaTurrets(){
+    var players_positions = [];
+    var j = 0;
+    for (var id in io.sockets.connected){ 
+        players_positions[j] = players[id].pos;
+        j++;
+    }
+    io.sockets.emit('movimento', players_positions);
+}
 function infinite(){
     i++;
 /*
@@ -140,8 +192,11 @@ function infinite(){
     }
     if (i % 10 == 0){
         atualizaAsteroides();
-//        atualizaTur();
         io.sockets.emit('message', i);
+    }
+    if (i % 500 == 0){
+        atualizaTurrets();
+        enviaTurrets();
     }
     setTimeout(infinite, 1);
 };

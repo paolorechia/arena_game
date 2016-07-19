@@ -30,52 +30,23 @@ var turret = {
     'atualizaDirecao' : function (event){
         if (event.key == 'w'){
             socket.emit('direcao', 'w');
-            /*
-            if (turret.vy > -1)
-                turret.vy = (turret.vy - turret.turn_rate);
-            turret.vel += turret.acel;
-            */
         }
         if (event.key == 's'){
-            if (turret.vy < 1)
-                turret.vy = (turret.vy + turret.turn_rate);
-            turret.vel += turret.acel;
             socket.emit('direcao', 's');
         }
         if (event.key == 'd'){
-            if (turret.vx < 1)
-            {
-                turret.vx = (turret.vx + turret.turn_rate);
-            }
-            turret.vel += turret.acel;
+            socket.emit('direcao', 'd');
         }
         if (event.key == 'a'){
-            if (turret.vx > -1){ 
-                turret.vx = (turret.vx - turret.turn_rate);
-            }
-            turret.vel += turret.acel;
+            socket.emit('direcao', 'a');
         }
     },
     // sempre executada no loop principal, move turret na direcao atual 
     'move' : function(){
-       socket.on('direcao', function(resp){
-            if (resp == 'w')
-            {
-                if (turret.vy > -1)
-                    turret.vy = (turret.vy - turret.turn_rate);
-                turret.vel += turret.acel;
-            }
-        });
-        if (turret.vel >= turret.max_speed){
-            turret.vel = turret.max_speed;
-        }
-        if (turret.vel > 0){
-            turret.x += turret.vx * turret.vel;
-            turret.y += turret.vy * turret.vel;
-        }
-        if (turret.vel <= 0){
-            turret.para();
-        }
+       socket.on('movimento', function(nova_pos){
+            turret.x = nova_pos.x;
+            turret.y = nova_pos.y;
+       });
     },
     'para' : function(){
             turret.vel = 0;
