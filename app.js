@@ -37,7 +37,7 @@ app.use(cookieParser());
 
 
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/modules',  express.static( path.join(__dirname, '/node_modules'))); 
+app.use('/modules',  express.static( path.join(__dirname, '/node_modules')));
 
 app.use('/', routes);
 app.use('/users', users);
@@ -73,8 +73,10 @@ app.use(function(err, req, res, next) {
   });
 });
 
-server.listen(3000, function(){
-    console.log('listening on port 3000');
+var port = process.env.PORT || 3000;
+
+server.listen(port, function(){
+    console.log('listening on port ' + port);
 });
 
 var players = {length : 0};
@@ -93,7 +95,7 @@ io.on('connection', function(socket){
         delete players[socket.id];
         players.length--;
         console.log(players);
-        
+
     });
     socket.on('myid', function(id){
         console.log(players.length);
@@ -137,9 +139,9 @@ function atualizaDirecao(key, id){
                 turret.vel += turret.acel;
             }
 }
-    
+
 function atualizaTurrets(){
-    for (var id in io.sockets.connected){ 
+    for (var id in io.sockets.connected){
             var turret = players[id];
             //console.log(turret);
             if (turret.vel >= turret.max_speed){
@@ -157,11 +159,11 @@ function atualizaTurrets(){
         turret.atualiza(players[i].turret.pos);
 */
     }
-}        
+}
 function enviaTurrets(){
     var players_positions = [];
     var j = 0;
-    for (var id in io.sockets.connected){ 
+    for (var id in io.sockets.connected){
         players_positions[j] = players[id].pos;
         j++;
     }
@@ -179,7 +181,7 @@ function infinite(){
     }
 */
     if (i % 10 == 0){
-        if (ast.asteroides.vetor.length < 40){ 
+        if (ast.asteroides.vetor.length < 40){
 //            console.log("criei..." + ast.asteroides.vetor[ast.asteroides.vetor.length - 1]);
             ast.asteroides.cria();
 //            console.log(ast.asteroides.vetor);
