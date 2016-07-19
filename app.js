@@ -37,8 +37,7 @@ app.use(cookieParser());
 
 
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/modules',  express.static( path.join(__dirname, '/node_modules')));
-
+app.use('/modules',  express.static( path.join(__dirname, '/node_modules'))); 
 
 app.use('/', routes);
 app.use('/users', users);
@@ -112,8 +111,8 @@ function atualizaAsteroides(){
 }
 
 function atualizaDirecao(key, id){
-           turret = players[id];
-           console.log(turret);
+           var turret = players[id];
+//           console.log(turret);
            if (key == 'w'){
                 if (turret.versor.y > -1)
                     turret.versor.y = (turret.versor.y - turret.turn_rate);
@@ -141,12 +140,8 @@ function atualizaDirecao(key, id){
     
 function atualizaTurrets(){
     for (var id in io.sockets.connected){ 
-            turret = players[id];
-            console.log(turret);
-            if (turret.versor.y > -1){
-                turret.versor.y = (turret.versor.y - turret.turn_rate);
-                turret.vel += turret.acel;
-            }
+            var turret = players[id];
+            //console.log(turret);
             if (turret.vel >= turret.max_speed){
                 turret.vel = turret.max_speed;
             }
@@ -155,7 +150,7 @@ function atualizaTurrets(){
                 turret.pos.y += turret.versor.y * turret.vel;
             }
             if (turret.vel <= 0){
-                turret.para();
+            //    turret.para();
             }
 /*
         socket = io.sockets.connected[player[i].id];
@@ -194,10 +189,12 @@ function infinite(){
         atualizaAsteroides();
         io.sockets.emit('message', i);
     }
-    if (i % 500 == 0){
+
+    if (i % 10 == 0){
         atualizaTurrets();
         enviaTurrets();
     }
+
     setTimeout(infinite, 1);
 };
 infinite();

@@ -42,16 +42,9 @@ var turret = {
         }
     },
     // sempre executada no loop principal, move turret na direcao atual 
-    'move' : function(){
-       socket.on('movimento', function(nova_pos){
-            turret.x = nova_pos.x;
-            turret.y = nova_pos.y;
-       });
-    },
-    'para' : function(){
-            turret.vel = 0;
-            turret.vx = 0;
-            turret.vy = 0;
+    'move' : function(x, y){
+            turret.x = x;
+            turret.y = y;
     },
     // desenha o canhao (APENAS o canhao, o risco da onde sai o laser)
     'desenhaCanhao' : function (ctx, raio, angulo){

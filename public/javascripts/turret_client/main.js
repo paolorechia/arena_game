@@ -25,6 +25,12 @@ background.inicia(ctx_background, c_background);
 camera.setRes(1600, 900, c_turret);
 turret.inicia();
 
+socket.on('movimento', function(nova_pos){
+    console.log(nova_pos);
+    turret.x = (nova_pos[0].x);
+    turret.y = (nova_pos[0].y);
+    console.log(turret.x, turret.y);
+});
 /* conjunto de eventos lidos a partir do mouse e do teclado,
 na falta de um lugar melhor ainda estao aqui
 A cada escuta de evento é associada uma acao + uma funcao
@@ -71,7 +77,6 @@ function mainLoop(timestamp){
 //    console.log(turret.vetorLaser);
     colisoes.confere();                 // confere colisao de tudo (asteroides, turret, laser, bordas)
     turret.vetorLaser.length = 0;       // reseta laser
-    turret.move();                      // atualiza posicao do turret no mapa
     turret.hud.desenhar(turret.hud.stats);      // desenha hud
     requestAnimationFrame(mainLoop);            // chama proxima iteracao do loop
 }

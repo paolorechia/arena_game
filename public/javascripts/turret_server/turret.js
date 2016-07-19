@@ -26,10 +26,15 @@ module.exports = function(height, width, calc){
         turret.pos.y = Math.floor((Math.random() * height)/2);
         return turret;
     }
-    return module;
+    module.para = function(){
+                this.vel = 0;
+                this.versor.x= 0;
+                this.versor.y= 0;
+    }
     module.atualiza = function(turret){
         socket.emit('turret', turret.pos);
     }
+    return module;
 };
         
     var turret = {
@@ -91,11 +96,6 @@ module.exports = function(height, width, calc){
             if (turret.vel <= 0){
                 turret.para();
             }
-        },
-        'para' : function(){
-                turret.vel = 0;
-                turret.vx = 0;
-                turret.vy = 0;
         },
         // desenha o canhao (APENAS o canhao, o risco da onde sai o laser)
         'desenhaCanhao' : function (ctx, raio, angulo){
