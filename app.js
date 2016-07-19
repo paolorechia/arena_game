@@ -7,7 +7,7 @@ var width=5000;
 
 var calc = require('./turret_server/calculo.js');
 var turret = require ('./turret_server/turret.js')(height,width, calc);
-var ast = require('./public/javascripts/turret_server/asteroides.js')(height,width, calc);
+var ast = require('./turret_server/asteroides.js')(height,width, calc);
 var express = require('express');
 var http = require('http');
 var path = require('path');
