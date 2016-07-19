@@ -10,12 +10,17 @@ var c_turret = document.getElementById("canvas_turret");
 var ctx_background = c_background.getContext("2d");
 var ctx_turret = c_turret.getContext("2d");
 socket.on('message', function(message){
-    console.log(message);
+//    console.log(message);
 });
 socket.on('asteroides', function(novo){
     asteroides.vetor = novo;
 });
-
+var my_id = 0;
+socket.on('myid', function(id){
+   my_id = id;
+});
+while (my_id == 0){};
+console.log("my id is " + my_id);
 
 /* funcoes de inicializacao de variaveis*/
 background.inicia(ctx_background, c_background);
