@@ -37,7 +37,7 @@ app.use(cookieParser());
 
 
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/modules',  express.static( path.join(__dirname, '/node_modules')));
+app.use('/modules',  express.static( path.join(__dirname, '/node_modules'))); 
 
 app.use('/', routes);
 app.use('/users', users);
@@ -73,10 +73,8 @@ app.use(function(err, req, res, next) {
   });
 });
 
-var port = process.env.PORT || 3000;
-
-server.listen(port, function(){
-    console.log('listening on port ' + port);
+server.listen(3000, function(){
+    console.log('listening on port 3000');
 });
 
 var players = {length : 0};
@@ -95,7 +93,7 @@ io.on('connection', function(socket){
         delete players[socket.id];
         players.length--;
         console.log(players);
-
+        
     });
     socket.on('myid', function(id){
         console.log(players.length);
@@ -139,9 +137,9 @@ function atualizaDirecao(key, id){
                 turret.vel += turret.acel;
             }
 }
-
+    
 function atualizaTurrets(){
-    for (var id in io.sockets.connected){
+    for (var id in io.sockets.connected){ 
             var turret = players[id];
             //console.log(turret);
             if (turret.vel >= turret.max_speed){
@@ -159,15 +157,36 @@ function atualizaTurrets(){
         turret.atualiza(players[i].turret.pos);
 */
     }
-}
+}        
+
+// algoritmo horrível, repensar de um jeito mais eficiente
 function enviaTurrets(){
     var players_positions = [];
+    var players_id = [];
+    var aux;
     var j = 0;
-    for (var id in io.sockets.connected){
+    // monta vetor de posicoes
+    // e manda a posicao do jogador para ele mesmo 
+    for (var id in io.sockets.connected){ 
         players_positions[j] = players[id].pos;
+        players_id[j] = id;
+        var socket = io.sockets.connected[id];
+        socket.emit('movimento', players_positions[j]);
         j++;
     }
-    io.sockets.emit('movimento', players_positions);
+    // exclui a propria posicao do jogador e
+    // manda a posicao dos outros jogadores
+    for (var id in io.sockets.connected){
+        for (var j = 0; j < players_positions.length; j++){
+            if (players_id == id);
+                aux = players_positions.splice(id, 1);
+        }
+        console.log(players_positions);
+        socket = io.sockets.connected[id];
+        socket.emit('players', players_positions);
+        players_positions.push(aux);
+    }
+    
 }
 function infinite(){
     i++;
@@ -181,7 +200,7 @@ function infinite(){
     }
 */
     if (i % 10 == 0){
-        if (ast.asteroides.vetor.length < 40){
+        if (ast.asteroides.vetor.length < 40){ 
 //            console.log("criei..." + ast.asteroides.vetor[ast.asteroides.vetor.length - 1]);
             ast.asteroides.cria();
 //            console.log(ast.asteroides.vetor);

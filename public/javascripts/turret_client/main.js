@@ -26,11 +26,16 @@ camera.setRes(1600, 900, c_turret);
 turret.inicia();
 
 socket.on('movimento', function(nova_pos){
-    console.log(nova_pos);
-    turret.x = (nova_pos[0].x);
-    turret.y = (nova_pos[0].y);
-    console.log(turret.x, turret.y);
+//    console.log(nova_pos);
+    turret.x = (nova_pos.x);
+    turret.y = (nova_pos.y);
+//    console.log(turret.x, turret.y);
 });
+socket.on('players', function(other_players){
+//    console.log(other_players);
+    players = other_players;
+});
+
 /* conjunto de eventos lidos a partir do mouse e do teclado,
 na falta de um lugar melhor ainda estao aqui
 A cada escuta de evento é associada uma acao + uma funcao
@@ -68,6 +73,7 @@ function mainLoop(timestamp){
     background.blit_turret();           // desenha no canvas da camera
     asteroides.atualiza();              // atualiza vetor de asteroides
     asteroides.desenhaTodos();          // desenha todos os asteroides do vetor
+    turret.desenhaTodosInimigos(players);
     calculo.versor(turret.versor);      // calcula vetor versor (de geometria analitica) do turret
     turret.gira();                      // desenha o turret atualizado com a rotacao
     if (bool) {

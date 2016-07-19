@@ -90,6 +90,7 @@ var turret = {
         (os quatro cantos) de um retangulo
         //(turret.x, turret.y) = posicao do turret
         */
+        console.log("checking enemy boundary...");
         var borda_esq = turret.x - camera.width/2;      
         var borda_dir = turret.x + camera.width/2;
         var borda_sup = turret.y - camera.height/2;
@@ -103,6 +104,7 @@ var turret = {
             var x = inimigo.x - borda_esq;
             var y = inimigo.y - borda_sup;
 
+            console.log("drawing enemy...");
             // desenha o inimigoeroide
             // strokeStyle = cor da linha
             ctx_turret.strokeStyle = "#FFFFFF";
@@ -112,21 +114,17 @@ var turret = {
             // de raio inimigo.tam * 5,
             // 0??
             // arco 2pi
-            ctx_turret.arc(x, y, turret.raio, 0, 2*Math.PI);
+            ctx_turret.arc(x, y, 20, 0, 2*Math.PI);
             // desenha o caminho
             ctx_turret.stroke();
             // fillStyle = cor de preenchimento
-                ctx_turret.fillStyle = "#FF0000";
+            ctx_turret.fillStyle = "#FFFFFF";
             // preenche
             ctx_turret.fill();
         }
     },
     'desenhaTodosInimigos' : function(){
-
-        console.log(players);
-//        console.log(turret.x + ", " + turret.y);
-        console.log(players.length);
-        for (var i = 0; i < players.length; i++){
+        for (var i = 0; players.length - 1; i++){
             turret.desenhaInimigo(players[i]);
         }
     },
