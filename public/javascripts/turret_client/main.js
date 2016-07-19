@@ -13,11 +13,7 @@ socket.on('message', function(message){
     console.log(message);
 });
 socket.on('asteroides', function(novo){
-//    console.log("ATUALIZEI");
-//    console.log(novo);
     asteroides.vetor = novo;
-//    console.log("vetor atualizado" + asteroides.vetor);
-//    console.log(asteroides.vetor[0]);
 });
 
 

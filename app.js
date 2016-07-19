@@ -6,6 +6,7 @@ var height=3000;
 var width=5000;
 
 var calc = require('./public/javascripts/turret_server/calculo.js');
+var turret = require ('./public/javascripts/turret_server/turret.js')(height,width, calc);
 var ast = require('./public/javascripts/turret_server/asteroides.js')(height,width, calc);
 var express = require('express');
 var http = require('http');
@@ -80,15 +81,14 @@ server.listen(3000, function(){
 var players = [];
 
 io.on('connection', function(socket){
-    players[players.length] = socket.id; 
-    players.length++;
+    players.push(turret.cria());
+    players[players.length -1].id = socket.id
     console.log(socket.id + " has connected");
     socket.on('direcao', function(dir){
         console.log("recebi direcao: " + dir);
         socket.emit('direcao', (dir));
     });
     socket.on('disconnect', function(){
-        players--;
         console.log(socket.id + " has disconnected");
     });
     console.log(players);
@@ -106,9 +106,9 @@ function infinite(){
     i++;
     if (i % 10 == 0){
         if (ast.asteroides.vetor.length < 40){ 
-            console.log("criei..." + ast.asteroides.vetor[ast.asteroides.vetor.length - 1]);
+//            console.log("criei..." + ast.asteroides.vetor[ast.asteroides.vetor.length - 1]);
             ast.asteroides.cria();
-            console.log(ast.asteroides.vetor);
+//            console.log(ast.asteroides.vetor);
         }
     }
     if (i % 10 == 0){
