@@ -123,9 +123,9 @@ var turret = {
     },
     'desenhaTodosInimigos' : function(){
 
-        console.log(players);
+//        console.log(players);
 //        console.log(turret.x + ", " + turret.y);
-        console.log(players.length);
+//        console.log(players.length);
         for (var i = 0; i < players.length; i++){
             turret.desenhaInimigo(players[i]);
         }

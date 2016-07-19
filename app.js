@@ -174,19 +174,8 @@ function enviaTurrets(){
         socket.emit('movimento', players_positions[j]);
         j++;
     }
-    // exclui a propria posicao do jogador e
     // manda a posicao dos outros jogadores
-    for (var id in io.sockets.connected){
-        for (var j = 0; j < players_positions.length; j++){
-            if (players_id == id);
-                aux = players_positions.splice(id, 1);
-        }
-        console.log(players_positions);
-        socket = io.sockets.connected[id];
-        socket.emit('players', players_positions);
-        players_positions.push(aux);
-    }
-    
+        io.sockets.emit('players', players_positions);
 }
 function infinite(){
     i++;
@@ -211,7 +200,7 @@ function infinite(){
         io.sockets.emit('message', i);
     }
 
-    if (i % 10 == 0){
+    if (i % 20 == 0){
         atualizaTurrets();
         enviaTurrets();
     }
