@@ -5,8 +5,8 @@ var background = {
 var height=3000;
 var width=5000;
 
-var calc = require('./public/javascripts/turret_server/calculo.js');
-var turret = require ('./public/javascripts/turret_server/turret.js')(height,width, calc);
+var calc = require('./turret_server/calculo.js');
+var turret = require ('./turret_server/turret.js')(height,width, calc);
 var ast = require('./public/javascripts/turret_server/asteroides.js')(height,width, calc);
 var express = require('express');
 var http = require('http');
@@ -85,7 +85,7 @@ io.on('connection', function(socket){
     console.log(socket.id + " has connected");
     socket.on('direcao', function(key){
         console.log("recebi direcao: " + key);
-        atualizaDirecao(key, socket.id);
+        turret.atualizaDirecao(key, socket.id, players);
         socket.emit('direcao', (key));
     });
     socket.on('disconnect', function(){
@@ -109,34 +109,6 @@ function enviaAsteroides(){
 //    console.log("enviando... " + ast.asteroides.vetor);
 }
 
-function atualizaDirecao(key, id){
-           var turret = players[id];
-//           console.log(turret);
-           if (key == 'w'){
-                if (turret.versor.y > -1)
-                    turret.versor.y = (turret.versor.y - turret.turn_rate);
-                turret.vel += turret.acel;
-            }
-            if (key == 's'){
-                if (turret.versor.y < 1)
-                    turret.versor.y = (turret.versor.y + turret.turn_rate);
-                turret.vel += turret.acel;
-            }
-            if (key == 'd'){
-                if (turret.versor.x < 1)
-                {
-                    turret.versor.x = (turret.versor.x + turret.turn_rate);
-                }
-                turret.vel += turret.acel;
-            }
-            if (key == 'a'){
-                if (turret.versor.x > -1){
-                    turret.versor.x = (turret.versor.x - turret.turn_rate);
-                }
-                turret.vel += turret.acel;
-            }
-}
-    
 function atualizaTurrets(){
     for (var id in io.sockets.connected){ 
             var turret = players[id];
