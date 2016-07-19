@@ -76,7 +76,7 @@ module.exports = function(height, width, calc){
         }
         else this.criaInf(vel, tam);
     },
-    // atualiza posicao de todos os this
+    // atualiza posicao de todos os asteroides
     // simples iteracao em um loop
     'atualiza' : function(){
         var i = 0;
