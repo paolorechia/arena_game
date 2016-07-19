@@ -18,10 +18,8 @@ socket.on('asteroides', function(novo){
 var my_id = 0;
 socket.on('myid', function(id){
    my_id = id;
+   socket.emit('myid', my_id);
 });
-while (my_id == 0){};
-console.log("my id is " + my_id);
-
 /* funcoes de inicializacao de variaveis*/
 background.inicia(ctx_background, c_background);
 camera.setRes(1600, 900, c_turret);
@@ -85,4 +83,8 @@ console.log(background.width, background.height);
 
 // execucao principal aqui
 // inicia iteracoes no loop principal
-requestAnimationFrame(mainLoop);
+setTimeout(function(){
+   console.log("my id is: " + my_id);
+   requestAnimationFrame(mainLoop);
+},
+   2000);

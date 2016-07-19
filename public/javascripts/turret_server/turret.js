@@ -19,7 +19,6 @@ module.exports = function(height, width, calc){
         this.acel= 4;
         this.turn_rate= 1;
         this.max_speed = 4;
-        this.id = 0;
     }
     module.cria = function (){
         var turret = new module.Turret();

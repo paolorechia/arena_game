@@ -78,11 +78,15 @@ server.listen(3000, function(){
     console.log('listening on port 3000');
 });
 
-var players = [];
-
+function Player(){
+    id : 0;
+    turret: 0;
+}
+var players = {length : 0};
 io.on('connection', function(socket){
-    players.push(turret.cria());
-    players[players.length -1].id = socket.id
+    players[socket.id] = turret.cria();
+    players.length++;
+    socket.emit('myid', socket.id);
     console.log(socket.id + " has connected");
     socket.on('direcao', function(dir){
         console.log("recebi direcao: " + dir);
@@ -90,6 +94,13 @@ io.on('connection', function(socket){
     });
     socket.on('disconnect', function(){
         console.log(socket.id + " has disconnected");
+        delete players[socket.id];
+        players.length--;
+        console.log(players);
+        
+    });
+    socket.on('myid', function(id){
+        console.log(players.length);
     });
     console.log(players);
 });
@@ -97,13 +108,29 @@ io.on('connection', function(socket){
 console.log(background);
 var i = 0;
 var j = 0;
-function atualizaAst(){
+function atualizaAsteroides(){
     ast.asteroides.atualiza();
     io.sockets.emit('asteroides', ast.asteroides.vetor);
 //    console.log("enviando... " + ast.asteroides.vetor);
 }
+function atualizaTurrrets(){
+    var len = players.length;
+    for (var i = 0; i < len; i++){
+        socket = io.sockets.connected[player[i].id];
+        turret.atualiza(players[i].turret.pos);
+    }
+}        
 function infinite(){
     i++;
+/*
+    if (i % 10000 == 0){
+        console.log('\033c');
+        console.log("----------------------");
+        console.log("A thousand thousands ticks tick!");
+        console.log(players);
+        console.log("----------------------");
+    }
+*/
     if (i % 10 == 0){
         if (ast.asteroides.vetor.length < 40){ 
 //            console.log("criei..." + ast.asteroides.vetor[ast.asteroides.vetor.length - 1]);
@@ -112,7 +139,8 @@ function infinite(){
         }
     }
     if (i % 10 == 0){
-        atualizaAst();
+        atualizaAsteroides();
+//        atualizaTur();
         io.sockets.emit('message', i);
     }
     setTimeout(infinite, 1);
