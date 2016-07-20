@@ -1,24 +1,23 @@
 // objeto de funcoes de colisoes
 // hmm, isso daqui tah meio porco, eh tudo uma funcao soh
-module.exports = function(ast, turret, width, height, players){
+module.exports = function(ast, width, height, players, calculo){
     var module = {};
 
-    module.colisoes = function(){
-            // variaveis auxiliares 
-            var camera = {
-                width : 1600,
-                height : 900,
-            };
-            var i = 0;
-            var x, y;
-            var x1, y1;
-            var dist;
-            // len = ultimo elemento do vetor de asteroides
-            // tam = idem do vetor de Laser
+    // variaveis auxiliares 
+    var camera = {
+        width : 1600,
+        height : 900,
+    };
+    var i = 0;
+    var x, y;
+    var x1, y1;
+    var dist;
+    // len = ultimo elemento do vetor de asteroides
+    // tam = idem do vetor de Laser
 //            var tam = turret.vetorLaser.length;
-            // percorre vetor de asteroides
+    // percorre vetor de asteroides
 
-        // confere se algum objeto atingiu a borda do mapa
+// confere se algum objeto atingiu a borda do mapa
         module.borda = function(){
             // primeiro asteroides
             module.bordaAst();
@@ -40,29 +39,43 @@ module.exports = function(ast, turret, width, height, players){
             }
         }
         module.bordaTur = function(){
-            for (i = 0; i < len; i++){
-                turret = players[i];
+            for (var k in players){
+                var turret = players[k];
+        /*      super debug mode
+                console.log('\033c');
+                console.log(turret);
+                console.log("width = " + width);
+                console.log("height = " + height);
+                console.log("camera.width = " + camera.width/2);
+                console.log("camera.height = " + camera.height/2);
+                console.log("turret.pos.x = " + turret.pos.x);
+                console.log("turret.pos.y = " + turret.pos.y);
+        */
                 // proximas condicionais testam se turret saiu do board
                 // inverte direcao e diminui velocidade pela metade
-                if (turret.x >= width - camera.width/2 || turret.x <= camera.width/2){
-                    turret.vx = - turret.vx;
-                    turret.x = turret.x + (turret.vx * turret.vel);
+                if (turret.pos.x >= width - camera.width/2 || turret.pos.x <= camera.width/2){
+                    console.log("saiu em x");
+                    turret.versor.x = - turret.versor.x;
+                    turret.pos.x = turret.pos.x + (turret.versor.x * turret.vel);
                     turret.vel= turret.vel/2;
                 }
-                if (turret.y >= .height - camera.height/2 || turret.y <= camera.height/2){
-                    turret.vy = - turret.vy;
-                    turret.y = turret.y + (turret.vy * turret.vel);
+                if (turret.pos.y >= height - camera.height/2 || turret.pos.y <= camera.height/2){
+                    console.log("saiu em y");
+                    turret.versor.y = - turret.versor.y;
+                    turret.pos.y = turret.pos.y + (turret.versor.y * turret.vel);
                     turret.vel= turret.vel/2;
                 }
+            }
+       }
                 
-
+        /*
 
                 //console.log(Math.sqrt(Math.pow(x,2)+Math.pow(.width/2,2)));
                 //console.log(Math.sqrt(Math.pow(y,2)+Math.pow(.height/2,2)));
 
                 // testa se turret acertou asteroide
                 // ue, isso nao eh distancia geometrica?? se sim, usar funcao
-                if( Math.sqrt(Math.pow(x-(turret.x),2)) < turret.raio*2  && Math.sqrt(Math.pow(y-(turret.y),2)) < turret.raio*2) {
+                if( Math.sqrt(Math.pow(x-(turret.pos.x),2)) < turret.raio*2  && Math.sqrt(Math.pow(y-(turret.pos.y),2)) < turret.raio*2) {
                   //mata asteroide
                   ast.asteroides.destroi(i,1);
         
@@ -96,8 +109,7 @@ module.exports = function(ast, turret, width, height, players){
                         return;
                     }
                 }
-            }
-        }
-    }
-    return module;
+            */
+        return module;
 }
+

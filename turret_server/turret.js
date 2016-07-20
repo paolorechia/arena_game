@@ -1,6 +1,6 @@
 // turret.versor do canhao
 // pseudo-classe
-module.exports = function(height, width, calc){
+module.exports = function(background, camera, calc){
     var module = {};
     module.Laser = function (x, y){
         this.x;
@@ -22,8 +22,9 @@ module.exports = function(height, width, calc){
     }
     module.cria = function (){
         var turret = new module.Turret();
-        turret.pos.x = Math.floor((Math.random() * width)/2);
-        turret.pos.y = Math.floor((Math.random() * height)/2);
+        // Math.random() * (max - min) + min
+        turret.pos.x = Math.floor(Math.random() * (background.borda_direita - background.borda_esquerda) + background.borda_esquerda);
+        turret.pos.y = Math.floor(Math.random() * (background.borda_superior - background.borda_inferior) + background.borda_inferior);
         return turret;
     }
     module.para = function(){
@@ -76,7 +77,7 @@ var inutil = {
 
             deg = atan * 180/3.14;
             // console.log(deg);
-            //Falta tratar quando coord = background.height
+            //Falta tratar quando coord = background.background.height
             if(coord.x > turret.x) {
                 if(coord.y >= turret.y) {
         //            console.log('DireitaBaixo');
@@ -130,8 +131,8 @@ var inutil = {
                 turret.vetorLaser[i].y = (y0 + turret.versor.y * turret.raio * i);
             }
             // e passa coordenadas adaptadas pro canvas menor pra funcao de desenhar
-            var x = camera.width/2;
-            var y = camera.height/2;
+            var x = camera.background.width/2;
+            var y = camera.background.height/2;
             x0 = x + turret.versor.x * turret.raio * base;
             x1 = x + turret.versor.x * turret.raio * (tam + base);
             y0 = y + turret.versor.y * turret.raio * base;
@@ -157,13 +158,13 @@ var inutil = {
           'desenhar' : function(stats) {
             ctx_turret.font = "30px Arial";
             ctx_turret.fillStyle="green";
-            ctx_turret.fillText("HP: " + this.stats.vida, camera.width/22, camera.height/18)
+            ctx_turret.fillText("HP: " + this.stats.vida, camera.background.width/22, camera.background.height/18)
             ctx_turret.fillStyle='red';
-            ctx_turret.fillText('Kills: '+ this.stats.kills, camera.width/2.2, camera.height/18)
+            ctx_turret.fillText('Kills: '+ this.stats.kills, camera.background.width/2.2, camera.background.height/18)
             ctx_turret.fillStyle='blue';
-            ctx_turret.fillText('SH: ' + this.stats.shield, camera.width/22, camera.height/9)
+            ctx_turret.fillText('SH: ' + this.stats.shield, camera.background.width/22, camera.background.height/9)
             ctx_turret.fillStyle='#1244AA';
-            ctx_turret.fillText('Energy: ' + this.stats.energy, camera.width/2.3, camera.height/1.05)
+            ctx_turret.fillText('Energy: ' + this.stats.energy, camera.background.width/2.3, camera.background.height/1.05)
             this.passivos();
           },
           // funcoes abaixo nao sei como funcionam, nao li ainda
