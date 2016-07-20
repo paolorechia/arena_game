@@ -1,3 +1,16 @@
+// objeto camera, contem dimensoes do canvas menor
+var camera = {
+    width : 0,
+    height : 0,
+    // seta tamanho do canvas menor
+    setRes: function (width, height, canvas){
+        canvas.width = width;
+        canvas.height = height;
+        camera.width = width;
+        camera.height = height;
+    },
+}
+
 // objeto background, contem informacoes do canvas maior
 var background = {
     // declaracao de variaveis internas
@@ -32,7 +45,14 @@ var background = {
             ctx.fillRect(x, y, 1, 1);
         }
     },
-    
+    'desenhaBorda' : function(ctx, camera){
+        ctx.strokeStyle = "#FF0000";        
+        ctx.lineWidth = 200;
+        console.log(camera);
+        console.log(background);
+        ctx.rect(background.width + camera.width, background.height + camera.height, background.width - camera.width, background.height - camera.height);
+        ctx.stroke();
+    },
     // inicializa as variaveis internas ao background
     inicia: function (ctx, canvas){
         background.width = canvas.width;
@@ -43,20 +63,8 @@ var background = {
         // e com estrelas
         background.populaEstrelas(ctx, background.width/4);
         // salva background criado
+        background.desenhaBorda(ctx, camera);
         background.grava(ctx, background.width, background.height);
     },    
 }
 
-// objeto camera, contem dimensoes do canvas menor
-// redundante
-var camera = {
-    width : 0,
-    height : 0,
-    // seta tamanho do canvas menor
-    setRes: function (width, height, canvas){
-        canvas.width = width;
-        canvas.height = height;
-        camera.width = width;
-        camera.height = height;
-    },
-}

@@ -20,11 +20,11 @@ module.exports = function(io){
     console.log(background);
     var calc = require('./calculo.js');
     var turret = require ('./turret.js')(background, camera, calc);
-    var ast = require('./asteroides.js')(height,width, calc);
+    var ast = require('./asteroides.js')(background, calc);
     var players = {};
     var net = require('./network.js')(io, players, ast, turret)
     var update = require('./update.js')(players, ast);
-    var colisoes = require('./colisoes.js')(ast, width, height, players, calc);
+    var colisoes = require('./colisoes.js')(ast, background, camera, players, calc);
 
     var i = 0;
     // loop principal (infinito)

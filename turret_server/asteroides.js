@@ -1,5 +1,5 @@
 //outro exemplo de pseudo-classe
-module.exports = function(height, width, calc){
+module.exports = function(background, calc){
     var module = {};
     module.Asteroide = function(x, y, velocidade, tamanho, versor){
     this.x = x;
@@ -19,7 +19,7 @@ module.exports = function(height, width, calc){
     'criaEsq' : function(vel, tam){
         var x = 1;
         // y -> numero de 1 ateh a altura do mapa
-        var y = Math.floor((Math.random() * height) + 1);
+        var y = Math.floor((Math.random() * background.height) + 1);
         // ultima posicao no vetor
         var len = this.vetor.length;
         // cria novo versor (a partir de uma pseudo-classe)
@@ -32,8 +32,8 @@ module.exports = function(height, width, calc){
         versor.y=vy;
     },
     'criaDir' : function(vel, tam){
-        var x = width;
-        var y = Math.floor((Math.random() * height) + 1);
+        var x = background.width;
+        var y = Math.floor((Math.random() * background.height) + 1);
         var len = this.vetor.length;
         var versor = new calc.Versor();
         this.vetor[len] = new module.Asteroide(x, y, vel, tam, versor);
@@ -42,7 +42,7 @@ module.exports = function(height, width, calc){
         versor.y=vy;
     },
     'criaSup' : function(vel, tam){
-        var x = Math.floor((Math.random() * height) + 1);
+        var x = Math.floor((Math.random() * background.height) + 1);
         var y = 1;
         var len = this.vetor.length;
         var versor = new calc.Versor();
@@ -52,8 +52,8 @@ module.exports = function(height, width, calc){
         versor.x=vx;
     },
     'criaInf' : function(vel, tam){
-        var x = Math.floor((Math.random() * height) + 1);
-        var y = height;
+        var x = Math.floor((Math.random() * background.height) + 1);
+        var y = background.height;
         var len = this.vetor.length;
         var versor = new calc.Versor();
         this.vetor[len] = new module.Asteroide(x, y, vel, tam, versor);

@@ -1,13 +1,9 @@
 // objeto de funcoes de colisoes
 // hmm, isso daqui tah meio porco, eh tudo uma funcao soh
-module.exports = function(ast, width, height, players, calculo){
+module.exports = function(ast, background, camera, players, calculo){
     var module = {};
 
     // variaveis auxiliares 
-    var camera = {
-        width : 1600,
-        height : 900,
-    };
     var i = 0;
     var x, y;
     var x1, y1;
@@ -31,7 +27,7 @@ module.exports = function(ast, width, height, players, calculo){
                 x = ast.asteroides.vetor[i].x;
                 y = ast.asteroides.vetor[i].y;
                 // testa se asteroide saiu do mapa
-                if (x > width || x < 0 || y > height || y < 0){
+                if (x > background.width || x < 0 || y > background.height || y < 0){
                     // se sim, boom!
                     ast.asteroides.destroi(i, 1);
                     return;
@@ -44,22 +40,16 @@ module.exports = function(ast, width, height, players, calculo){
         /*      super debug mode
                 console.log('\033c');
                 console.log(turret);
-                console.log("width = " + width);
-                console.log("height = " + height);
-                console.log("camera.width = " + camera.width/2);
-                console.log("camera.height = " + camera.height/2);
-                console.log("turret.pos.x = " + turret.pos.x);
-                console.log("turret.pos.y = " + turret.pos.y);
         */
                 // proximas condicionais testam se turret saiu do board
                 // inverte direcao e diminui velocidade pela metade
-                if (turret.pos.x >= width - camera.width/2 || turret.pos.x <= camera.width/2){
+                if (turret.pos.x >= background.width - camera.width/2 || turret.pos.x <= camera.width/2){
                     console.log("saiu em x");
                     turret.versor.x = - turret.versor.x;
                     turret.pos.x = turret.pos.x + (turret.versor.x * turret.vel);
                     turret.vel= turret.vel/2;
                 }
-                if (turret.pos.y >= height - camera.height/2 || turret.pos.y <= camera.height/2){
+                if (turret.pos.y >= background.height - camera.height/2 || turret.pos.y <= camera.height/2){
                     console.log("saiu em y");
                     turret.versor.y = - turret.versor.y;
                     turret.pos.y = turret.pos.y + (turret.versor.y * turret.vel);
@@ -70,8 +60,8 @@ module.exports = function(ast, width, height, players, calculo){
                 
         /*
 
-                //console.log(Math.sqrt(Math.pow(x,2)+Math.pow(.width/2,2)));
-                //console.log(Math.sqrt(Math.pow(y,2)+Math.pow(.height/2,2)));
+                //console.log(Math.sqrt(Math.pow(x,2)+Math.pow(.background.width/2,2)));
+                //console.log(Math.sqrt(Math.pow(y,2)+Math.pow(.background.height/2,2)));
 
                 // testa se turret acertou asteroide
                 // ue, isso nao eh distancia geometrica?? se sim, usar funcao

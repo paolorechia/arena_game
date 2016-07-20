@@ -21,8 +21,8 @@ socket.on('myid', function(id){
    socket.emit('myid', my_id);
 });
 /* funcoes de inicializacao de variaveis*/
-background.inicia(ctx_background, c_background);
 camera.setRes(1600, 900, c_turret);
+background.inicia(ctx_background, c_background);
 turret.inicia();
 
 socket.on('movimento', function(nova_pos){
