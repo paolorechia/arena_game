@@ -1,4 +1,4 @@
-// objeto de funcoes de colisoes
+// colisoes
 // hmm, isso daqui tah meio porco, eh tudo uma funcao soh
 module.exports = function(ast, background, camera, players, calculo){
     var module = {};
@@ -16,26 +16,38 @@ module.exports = function(ast, background, camera, players, calculo){
 // confere se algum objeto atingiu a borda do mapa
         module.borda = function(){
             // primeiro asteroides
-            module.bordaAst();
+            module.asteroides();
             // depois turrets
             module.bordaTur();
         }
-        module.bordaAst = function(){
+        saiuMapa = function(x, y){
+            if (x > background.width ||
+                x < 0 ||
+                y > background.height ||
+                y < 0){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        bateuBorda = function(){
+        
+        }
+            
+        module.asteroides = function(){
             var len = ast.asteroides.vetor.length;
             for (i = 0; i < len; i++){
-                // puxa coordenadas do asteroide
-                x = ast.asteroides.vetor[i].x;
-                y = ast.asteroides.vetor[i].y;
                 // testa se asteroide saiu do mapa
-                if (x > background.width ||
-                    x < 0 ||
-                    y > background.height ||
-                    y < 0){
-                    // se sim, boom!
-                    ast.asteroides.destroi(i, 1);
-                    return;
+                var asteroide = ast.asteroides.vetor[i];
+                if (asteroide != undefined){
+                    if (saiuMapa(asteroide.x, asteroide.y)){
+                            // se sim, boom!
+                        ast.asteroides.destroi(i, 1);
+                    }
                 }
-            }
+
+           }
         }
         module.bordaTur = function(){
             for (var k in players){
