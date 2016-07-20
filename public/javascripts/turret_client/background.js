@@ -46,11 +46,14 @@ var background = {
         }
     },
     'desenhaBorda' : function(ctx, camera){
-        ctx.strokeStyle = "#FF0000";        
-        ctx.lineWidth = 200;
-        console.log(camera);
-        console.log(background);
-        ctx.rect(background.width + camera.width, background.height + camera.height, background.width - camera.width, background.height - camera.height);
+        ctx.strokeStyle = "#00002F";        
+        ctx.lineWidth = 800;
+        console.log(camera.width);
+        console.log(camera.height);
+        console.log(background.width);
+        console.log(background.height);
+        var largura = ctx.lineWidth/2;
+        ctx.rect(camera.width/2 - largura, camera.height/2 - largura, background.width - camera.width + ctx.lineWidth, background.height - camera.height + ctx.lineWidth);
         ctx.stroke();
     },
     // inicializa as variaveis internas ao background
