@@ -6,6 +6,7 @@ function Laser(x, y){
 }
 
 var players = [];
+var players_id = [];
 
 var turret = {
     // declaracao/incializacao de variaveis
@@ -121,13 +122,15 @@ var turret = {
             ctx_turret.fill();
         }
     },
-    'desenhaTodosInimigos' : function(){
+    'desenhaTodosInimigos' : function(my_id){
 
 //        console.log(players);
 //        console.log(turret.x + ", " + turret.y);
 //        console.log(players.length);
         for (var i = 0; i < players.length; i++){
-            turret.desenhaInimigo(players[i]);
+            if (players_id[i] != my_id){
+                turret.desenhaInimigo(players[i]);
+            }
         }
     },
     // atualiza o angulo utilizando trigonometria

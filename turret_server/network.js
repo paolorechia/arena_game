@@ -42,8 +42,9 @@ module.exports = function(io, players, ast, turret){
             socket.emit('movimento', players_positions[j]);
             j++;
         }
-        // manda a posicao dos outros jogadores
-            io.sockets.emit('players', players_positions);
+        // manda a posicao dos jogadores
+        io.sockets.emit('players', players_positions);
+        io.sockets.emit('players_id', players_id);
     }
     module.enviaAsteroides = function(){
         io.sockets.emit('asteroides', ast.asteroides.vetor);

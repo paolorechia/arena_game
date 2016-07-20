@@ -31,9 +31,6 @@ module.exports = function(height, width, calc){
                 this.versor.x= 0;
                 this.versor.y= 0;
     }
-    module.atualiza = function(turret){
-        socket.emit('turret', turret.pos);
-    }
     module.atualizaDirecao = function (key, id, players){
            var turret = players[id];
 //           console.log(turret);

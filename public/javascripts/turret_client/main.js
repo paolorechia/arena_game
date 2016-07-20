@@ -31,10 +31,15 @@ socket.on('movimento', function(nova_pos){
     turret.y = (nova_pos.y);
 //    console.log(turret.x, turret.y);
 });
-socket.on('players', function(other_players){
+socket.on('players', function(received_players){
 //    console.log(other_players);
-    players = other_players;
+    players = received_players;
 });
+socket.on('players_id', function(received_ids){
+//    console.log(other_players);
+    players_id = received_ids;
+});
+
 
 /* conjunto de eventos lidos a partir do mouse e do teclado,
 na falta de um lugar melhor ainda estao aqui
@@ -73,7 +78,7 @@ function mainLoop(timestamp){
     background.blit_turret();           // desenha no canvas da camera
     asteroides.atualiza();              // atualiza vetor de asteroides
     asteroides.desenhaTodos();          // desenha todos os asteroides do vetor
-    turret.desenhaTodosInimigos(players);
+    turret.desenhaTodosInimigos(my_id);
     calculo.versor(turret.versor);      // calcula vetor versor (de geometria analitica) do turret
     turret.gira();                      // desenha o turret atualizado com a rotacao
     if (bool) {
