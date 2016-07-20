@@ -1,13 +1,12 @@
 // that is, this code calculates what will happen in the
 // next iteration of the main loop, thus updating the game state
 
-module.exports = function(io, players, ast){
+module.exports = function(players, ast){
    var module = {};
 
    module.turrets = function(){
-        for (var id in io.sockets.connected){
-                var turret = players[id];
-                //console.log(turret);
+        for (var id in players){
+                turret = players[id]; 
                 if (turret.vel >= turret.max_speed){
                     turret.vel = turret.max_speed;
                 }

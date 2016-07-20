@@ -9,7 +9,6 @@ module.exports = function(io, players, ast, turret){
     // handles the 
     io.on('connection', function(socket){
         players[socket.id] = turret.cria();
-        players.length++;
         socket.emit('myid', socket.id);
         console.log(socket.id + " has connected");
         socket.on('direcao', function(key){
@@ -20,12 +19,11 @@ module.exports = function(io, players, ast, turret){
         socket.on('disconnect', function(){
             console.log(socket.id + " has disconnected");
             delete players[socket.id];
-            players.length--;
             console.log(players);
 
         });
         socket.on('myid', function(id){
-            console.log(players.length);
+            console.log("find an use for myid socket.on or delete it");
         });
         console.log(players);
     });
@@ -51,6 +49,5 @@ module.exports = function(io, players, ast, turret){
         io.sockets.emit('asteroides', ast.asteroides.vetor);
     //    console.log("enviando... " + ast.asteroides.vetor);
     }
-
     return module;
 } 

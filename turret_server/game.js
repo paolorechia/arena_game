@@ -8,9 +8,9 @@ module.exports = function(io){
     var calc = require('./calculo.js');
     var turret = require ('./turret.js')(height,width, calc);
     var ast = require('./asteroides.js')(height,width, calc);
-    var players = {length : 0};
+    var players = {};
     var net = require('./network.js')(io, players, ast, turret)
-    var update = require('./update.js')(io, players, ast);
+    var update = require('./update.js')(players, ast);
 
     var i = 0;
     // loop principal (infinito)
