@@ -28,7 +28,7 @@ app.use(cookieParser());
 
 
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/modules',  express.static( path.join(__dirname, '/node_modules'))); 
+app.use('/modules',  express.static( path.join(__dirname, '/node_modules')));
 
 app.use('/', routes);
 app.use('/users', users);
@@ -64,8 +64,10 @@ app.use(function(err, req, res, next) {
   });
 });
 
-server.listen(3000, function(){
-    console.log('listening on port 3000');
+
+var port = process.env.PORT || 3000;
+server.listen(port, function(){
+    console.log('listening on port:' + port);
 });
 game.start();
 
