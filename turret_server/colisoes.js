@@ -18,8 +18,10 @@ module.exports = function(ast, background, camera, players, calculo){
             // primeiro asteroides
             module.asteroides();
             // depois turrets
-            module.bordaTur();
+            module.turrets();
         }
+
+        // funcoes booleanas
         saiuMapa = function(x, y){
             if (x > background.width ||
                 x < 0 ||
@@ -31,10 +33,21 @@ module.exports = function(ast, background, camera, players, calculo){
                 return false;
             }
         }
-        bateuBorda = function(){
-        
+        bateuBordaY = function(y){
+                if (y >= background.height - camera.height/2 || y <= camera.height/2){
+                    return true;
+                    }
+                else
+                    return false;
         }
-            
+        bateuBordaX = function(x){
+                if (x >= background.width - camera.width/2 || x <= camera.width/2){
+                    return true;
+                }
+                else
+                    return false;
+        }
+
         module.asteroides = function(){
             var len = ast.asteroides.vetor.length;
             for (i = 0; i < len; i++){
@@ -49,30 +62,30 @@ module.exports = function(ast, background, camera, players, calculo){
 
            }
         }
-        module.bordaTur = function(){
+        module.turrets = function(){
             for (var k in players){
                 var turret = players[k];
+                    if (bateuBordaX(turret.pos.x)){
+                        turret.versor.x = - turret.versor.x;
+                        turret.pos.x = turret.pos.x + (turret.versor.x * turret.vel);
+                        turret.vel= turret.vel/2;
+                    }
+                    if (bateuBordaY(turret.pos.y)){
+                        turret.versor.y = - turret.versor.y;
+                        turret.pos.y = turret.pos.y + (turret.versor.y * turret.vel);
+                        turret.vel= turret.vel/2;
+                    }
+            }
+        }
+        
+        return module;
+}
         /*      super debug mode
                 console.log('\033c');
                 console.log(turret);
         */
                 // proximas condicionais testam se turret saiu do board
                 // inverte direcao e diminui velocidade pela metade
-                if (turret.pos.x >= background.width - camera.width/2 || turret.pos.x <= camera.width/2){
-                    console.log("saiu em x");
-                    turret.versor.x = - turret.versor.x;
-                    turret.pos.x = turret.pos.x + (turret.versor.x * turret.vel);
-                    turret.vel= turret.vel/2;
-                }
-                if (turret.pos.y >= background.height - camera.height/2 || turret.pos.y <= camera.height/2){
-                    console.log("saiu em y");
-                    turret.versor.y = - turret.versor.y;
-                    turret.pos.y = turret.pos.y + (turret.versor.y * turret.vel);
-                    turret.vel= turret.vel/2;
-                }
-            }
-       }
-                
         /*
 
                 //console.log(Math.sqrt(Math.pow(x,2)+Math.pow(.background.width/2,2)));
@@ -115,6 +128,3 @@ module.exports = function(ast, background, camera, players, calculo){
                     }
                 }
             */
-        return module;
-}
-
