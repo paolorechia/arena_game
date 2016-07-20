@@ -27,7 +27,10 @@ module.exports = function(ast, background, camera, players, calculo){
                 x = ast.asteroides.vetor[i].x;
                 y = ast.asteroides.vetor[i].y;
                 // testa se asteroide saiu do mapa
-                if (x > background.width || x < 0 || y > background.height || y < 0){
+                if (x > background.width ||
+                    x < 0 ||
+                    y > background.height ||
+                    y < 0){
                     // se sim, boom!
                     ast.asteroides.destroi(i, 1);
                     return;

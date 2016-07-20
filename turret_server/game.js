@@ -18,7 +18,8 @@ module.exports = function(io){
     };
     console.log(camera);
     console.log(background);
-    var calc = require('./calculo.js');
+    var calc = require('./calculo.js')(camera);
+    console.log(calc);
     var turret = require ('./turret.js')(background, camera, calc);
     var ast = require('./asteroides.js')(background, calc);
     var players = {};
