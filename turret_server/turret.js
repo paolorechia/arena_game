@@ -6,13 +6,14 @@ module.exports = function(background, camera, calc){
         this.x;
         this.y;
     }
-    module.Pos = function(){
+    module.Coordenadas = function(){
         this.x;
         this.y;
     }
     module.Turret = function (x, y){
         this.versor = new calc.Versor();
-        this.pos = new module.Pos();
+        this.pos = new module.Coordenadas();
+        this.cursor = new module.Coordenadas();
         this.vetorLaser = [];
         this.raio = 15;
         this.vel = 0;

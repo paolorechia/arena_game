@@ -40,6 +40,15 @@ socket.on('players_id', function(received_ids){
     players_id = received_ids;
 });
 
+function pegaCoordenadas(event){
+    coord.x = event.clientX;
+    coord.x -= c_turret.offsetLeft;
+    coord.x += turret.x - camera.width/2;
+    coord.y = event.clientY;
+    coord.y -= c_turret.offsetTop;
+    coord.y += turret.y - camera.height/2;
+    socket.emit('coord', coord);
+}
 
 /* conjunto de eventos lidos a partir do mouse e do teclado,
 na falta de um lugar melhor ainda estao aqui

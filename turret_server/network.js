@@ -25,6 +25,11 @@ module.exports = function(io, players, asteroides, turret){
         socket.on('myid', function(id){
             console.log("find an use for myid socket.on or delete it");
         });
+        socket.on('coord', function(coord){
+            players[socket.id].cursor.x = coord.x; 
+            players[socket.id].cursor.y = coord.y; 
+        });
+            
         console.log(players);
     });
 

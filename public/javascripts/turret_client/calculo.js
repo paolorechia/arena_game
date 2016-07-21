@@ -6,6 +6,7 @@ var coord = {
 
 // funcao para pegar as coordenadas do mouse
 // atualiza coord.x e coord.y
+/*
 function pegaCoordenadas(event){
     coord.x = event.clientX;
     coord.x -= c_turret.offsetLeft;
@@ -15,6 +16,7 @@ function pegaCoordenadas(event){
     coord.y += turret.y - camera.height/2;
 //    return coord;
 }
+*/
 
 // imprimir coordenadas pro console
 function logCoordenadas(){
