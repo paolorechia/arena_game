@@ -36,25 +36,3 @@ module.exports = function(stub){
 
     return module;
 }
-    // funcao para pegar as coordenadas do mouse
-    // atualiza coord.x e coord.y
-    function pegaCoordenadas(event){
-        coord.x = event.clientX;
-        coord.x -= c_turret.offsetLeft;
-        coord.x += turret.x - camera.width/2;
-        coord.y = event.clientY;
-        coord.y -= c_turret.offsetTop;
-        coord.y += turret.y - camera.height/2;
-    //    return coord;
-    }
-
-    // imprimir coordenadas pro console
-    function logCoordenadas(){
-        var x = coord.x.toString();
-        var y = coord.y.toString();
-        var string = "x = ";
-        string = string.concat(x);
-        string = string.concat("; y = ");
-        string = string.concat(y);
-        console.log(string);
-    }

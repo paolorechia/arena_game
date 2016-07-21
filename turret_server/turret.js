@@ -23,7 +23,7 @@ module.exports = function(background, camera, calc){
         this.max= 100;
         this.recharge_rate = 2;
         this.overheat_threshold = 10;
-        this.overheat_cooldown = 2;
+        this.overheat_cooldown = 3;
     }
     module.Hull = function(){
         this.max = 100;
@@ -61,12 +61,6 @@ module.exports = function(background, camera, calc){
             turret.shield.up == true)
             turret.shield.points += turret.shield.recharge_rate;
     };
-    module.rechargeEnergy = function (turret){
-        if (turret.energy.points < turret.energy.max)
-            turret.energy.points += turret.energy.recharge_rate;
-        if (turret.energy.points >= turret.energy.max)
-            turret.energy.points = turret.energy.max;
-    };
     module.disableShield = function (turret){
         turret.shield.up = false;
         module.restartShield(turret);
@@ -91,6 +85,12 @@ module.exports = function(background, camera, calc){
             turret.hull.points -= dano;
         }
     }
+    module.rechargeEnergy = function (turret){
+        if (turret.energy.points < turret.energy.max)
+            turret.energy.points += turret.energy.recharge_rate;
+        if (turret.energy.points >= turret.energy.max)
+            turret.energy.points = turret.energy.max;
+    };
     module.cooldownEnergy = function (turret){
         turret.energy.overheat = false;
     }

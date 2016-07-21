@@ -111,48 +111,21 @@ var turret = {
         //console.log(nave);
         return atan;
     },
-    // desenha laser (uma linha)
-    'desenhaLaser' : function(x0, y0, x1, y1){
-        ctx_turret.beginPath();
-        // move para inicio da linha
-        ctx_turret.moveTo(x0,y0);
-        // seta largura da linha
-        ctx_turret.lineWidth=turret.raio*0.2;
-        // cor
-        ctx_turret.strokeStyle="#00FF00";
-        // coordenada destino
-        ctx_turret.lineTo(x1, y1);
-        // desenha
-        ctx_turret.stroke();
-    },
     //atira o laser se a energia eh maior do que 0
     'atira' : function (){
-        /*
-        // se tudo estiver ok, atira
-        var tam = 14;
-        var base = 2;
-        var x0 = turret.x + turret.versor.x * turret.raio * base;
-        var x1 = turret.x + turret.versor.x * turret.raio * (tam + base);
-        var y0 = turret.y + turret.versor.y * turret.raio * base;
-        var y1 = turret.y + turret.versor.y * turret.raio * (tam + base);
-        var i;
-        // cria um vetor de coordenadas para testar nas colisoes
-        for (i = 0; i< tam; i++){
-            turret.vetorLaser[i] = new Laser(0,0);
-            turret.vetorLaser[i].x = (x0 + turret.versor.x * turret.raio * i);
-            turret.vetorLaser[i].y = (y0 + turret.versor.y * turret.raio * i);
+        for (i = 0; i < players.length; i++){
+            if (players_id[i] == my_id){
+                var laser = lasers[i];
+                if (laser != undefined && laser.first != undefined){
+                    x0 = laser.first.x;
+                    y0 = laser.first.y;
+                    x1 = laser.last.x;
+                    y1 = laser.last.y;
+                    inimigo.desenhaLaser(x0, y0, x1, y1);
+                }
+            }
         }
-        // e passa coordenadas adaptadas pro canvas menor pra funcao de desenhar
-        var x = camera.width/2;
-        var y = camera.height/2;
-        x0 = x + turret.versor.x * turret.raio * base;
-        x1 = x + turret.versor.x * turret.raio * (tam + base);
-        y0 = y + turret.versor.y * turret.raio * base;
-        y1 = y + turret.versor.y * turret.raio * (tam + base);
-        turret.desenhaLaser(x0, y0, x1, y1);
-        */
     },
-
     // atualiza status do tiro de acordo com o evento de mouse
     "atirou" : function(status_tiro){
       bool = status_tiro;
