@@ -88,7 +88,6 @@ module.exports = function(background, calc){
             this.vetor[i].y += this.vetor[i].v.y * this.vetor[i].vel;
         }
     },
-
     // remove asteroide do vetor
     'destroi' : function(indice){
         this.vetor.splice(indice, 1);

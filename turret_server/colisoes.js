@@ -1,6 +1,6 @@
 // colisoes
 // hmm, isso daqui tah meio porco, eh tudo uma funcao soh
-module.exports = function(ast, background, camera, players, calculo){
+module.exports = function(ast, background, camera, players, calc){
     var module = {};
 
     // variaveis auxiliares 
@@ -14,7 +14,7 @@ module.exports = function(ast, background, camera, players, calculo){
     // percorre vetor de asteroides
 
 // confere se algum objeto atingiu a borda do mapa
-        module.borda = function(){
+        module.tudo= function(){
             // primeiro asteroides
             module.asteroides();
             // depois turrets
@@ -49,18 +49,39 @@ module.exports = function(ast, background, camera, players, calculo){
         }
 
         module.asteroides = function(){
-            var len = ast.asteroides.vetor.length;
-            for (i = 0; i < len; i++){
-                // testa se asteroide saiu do mapa
+            for (i = 0; i < ast.asteroides.vetor.length; i++){
+                // pega um asteroide do vetor
                 var asteroide = ast.asteroides.vetor[i];
-                if (asteroide != undefined){
-                    if (saiuMapa(asteroide.x, asteroide.y)){
-                            // se sim, boom!
-                        ast.asteroides.destroi(i, 1);
+                // verifica se eh valido 
+                // se nao for, pula para proximo asteroide
+                // testa se asteroide saiu do mapa
+                if (saiuMapa(asteroide.x, asteroide.y)){
+                        // se sim, boom!
+                    ast.asteroides.destroi(i, 1);
+                }
+                // testa se asteroide colidiu com algum turret
+                for (var k in players){
+                    var turret = players[k];
+                    dist = calc.distGeometrica(asteroide.x, asteroide.y, turret.pos.x, turret.pos.y);
+                    var raio_ast = ast.asteroides.vetor[i].tam * 5;
+                    if (dist < (raio_ast + turret.raio)){
+//                      console.log("to matando");
+                      //mata asteroide
+                        ast.asteroides.destroi(i,1);
+                        //corta velocidade
+                        turret.vel = turret.vel/2;
+                        // diminui escudo e vida
+                        /*
+                        if(turret.hud.stats.shield > 0) {
+                            turret.hud.stats.shield -=1;
+                          } 
+                        else {
+                            turret.hud.stats.vida -=1;
+                          }
+                        */
                     }
                 }
-
-           }
+            }
         }
         module.turrets = function(){
             for (var k in players){
@@ -77,7 +98,6 @@ module.exports = function(ast, background, camera, players, calculo){
                     }
             }
         }
-        
         return module;
 }
         /*      super debug mode
@@ -93,20 +113,6 @@ module.exports = function(ast, background, camera, players, calculo){
 
                 // testa se turret acertou asteroide
                 // ue, isso nao eh distancia geometrica?? se sim, usar funcao
-                if( Math.sqrt(Math.pow(x-(turret.pos.x),2)) < turret.raio*2  && Math.sqrt(Math.pow(y-(turret.pos.y),2)) < turret.raio*2) {
-                  //mata asteroide
-                  ast.asteroides.destroi(i,1);
-        
-                  //corta velocidade
-                  turret.vel = turret.vel/2;
-                  // diminui escudo e vida
-                  if(turret.hud.stats.shield > 0) {
-                    turret.hud.stats.shield -=1;
-                  } else {
-                    turret.hud.stats.vida -=1;
-                  }
-                  return;
-                }
 
                 //----------------------
 
