@@ -76,5 +76,16 @@ module.exports = function(io, players, asteroides, turret, update){
 //            console.log("sending lasers... ", lasers);
             io.sockets.emit('lasers', lasers);
     }
+    module.enviaStatus = function (){
+        for (var id in io.sockets.connected){
+            var estado = {hp:           players[id].hp,
+                          shield:       players[id].shield, 
+                          energy:       players[id].energy,
+                          ast_kills:    players[id].ast_kills,
+                          player_kills: players[id].player_kills};
+            socket = io.sockets.connected[id];
+            socket.emit('status', estado); 
+        }  
+    }
     return module;
 }

@@ -50,6 +50,12 @@ socket.on('lasers', function(received_lasers){
 //    console.log(lasers);
 });
 
+socket.on('status', function(estado){
+    turret.hud.stats.vida = estado.hp;
+    turret.hud.stats.shield = estado.shield;
+    turret.hud.stats.energy = estado.energy;
+    turret.hud.stats.kills = estado.player_kills;
+});
 
 // funcoes de evento
 

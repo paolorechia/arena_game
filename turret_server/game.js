@@ -50,10 +50,15 @@ module.exports = function(io){
             net.enviaAsteroides();
             net.enviaLasers();
         }
+
         if (i % 60 == 0){
+            net.enviaStatus();
+        /*
             console.log('\033c');
             console.log(players);
+        */
         }
+
 
         setTimeout(module.start, 1);
     };
