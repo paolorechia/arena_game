@@ -33,6 +33,25 @@ module.exports = function(background, camera, calc){
             turret.hp -= dano;
         }
     }
+    module.morte = function (turret){
+        turret.pos.x = 0;
+        turret.pos.y = 0;
+        
+    }
+    module.respawn = function (turret){
+        turret.ast_kills = 0;
+        turret.player_kills = 0;
+        turret.hp = 100;
+        turret.shield = 20;
+        turret.energy = 100;
+        turret.pos.x = Math.floor(Math.random() * (background.borda_direita - background.borda_esquerda) + background.borda_esquerda);
+        turret.pos.y = Math.floor(Math.random() * (background.borda_superior - background.borda_inferior) + background.borda_inferior);
+    }
+    module.matouNave = function (turret, alvo){
+        turret.player_kills++;
+        module.morte(alvo);
+        setTimeout(function(){module.respawn(alvo);}, 3000);
+    }
     module.cria = function (){
         var turret = new module.Turret();
         // Math.random() * (max - min) + min

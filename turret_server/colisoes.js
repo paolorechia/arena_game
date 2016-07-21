@@ -85,7 +85,7 @@ module.exports = function(asteroides, background, camera, players, calc, turret)
                                         // o laser acertou, BAM
                                         asteroides.destroi(i, 1);
                                         // aumenta contador de kills
-            //                            nave.hud.stats.kills += 1;
+                                        nave.ast_kills += 1;
                                     }
                                 }
                             }
@@ -117,12 +117,15 @@ module.exports = function(asteroides, background, camera, players, calc, turret)
                             
                                     if (dist < (alvo.raio)){
                                        turret.sofreDano(alvo, nave.laser.damage);  
+                                       if (alvo.hp < 0){
+                                         turret.matouNave(nave, alvo)
+                                       } 
                                     } 
-                                } 
-                            }
+                                }
                  
+                            }
                         }
-                    }
+                   }
             }
         }
         return module;
