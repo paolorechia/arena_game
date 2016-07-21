@@ -22,12 +22,18 @@ module.exports = function(players, asteroides, calc){
         // confere se estah atirando
         }
     }
+    // atualiza estado do laser de todos os jogadores
+    module.laserTodos = function(){
+        for (var id in players){
+            module.laser(players[id]);
+        }
+    }
     module.laser = function (turret){
         if (turret.laser.atirando == 0){
            turret.laser.vetor = [];
            return; 
         }
-        console.log("ATIRAAAANDO");
+//        console.log("ATIRAAAANDO");
         calc.laserVersor(turret);
         
         var base = 2;

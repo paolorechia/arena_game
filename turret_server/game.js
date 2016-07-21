@@ -40,6 +40,7 @@ module.exports = function(io){
         if (i % 10 == 0){
             update.asteroides();
             update.turrets();
+            update.laserTodos();
             colisoes.tudo();
             io.sockets.emit('message', i);
         }

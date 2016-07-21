@@ -117,13 +117,3 @@ module.exports = function(asteroides, background, camera, players, calc){
         }
         return module;
 }
-        /*      super debug mode
-                console.log('\033c');
-                console.log(turret);
-                // confere se laser acertou algum asteroide
-                // laser = um conjunto de coordenadas armazenado num vetor
-                // o teste consiste em calcular a distancia geometrica de cada ponto
-                // do vetorLaser em relacao ao centro de cada asteroide
-                    }
-                }
-            */

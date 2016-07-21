@@ -32,7 +32,6 @@ module.exports = function(io, players, asteroides, turret, update){
         socket.on('tiro', function(atirou){
 //            console.log(atirou);
             players[socket.id].laser.atirando = atirou;
-            update.laser(players[socket.id]);
             if (atirou == 1){
                 console.log("TAC TACC TAC");
             }
@@ -44,6 +43,7 @@ module.exports = function(io, players, asteroides, turret, update){
     module.enviaTurrets = function(){
         var players_positions = [];
         var players_id = [];
+        var players_pointers = [];
         var aux;
         var j = 0;
         // monta vetor de posicoes
@@ -51,6 +51,7 @@ module.exports = function(io, players, asteroides, turret, update){
         for (var id in io.sockets.connected){
             players_positions[j] = players[id].pos;
             players_id[j] = id;
+            players_pointers[j] = players[id].cursor
             var socket = io.sockets.connected[id];
             socket.emit('movimento', players_positions[j]);
             j++;
@@ -58,6 +59,7 @@ module.exports = function(io, players, asteroides, turret, update){
         // manda a posicao dos jogadores
         io.sockets.emit('players', players_positions);
         io.sockets.emit('players_id', players_id);
+        io.sockets.emit('players_pointers', players_pointers);
     }
     module.enviaAsteroides = function(){
         io.sockets.emit('asteroides', asteroides.vetor);
