@@ -52,7 +52,7 @@ var inimigo = {
             ctx_turret.restore();
        }
     },
-    'desenhaTodos' : function(my_id){
+    'desenhaTodos' : function(){
         for (var i = 0; i < players.length; i++){
             if (players_id[i] != my_id){
                 inimigo.desenha(players[i], players_pointers[i]);

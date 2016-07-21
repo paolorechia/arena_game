@@ -108,7 +108,7 @@ var turret = {
     //           console.log('EsquerdaCima');
             }
         }
-        console.log(nave);
+        //console.log(nave);
         return atan;
     },
     // desenha laser (uma linha)

@@ -115,7 +115,7 @@ function mainLoop(timestamp){
 
 // testando firebug
 console.log("1 c4n 7yp3 t0 c0ns0l3!");
-console.log(background.width, background.height);
+//console.log(background.width, background.height);
 
 // execucao principal aqui
 // inicia iteracoes no loop principal

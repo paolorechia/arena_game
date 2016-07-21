@@ -48,10 +48,6 @@ var background = {
     'desenhaBorda' : function(ctx, camera){
         ctx.strokeStyle = "#00002F";        
         ctx.lineWidth = 800;
-        console.log(camera.width);
-        console.log(camera.height);
-        console.log(background.width);
-        console.log(background.height);
         var largura = ctx.lineWidth/2;
         ctx.rect(camera.width/2 - largura, camera.height/2 - largura, background.width - camera.width + ctx.lineWidth, background.height - camera.height + ctx.lineWidth);
         ctx.stroke();
