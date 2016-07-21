@@ -45,9 +45,12 @@ module.exports = function(players, asteroides, calc, turret){
            turret.laser.vetor = [];
            return; 
         }
-//        console.log("ATIRAAAANDO");
+        if (turret.energy < 0){
+            console.log("implementar cooldown");
+        }
+        console.log("ATIRAAAANDO");
         calc.laserVersor(turret);
-        
+        turret.energy -= turret.laser.cost;
         var base = 2;
         var x0 = turret.pos.x + turret.laser.versor.x * turret.raio * base;
         var x1 = turret.pos.x + turret.laser.versor.x * turret.raio * (turret.laser.range + base);

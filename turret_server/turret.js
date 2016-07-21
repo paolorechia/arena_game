@@ -8,6 +8,7 @@ module.exports = function(background, camera, calc){
         this.vetor = [];
         this.range = 14;
         this.damage = 1;
+        this.cost = 1;
     }
     module.Turret = function (x, y){
         this.versor = new calc.Versor();
