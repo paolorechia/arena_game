@@ -1,6 +1,5 @@
 // colisoes
-// hmm, isso daqui tah meio porco, eh tudo uma funcao soh
-module.exports = function(asteroides, background, camera, players, calc){
+module.exports = function(asteroides, background, camera, players, calc, turret){
     var module = {};
 
     // variaveis auxiliares 
@@ -18,7 +17,7 @@ module.exports = function(asteroides, background, camera, players, calc){
             // primeiro asteroides
             module.asteroides();
             // depois turrets
-            module.turrets();
+            module.naves();
         }
 
         // funcoes booleanas
@@ -61,30 +60,24 @@ module.exports = function(asteroides, background, camera, players, calc){
                 }
                 // testa se asteroide colidiu com algum turret
                 for (var k in players){
-                    var turret = players[k];
-                    dist = calc.distGeometrica(asteroide.x, asteroide.y, turret.pos.x, turret.pos.y);
+                    var nave = players[k];
+                    dist = calc.distGeometrica(asteroide.x, asteroide.y, nave.pos.x, nave.pos.y);
                     var raio_ast = asteroide.tam * 5;
-                    if (dist < (raio_ast + turret.raio)){
+                    if (dist < (raio_ast + nave.raio)){
 //                      console.log("to matando");
                       //mata asteroide
                         asteroides.destroi(i,1);
                         //corta velocidade
-                        turret.vel = turret.vel/2;
+                        nave.vel = nave.vel/2;
                         // diminui escudo e vida
-                        /*
-                        if(turret.hud.stats.shield > 0) {
-                            turret.hud.stats.shield -=1;
-                          } 
-                        else {
-                            turret.hud.stats.vida -=1;
-                          }
-                        */
-                 // e com algum laser do turret
+                        turret.sofreDano(nave, asteroide.tam);
                     }
-                     if (turret.laser.vetor[0] != undefined){
-                            for (var j = 0; j < turret.laser.range; j++){
-                                x1 = turret.laser.vetor[j].x;
-                                y1 = turret.laser.vetor[j].y;
+                       
+                 // e com algum laser da nave
+                     if (nave.laser.vetor[0] != undefined){
+                            for (var j = 0; j < nave.laser.range; j++){
+                                x1 = nave.laser.vetor[j].x;
+                                y1 = nave.laser.vetor[j].y;
                                 dist = calc.distGeometrica(asteroide.x, asteroide.y, x1, y1)
                                 // se a distancia for inferior ao diametro do asteroide
                                 if (asteroides.vetor[i] != undefined){
@@ -92,26 +85,43 @@ module.exports = function(asteroides, background, camera, players, calc){
                                         // o laser acertou, BAM
                                         asteroides.destroi(i, 1);
                                         // aumenta contador de kills
-            //                            turret.hud.stats.kills += 1;
+            //                            nave.hud.stats.kills += 1;
                                     }
                                 }
                             }
-                    }
+                     }
                 }
             }
         }
-        module.turrets = function(){
+        module.naves= function(){
             for (var k in players){
-                var turret = players[k];
-                    if (bateuBordaX(turret.pos.x)){
-                        turret.versor.x = - turret.versor.x;
-                        turret.pos.x = turret.pos.x + (turret.versor.x * turret.vel);
-                        turret.vel= turret.vel/2;
+                var nave = players[k];
+                    if (bateuBordaX(nave.pos.x)){
+                        nave.versor.x = - nave.versor.x;
+                        nave.pos.x = nave.pos.x + (nave.versor.x * nave.vel);
+                        nave.vel= nave.vel/2;
                     }
-                    if (bateuBordaY(turret.pos.y)){
-                        turret.versor.y = - turret.versor.y;
-                        turret.pos.y = turret.pos.y + (turret.versor.y * turret.vel);
-                        turret.vel= turret.vel/2;
+                    if (bateuBordaY(nave.pos.y)){
+                        nave.versor.y = - nave.versor.y;
+                        nave.pos.y = nave.pos.y + (nave.versor.y * nave.vel);
+                        nave.vel= nave.vel/2;
+                    }
+                    if (nave.laser.vetor[0] != undefined){
+                        for (var j in players){
+                            var alvo = players[j];
+                            if (alvo != nave){
+                                for (var j = 0; j < nave.laser.range; j++){
+                                    x1 = nave.laser.vetor[j].x;
+                                    y1 = nave.laser.vetor[j].y;
+                                    dist = calc.distGeometrica(alvo.pos.x, alvo.pos.y, x1, y1)
+                            
+                                    if (dist < (alvo.raio)){
+                                       turret.sofreDano(alvo, nave.laser.damage);  
+                                    } 
+                                } 
+                            }
+                 
+                        }
                     }
             }
         }

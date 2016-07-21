@@ -25,7 +25,7 @@ module.exports = function(io){
     var players = {};
     var update = require('./update.js')(players, asteroides, calc);
     var net = require('./network.js')(io, players, asteroides, turret, update)
-    var colisoes = require('./colisoes.js')(asteroides, background, camera, players, calc);
+    var colisoes = require('./colisoes.js')(asteroides, background, camera, players, calc, turret);
 
     var i = 0;
     // loop principal (infinito)
@@ -51,6 +51,8 @@ module.exports = function(io){
             net.enviaLasers();
         }
         if (i % 60 == 0){
+            console.log('\033c');
+            console.log(players);
         }
 
         setTimeout(module.start, 1);

@@ -7,6 +7,7 @@ module.exports = function(background, camera, calc){
         this.versor = new calc.Versor();
         this.vetor = [];
         this.range = 14;
+        this.damage = 1;
     }
     module.Turret = function (x, y){
         this.versor = new calc.Versor();
@@ -18,6 +19,19 @@ module.exports = function(background, camera, calc){
         this.acel= 4;
         this.turn_rate= 1;
         this.max_speed = 4;
+        this.hp = 100;
+        this.shield = 20;
+        this.energy = 100;
+        this.ast_kills = 0;
+        this.player_kills = 0;
+    }
+    module.sofreDano = function(turret, dano){
+        if (turret.shield > 0){
+            turret.shield -= dano; 
+        }
+        else {
+            turret.hp -= dano;
+        }
     }
     module.cria = function (){
         var turret = new module.Turret();
