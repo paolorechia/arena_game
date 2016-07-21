@@ -1,6 +1,6 @@
 // colisoes
 // hmm, isso daqui tah meio porco, eh tudo uma funcao soh
-module.exports = function(ast, background, camera, players, calc){
+module.exports = function(asteroides, background, camera, players, calc){
     var module = {};
 
     // variaveis auxiliares 
@@ -49,25 +49,25 @@ module.exports = function(ast, background, camera, players, calc){
         }
 
         module.asteroides = function(){
-            for (i = 0; i < ast.asteroides.vetor.length; i++){
+            for (i = 0; i < asteroides.vetor.length; i++){
                 // pega um asteroide do vetor
-                var asteroide = ast.asteroides.vetor[i];
+                var asteroide = asteroides.vetor[i];
                 // verifica se eh valido 
                 // se nao for, pula para proximo asteroide
                 // testa se asteroide saiu do mapa
                 if (saiuMapa(asteroide.x, asteroide.y)){
                         // se sim, boom!
-                    ast.asteroides.destroi(i, 1);
+                    asteroides.destroi(i, 1);
                 }
                 // testa se asteroide colidiu com algum turret
                 for (var k in players){
                     var turret = players[k];
                     dist = calc.distGeometrica(asteroide.x, asteroide.y, turret.pos.x, turret.pos.y);
-                    var raio_ast = ast.asteroides.vetor[i].tam * 5;
+                    var raio_ast = asteroide.tam * 5;
                     if (dist < (raio_ast + turret.raio)){
 //                      console.log("to matando");
                       //mata asteroide
-                        ast.asteroides.destroi(i,1);
+                        asteroides.destroi(i,1);
                         //corta velocidade
                         turret.vel = turret.vel/2;
                         // diminui escudo e vida
@@ -125,9 +125,9 @@ module.exports = function(ast, background, camera, players, calc){
                     y1 = turret.vetorLaser[j].y;
                     dist = calculo.distGeometrica(x, y, x1, y1)
                     // se a distancia for inferior ao diametro do asteroide
-                    if (dist < (ast.asteroides.vetor[i].tam * 5)){
+                    if (dist < (asteroides.vetor[i].tam * 5)){
                         // o laser acertou, BAM
-                        ast.asteroides.destroi(i, 1);
+                        asteroides.destroi(i, 1);
                         // aumenta contador de kills
                         turret.hud.stats.kills += 1;
                         return;

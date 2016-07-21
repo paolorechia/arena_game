@@ -8,99 +8,85 @@ module.exports = function(background, calc){
     this.tam = tamanho;
     this.v = versor;
 }
-    module.asteroides = {
     // declara vetor de asteroides
-    vetor : [],
+    module.vetor = [];
 
     // as quatro funcoes abaixo sao chamadas
     // na criacao de um asteroide, de acordo com um numero aleatorio
     // que determina em que borda vai nascer (esquerda, direita, superior, inferior)
     // sao identicas exceto nos valores das coordenadas e versor
-    'criaEsq' : function(vel, tam){
+    criaEsq = function(vel, tam){
         var x = 1;
         // y -> numero de 1 ateh a altura do mapa
         var y = Math.floor((Math.random() * background.height) + 1);
         // ultima posicao no vetor
-        var len = this.vetor.length;
+        var len = module.vetor.length;
         // cria novo versor (a partir de uma pseudo-classe)
         var versor = new calc.Versor();
         // joga no vetor (igual a fazer um "push")
-        this.vetor[len] = new module.Asteroide(x, y, vel, tam, versor);
+        module.vetor[len] = new module.Asteroide(x, y, vel, tam, versor);
         // seta o versor
         versor.x=1;
         var vy = (Math.random() - 0.5);
         versor.y=vy;
-    },
-    'criaDir' : function(vel, tam){
+    };
+    criaDir = function(vel, tam){
         var x = background.width;
         var y = Math.floor((Math.random() * background.height) + 1);
-        var len = this.vetor.length;
+        var len = module.vetor.length;
         var versor = new calc.Versor();
-        this.vetor[len] = new module.Asteroide(x, y, vel, tam, versor);
+        module.vetor[len] = new module.Asteroide(x, y, vel, tam, versor);
         versor.x=-1;
         var vy = (Math.random() - 0.5);
         versor.y=vy;
-    },
-    'criaSup' : function(vel, tam){
+    };
+    criaSup = function(vel, tam){
         var x = Math.floor((Math.random() * background.height) + 1);
         var y = 1;
-        var len = this.vetor.length;
+        var len = module.vetor.length;
         var versor = new calc.Versor();
-        this.vetor[len] = new module.Asteroide(x, y, vel, tam, versor);
+        module.vetor[len] = new module.Asteroide(x, y, vel, tam, versor);
         versor.y=1;
         var vx = (Math.random() - 0.5);
         versor.x=vx;
-    },
-    'criaInf' : function(vel, tam){
+    };
+    criaInf = function(vel, tam){
         var x = Math.floor((Math.random() * background.height) + 1);
         var y = background.height;
-        var len = this.vetor.length;
+        var len = module.vetor.length;
         var versor = new calc.Versor();
-        this.vetor[len] = new module.Asteroide(x, y, vel, tam, versor);
+        module.vetor[len] = new module.Asteroide(x, y, vel, tam, versor);
         versor.y=-1;
         var vx = (Math.random() - 0.5);
         versor.x=vx;
-    },
-    'cria' : function(){
+    };
+    module.cria = function(){
         var randomize = Math.floor((Math.random())* 4);
         var vel = Math.floor((Math.random() * 10) + 1);
         var tam = Math.floor((Math.random() * 5) + 2);
         if (randomize == 0){
-            this.criaEsq(vel, tam);
+            criaEsq(vel, tam);
         }
         else if (randomize == 1){
-            this.criaDir(vel, tam);
+            criaDir(vel, tam);
         }
         else if (randomize == 2){
-            this.criaSup(vel, tam);
+            criaSup(vel, tam);
         }
-        else this.criaInf(vel, tam);
-    },
-    // atualiza posicao de todos os asteroides
-    // simples iteracao em um loop
-    'atualiza' : function(){
-        var i = 0;
-        var len = this.vetor.length;
-        for (i = 0; i < len; i++){
-            // a cada interacao as coordenadas de um asteroide sao puxadas
-            // e multiplacadas pelo versor desse asteroide
-            this.vetor[i].x += this.vetor[i].v.x * this.vetor[i].vel;
-            this.vetor[i].y += this.vetor[i].v.y * this.vetor[i].vel;
-        }
-    },
+        else criaInf(vel, tam);
+    };
     // remove asteroide do vetor
-    'destroi' : function(indice){
+    module.destroi = function(indice){
         this.vetor.splice(indice, 1);
-    },
+    };
     // destroi todos os this
-    'limpa' : function(){
+    module.limpa = function(){
         var i;
         var len = this.vetor.length;
         for (i = 0; i < len; i++){
             this.destroi(i, 1);
         }
-    }
-}
+    };
     return module;
 };
 

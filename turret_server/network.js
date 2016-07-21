@@ -1,6 +1,6 @@
 // handles the socket communication between server and clients
 
-module.exports = function(io, players, ast, turret){
+module.exports = function(io, players, asteroides, turret){
     var module = {};
 
     // setup the HTTP connection to use only websocket and deny polling
@@ -47,8 +47,8 @@ module.exports = function(io, players, ast, turret){
         io.sockets.emit('players_id', players_id);
     }
     module.enviaAsteroides = function(){
-        io.sockets.emit('asteroides', ast.asteroides.vetor);
-    //    console.log("enviando... " + ast.asteroides.vetor);
+        io.sockets.emit('asteroides', asteroides.vetor);
+    //    console.log("enviando... " + asteroides.vetor);
     }
     return module;
 } 

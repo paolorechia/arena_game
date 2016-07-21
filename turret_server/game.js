@@ -21,11 +21,11 @@ module.exports = function(io){
     var calc = require('./calculo.js')(camera);
     console.log(calc);
     var turret = require ('./turret.js')(background, camera, calc);
-    var ast = require('./asteroides.js')(background, calc);
+    var asteroides = require('./asteroides.js')(background, calc);
     var players = {};
-    var net = require('./network.js')(io, players, ast, turret)
-    var update = require('./update.js')(players, ast);
-    var colisoes = require('./colisoes.js')(ast, background, camera, players, calc);
+    var net = require('./network.js')(io, players, asteroides, turret)
+    var update = require('./update.js')(players, asteroides);
+    var colisoes = require('./colisoes.js')(asteroides, background, camera, players, calc);
 
     var i = 0;
     // loop principal (infinito)
@@ -33,8 +33,8 @@ module.exports = function(io){
         i++;
 
         if (i % 10 == 0){
-            if (ast.asteroides.vetor.length < 40){
-                ast.asteroides.cria();
+            if (asteroides.vetor.length < 40){
+                asteroides.cria();
             }
         }
         if (i % 10 == 0){
