@@ -1,12 +1,13 @@
 // that is, this code calculates what will happen in the
 // next iteration of the main loop, thus updating the game state
 
-module.exports = function(players, asteroides){
+module.exports = function(players, asteroides, calc){
    var module = {};
 
    module.turrets = function(){
+        // atualiza posicao do turret
         for (var id in players){
-                turret = players[id]; 
+                var turret = players[id]; 
                 if (turret.vel >= turret.max_speed){
                     turret.vel = turret.max_speed;
                 }
@@ -17,8 +18,34 @@ module.exports = function(players, asteroides){
                 if (turret.vel <= 0){
                 //    turret.para();
                 }
+
+        // confere se estah atirando
         }
     }
+    module.laser = function (turret){
+        if (turret.laser.atirando == 0){
+           turret.laser.vetor = [];
+           return; 
+        }
+        console.log(turret.laser.atirando);
+        console.log("ATIRAAAANDO");
+        calc.laserVersor(turret);
+        
+        var base = 2;
+        var x0 = turret.x + turret.laser.versor.x * turret.raio * base;
+        var x1 = turret.x + turret.laser.versor.x * turret.raio * (turret.laser.range + base);
+        var y0 = turret.y + turret.laser.versor.y * turret.raio * base;
+        var y1 = turret.y + turret.laser.versor.y * turret.raio * (turret.laser.range + base);
+        var i;
+        // cria um vetor de coordenadas para testar nas colisoes
+        console.log(turret.laser.range);
+        for (i = 0; i < turret.laser.range; i++){
+            turret.laser.vetor[i] = new calc.Coordenadas(0,0);
+            turret.laser.vetor[i].x = (x0 + turret.laser.versor.x * turret.raio * i);
+            turret.laser.vetor[i].y = (y0 + turret.laser.versor.y * turret.raio * i);
+        }
+        console.log(turret);
+    } 
     module.asteroides = function(){
         var i = 0;
         var len = asteroides.vetor.length;

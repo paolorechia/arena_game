@@ -40,6 +40,9 @@ socket.on('players_id', function(received_ids){
     players_id = received_ids;
 });
 
+
+// funcoes de evento
+
 function pegaCoordenadas(event){
     coord.x = event.clientX;
     coord.x -= c_turret.offsetLeft;
@@ -50,19 +53,24 @@ function pegaCoordenadas(event){
     socket.emit('coord', coord);
 }
 
+var bool = 0;
+atirou = function(status_tiro){
+      bool = status_tiro;
+      socket.emit('tiro', bool);
+}
+
 /* conjunto de eventos lidos a partir do mouse e do teclado,
 na falta de um lugar melhor ainda estao aqui
 A cada escuta de evento é associada uma acao + uma funcao
 */
 c_turret.addEventListener("mousemove", pegaCoordenadas, false);
-c_turret.addEventListener("mousedown", function(){ turret.atirou(1)}, false);
-c_turret.addEventListener("mouseup", function(){ turret.atirou(0)}, false);
+c_turret.addEventListener("mousedown", function(){ atirou(1)}, false);
+c_turret.addEventListener("mouseup", function(){ atirou(0)}, false);
 window.addEventListener("keydown", function(event){ turret.atualizaDirecao(event)}, false);
 
 
 //incializacao de variaveis do loop principal
 var lastFrameTimeMs = 0;
-var bool = 0;
 var maxFPS = 90;
 var tempo = 0;
 

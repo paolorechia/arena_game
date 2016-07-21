@@ -6,22 +6,27 @@ module.exports = function(stub){
         y:0
     };
 
+    module.Coordenadas = function(){
+        this.x;
+        this.y;
+    }
     module.Versor = function(){
         this.x = 0;
         this.y = 0;
     }
-    module.calculoVersor = function(v){
+    module.laserVersor= function(turret){
             // pega coordenadas e desloca origem para o centro
-            var x = coord.x - turret.x;
-            var y = coord.y - turret.y;
+            
+            var x = turret.cursor.x - turret.pos.x;
+            var y = turret.cursor.y - turret.pos.y;
 
             // calcula modulo do vetor (x,y)
             var mod = Math.sqrt((Math.pow(x, 2) + Math.pow(y, 2)));
             var a = 1 / mod;
 
             // calcula versor
-            v.x = x * a;
-            v.y = y * a;
+            turret.laser.versor.x = x * a;
+            turret.laser.versor.y = y * a;
     }
     module.distGeometrica = function(x0, y0, x1, y1){
             var x = Math.pow((x0 - x1), 2);

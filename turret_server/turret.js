@@ -2,19 +2,17 @@
 // pseudo-classe
 module.exports = function(background, camera, calc){
     var module = {};
-    module.Laser = function (x, y){
-        this.x;
-        this.y;
-    }
-    module.Coordenadas = function(){
-        this.x;
-        this.y;
+    module.Laser = function (){
+        this.atirando = 0;
+        this.versor = new calc.Versor();
+        this.vetor = [];
+        this.range = 14;
     }
     module.Turret = function (x, y){
         this.versor = new calc.Versor();
-        this.pos = new module.Coordenadas();
-        this.cursor = new module.Coordenadas();
-        this.vetorLaser = [];
+        this.pos = new calc.Coordenadas();
+        this.cursor = new calc.Coordenadas();
+        this.laser = new module.Laser();
         this.raio = 15;
         this.vel = 0;
         this.acel= 4;

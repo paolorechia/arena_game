@@ -23,8 +23,8 @@ module.exports = function(io){
     var turret = require ('./turret.js')(background, camera, calc);
     var asteroides = require('./asteroides.js')(background, calc);
     var players = {};
-    var net = require('./network.js')(io, players, asteroides, turret)
-    var update = require('./update.js')(players, asteroides);
+    var update = require('./update.js')(players, asteroides, calc);
+    var net = require('./network.js')(io, players, asteroides, turret, update)
     var colisoes = require('./colisoes.js')(asteroides, background, camera, players, calc);
 
     var i = 0;

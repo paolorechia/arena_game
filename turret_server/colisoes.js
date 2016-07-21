@@ -13,7 +13,7 @@ module.exports = function(asteroides, background, camera, players, calc){
 //            var tam = turret.vetorLaser.length;
     // percorre vetor de asteroides
 
-// confere se algum objeto atingiu a borda do mapa
+// confere todas as colisoes
         module.tudo= function(){
             // primeiro asteroides
             module.asteroides();
@@ -96,6 +96,22 @@ module.exports = function(asteroides, background, camera, players, calc){
                         turret.pos.y = turret.pos.y + (turret.versor.y * turret.vel);
                         turret.vel= turret.vel/2;
                     }
+                if (turret.laser.vetor[0] != undefined){
+//                    console.log("ATIRAAAANDO");
+                    for (var j = 0; j < turret.laser.range; j++){
+                        x1 = turret.laser.vetor[j].x;
+                        y1 = turret.laser.vetor[j].y;
+                        dist = calc.distGeometrica(turret.pos.x, turret.pos.y, x1, y1)
+                        // se a distancia for inferior ao diametro do asteroide
+                        if (dist < (asteroides.vetor[i].tam * 5)){
+                            // o laser acertou, BAM
+                            asteroides.destroi(i, 1);
+                            // aumenta contador de kills
+//                            turret.hud.stats.kills += 1;
+                            return;
+                        }
+                    }
+                }
             }
         }
         return module;
@@ -103,34 +119,10 @@ module.exports = function(asteroides, background, camera, players, calc){
         /*      super debug mode
                 console.log('\033c');
                 console.log(turret);
-        */
-                // proximas condicionais testam se turret saiu do board
-                // inverte direcao e diminui velocidade pela metade
-        /*
-
-                //console.log(Math.sqrt(Math.pow(x,2)+Math.pow(.background.width/2,2)));
-                //console.log(Math.sqrt(Math.pow(y,2)+Math.pow(.background.height/2,2)));
-
-                // testa se turret acertou asteroide
-                // ue, isso nao eh distancia geometrica?? se sim, usar funcao
-
-                //----------------------
-
                 // confere se laser acertou algum asteroide
                 // laser = um conjunto de coordenadas armazenado num vetor
                 // o teste consiste em calcular a distancia geometrica de cada ponto
                 // do vetorLaser em relacao ao centro de cada asteroide
-                for (j = 0; j < tam; j++){
-                    x1 = turret.vetorLaser[j].x;
-                    y1 = turret.vetorLaser[j].y;
-                    dist = calculo.distGeometrica(x, y, x1, y1)
-                    // se a distancia for inferior ao diametro do asteroide
-                    if (dist < (asteroides.vetor[i].tam * 5)){
-                        // o laser acertou, BAM
-                        asteroides.destroi(i, 1);
-                        // aumenta contador de kills
-                        turret.hud.stats.kills += 1;
-                        return;
                     }
                 }
             */
