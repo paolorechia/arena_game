@@ -127,27 +127,7 @@ var turret = {
     },
     //atira o laser se a energia eh maior do que 0
     'atira' : function (){
-
-        // confere se a energia eh adequada
-        // e se nao estah em tempo de recarga
-        if(this.hud.stats.energy <= 1) {
-          this.hud.cooldown_time = true;
-          bool = 0;
-        }
-
-        if(this.hud.stats.energy >= 20 && this.hud.cooldown_time ==true) {
-          this.hud.cooldown_time = false;
-        }
-
-        if (this.hud.cooldown_time) {
-          return;
-        }
-
-        this.hud.descarregar_energia(1);
-
-        if(bool == 0)
-          return;
-
+        /*
         // se tudo estiver ok, atira
         var tam = 14;
         var base = 2;
@@ -170,6 +150,7 @@ var turret = {
         y0 = y + turret.versor.y * turret.raio * base;
         y1 = y + turret.versor.y * turret.raio * (tam + base);
         turret.desenhaLaser(x0, y0, x1, y1);
+        */
     },
 
     // atualiza status do tiro de acordo com o evento de mouse
@@ -178,100 +159,25 @@ var turret = {
     },
 
     // hud
-     'hud' : {
-      // stats deveria estar em outro lugar...
-      'stats' : {
-        vida: 10,
-        shield: 2,
-        kills: 0,
-        energy: 100
-      },
-      // desenha os stats na tela
-      'desenhar' : function(stats) {
-        ctx_turret.font = "30px Arial";
-        ctx_turret.fillStyle="green";
-        ctx_turret.fillText("HP: " + this.stats.vida, camera.width/22, camera.height/18)
-        ctx_turret.fillStyle='red';
-        ctx_turret.fillText('Kills: '+ this.stats.kills, camera.width/2.2, camera.height/18)
-        ctx_turret.fillStyle='blue';
-        ctx_turret.fillText('SH: ' + this.stats.shield, camera.width/22, camera.height/9)
-        ctx_turret.fillStyle='#1244AA';
-        ctx_turret.fillText('Energy: ' + this.stats.energy, camera.width/2.3, camera.height/1.05)
-        this.passivos();
-      },
-      // funcoes abaixo nao sei como funcionam, nao li ainda
-      // mas parece que deveriam fazer parte do turret e nao do hud
-      carregar_energia : function(rate) {
-        var min_energy = 0;
-        var max_energy = 100;
-        var that = this;
-        if(that.stats.energy >= min_energy && that.stats.energy < max_energy) {
-            if(that.prevent_energy == true) {
-              that.prevent_energy = false;
-              //setTimeout workaround
-
-              window.setTimeout(function(){
-                that.stats.energy+=1*rate;
-                that.prevent_energy = true;
-              }, 100);
-            }
-        }
-
-      },
-      descarregar_energia : function(rate) {
-        var max_energy = 100;
-        var min_energy = 0;
-        if(this.stats.energy > min_energy) {
-          this.stats.energy -= 1*rate;
-        } else {
-            //bloqueia Laser até chegar em x% energia.
-
-        }
-      },
-      carregar_shield : function(rate){
-        var max_shield = 2;
-        var min_shield = 0;
-        var that = this;
-
-        if(that.stats.shield >= min_shield && that.stats.shield < max_shield) {
-            if(that.prevent_shield == true) {
-              that.prevent_shield = false;
-
-              window.setTimeout(function(){
-                that.stats.shield+=1*rate;
-                that.prevent_shield = true;
-
-              },5000);
-            }
-        }
-      },
-      descarregar_shield : function(quantidade) {
-        var max_shield = 3;
-        var min_shield = 0;
-        if(this.stats.shield <= max_shield && this.stats.shield > min_shield) {
-          this.stats.shield -= quantidade;
-        }
-
-      },
-      descarregar_vida : function(quantidade){
-        this.stats.vida -= quantidade;
-      },
-      tomar_dano : function(quantidade) {
-        if(quantidade <= this.stats.shield) {
-          this.descarregar_shield(quantidade);
-        } else {
-          this.descarregar_vida(quantidade - this.stats.shield);
-          this.descarregar_shield(this.stats.shield);
-        }
-      },
-      passivos : function() {
-
-        this.carregar_shield(1);
-        this.carregar_energia(1);
-
-      },
-      prevent_shield : true,
-      prevent_energy : true,
-      cooldown_time : false
+    'hud' : {
+          // stats deveria estar em outro lugar...
+          'stats' : {
+            vida: 10,
+            shield: 2,
+            kills: 0,
+            energy: 100
+          },
+          // desenha os stats na tela
+          'desenhar' : function(stats) {
+            ctx_turret.font = "30px Arial";
+            ctx_turret.fillStyle="green";
+            ctx_turret.fillText("HP: " + this.stats.vida, camera.width/22, camera.height/18)
+            ctx_turret.fillStyle='red';
+            ctx_turret.fillText('Kills: '+ this.stats.kills, camera.width/2.2, camera.height/18)
+            ctx_turret.fillStyle='blue';
+            ctx_turret.fillText('SH: ' + this.stats.shield, camera.width/22, camera.height/9)
+            ctx_turret.fillStyle='#1244AA';
+            ctx_turret.fillText('Energy: ' + this.stats.energy, camera.width/2.3, camera.height/1.05)
+          },
     }
 }
