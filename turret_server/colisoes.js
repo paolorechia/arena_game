@@ -70,15 +70,15 @@ module.exports = function(asteroides, background, camera, players, calc, turret)
                         //corta velocidade
                         nave.vel = nave.vel/2;
                         // diminui escudo e vida
-                        turret.sofreDano(nave, asteroide.tam);
-                        if (nave.hp < 0)
+                        turret.sofreDano(nave, (asteroide.tam * asteroide.tam));
+                        if (nave.hull.points < 0)
                         {
                             turret.morte(nave);
-                            setTimeout(function(){module.respawn(alvo);}, 3000);
+                            turret.respawnInTime(nave, 5);
                         }
                     }
                        
-                 // e com algum laser da nave
+                 // e com algum laser das naves
                      if (nave.laser.vetor[0] != undefined){
                             for (var j = 0; j < nave.laser.range; j++){
                                 x1 = nave.laser.vetor[j].x;
@@ -88,7 +88,12 @@ module.exports = function(asteroides, background, camera, players, calc, turret)
                                 if (asteroides.vetor[i] != undefined){
                                     if (dist < (asteroides.vetor[i].tam * 5)){
                                         // o laser acertou, BAM
-                                        asteroides.destroi(i, 1);
+                                        asteroides.vetor[i].hp--;
+//                                        console.log("its a hit!", 
+//                                        asteroides.vetor[i].hp);
+                                        if (asteroides.vetor[i].hp <= 0){
+                                            asteroides.destroi(i, 1);
+                                        }
                                         // aumenta contador de kills
                                         nave.ast_kills += 1;
                                     }
@@ -122,8 +127,9 @@ module.exports = function(asteroides, background, camera, players, calc, turret)
                             
                                     if (dist < (alvo.raio)){
                                        turret.sofreDano(alvo, nave.laser.damage);  
-                                       if (alvo.hp < 0){
+                                       if (alvo.hull.points < 0){
                                          turret.matouNave(nave, alvo)
+                                         turret.respawnInTime(alvo, 5);
                                        } 
                                     } 
                                 }

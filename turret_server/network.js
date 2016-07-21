@@ -78,9 +78,9 @@ module.exports = function(io, players, asteroides, turret, update){
     }
     module.enviaStatus = function (){
         for (var id in io.sockets.connected){
-            var estado = {hp:           players[id].hp,
-                          shield:       players[id].shield, 
-                          energy:       players[id].energy,
+            var estado = {hp:           players[id].hull.points,
+                          shield:       players[id].shield.points, 
+                          energy:       players[id].energy.points,
                           ast_kills:    players[id].ast_kills,
                           player_kills: players[id].player_kills};
             socket = io.sockets.connected[id];

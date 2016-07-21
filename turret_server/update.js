@@ -37,20 +37,18 @@ module.exports = function(players, asteroides, calc, turret){
     module.energies = function(){
         for (var id in players){
             var nave = players[id];
+            turret.overheatEnergy(nave); // apply overheat before recharging
             turret.rechargeEnergy(nave);
         }
     } 
     module.laser = function (turret){
-        if (turret.laser.atirando == 0){
+        if (turret.laser.atirando == 0 || turret.energy.overheat == true){
            turret.laser.vetor = [];
            return; 
         }
-        if (turret.energy < 0){
-            console.log("implementar cooldown");
-        }
-        console.log("ATIRAAAANDO");
+//        console.log("ATIRAAAANDO");
         calc.laserVersor(turret);
-        turret.energy -= turret.laser.cost;
+        turret.energy.points -= turret.laser.cost;
         var base = 2;
         var x0 = turret.pos.x + turret.laser.versor.x * turret.raio * base;
         var x1 = turret.pos.x + turret.laser.versor.x * turret.raio * (turret.laser.range + base);

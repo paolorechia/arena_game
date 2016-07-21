@@ -1,13 +1,13 @@
 //outro exemplo de pseudo-classe
 module.exports = function(background, calc){
     var module = {};
-    module.Asteroide = function(x, y, velocidade, tamanho, versor){
+    module.Asteroide = function(x, y, velocidade, tamanho, versor, hp){
     this.x = x;
     this.y = y;
     this.vel = velocidade;
     this.tam = tamanho;
     this.v = versor;
-    this.hp = 10;
+    this.hp = hp;
 }
     // declara vetor de asteroides
     module.vetor = [];
@@ -65,7 +65,7 @@ module.exports = function(background, calc){
         var randomize = Math.floor((Math.random())* 4);
         var vel = Math.floor((Math.random() * 10) + 1);
         var tam = Math.floor((Math.random() * 5) + 2);
-        var hp = tam * 10;
+        var hp = tam * tam * tam;
         if (randomize == 0){
             criaEsq(vel, tam, hp);
         }

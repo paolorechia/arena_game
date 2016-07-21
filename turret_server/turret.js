@@ -5,75 +5,123 @@ module.exports = function(background, camera, calc){
     module.Laser = function (){
         this.atirando = 0;
         this.versor = new calc.Versor();
-        this.vetor = [];
+        this.vetor = []; 
         this.range = 14;
         this.damage = 1;
         this.cost = 1;
+    }
+    module.Shield = function(){
+        this.up = true;
+        this.points;
+        this.max= 20;
+        this.recharge_rate = 1;
+        this.cooldown = 3;
+    }
+    module.Energy = function(){
+        this.overheat = false;
+        this.points;
+        this.max= 100;
+        this.recharge_rate = 2;
+        this.overheat_threshold = 10;
+        this.overheat_cooldown = 2;
+    }
+    module.Hull = function(){
+        this.max = 100;
+        this.points;
+        this.resistance = 0;
     }
     module.Turret = function (x, y){
         this.versor = new calc.Versor();
         this.pos = new calc.Coordenadas();
         this.cursor = new calc.Coordenadas();
         this.laser = new module.Laser();
+        this.shield = new module.Shield();
+        this.energy = new module.Energy();
+        this.hull = new module.Hull();
         this.raio = 15;
         this.vel = 0;
         this.acel= 4;
         this.turn_rate= 1;
         this.max_speed = 4;
-        this.max_hp = 100;
-        this.max_shield = 20;
-        this.shield_recharge_rate = 1;
-        this.max_energy = 100;
-        this.energy_recharge_rate = 5;
         this.ast_kills = 0;
         this.player_kills = 0;
-    }
-    module.sofreDano = function(turret, dano){
-        if (turret.shield > 0){
-            turret.shield -= dano; 
-        }
-        else {
-            turret.hp -= dano;
-        }
-    }
-    module.morte = function (turret){
-        turret.pos.x = 0;
-        turret.pos.y = 0;
-        
-    }
-    module.rechargeShield = function (turret){
-        if (turret.shield <= turret.max_shield)
-            turret.shield += turret.shield_recharge_rate;
-    };
-    module.rechargeEnergy = function (turret){
-        if (turret.energy <= turret.max_energy)
-            turret.energy += turret.energy_recharge_rate;
-        if (turret.energy > turret.max_energy)
-            turret.energy = turret.max_energy;
-    };
-    module.respawn = function (turret){
-        turret.ast_kills = 0;
-        turret.player_kills = 0;
-        turret.hp = turret.max_hp;
-        turret.shield = turret.max_shield;
-        turret.energy = turret.max_energy;
-        turret.pos.x = Math.floor(Math.random() * (background.borda_direita - background.borda_esquerda) + background.borda_esquerda);
-        turret.pos.y = Math.floor(Math.random() * (background.borda_superior - background.borda_inferior) + background.borda_inferior);
-    }
-    module.matouNave = function (turret, alvo){
-        turret.player_kills++;
-        module.morte(alvo);
-        setTimeout(function(){module.respawn(alvo);}, 3000);
     }
     module.cria = function (){
         var turret = new module.Turret();
         // Math.random() * (max - min) + min
-        turret.hp = turret.max_hp;
-        turret.shield = turret.max_shield;
-        turret.energy = turret.max_energy;
+        turret.hull.points = turret.hull.max;
+        turret.shield.points = turret.shield.max;
+        turret.energy.points = turret.energy.max;
         turret.pos.x = Math.floor(Math.random() * (background.borda_direita - background.borda_esquerda) + background.borda_esquerda);
         turret.pos.y = Math.floor(Math.random() * (background.borda_superior - background.borda_inferior) + background.borda_inferior);
         return turret;
+    }
+    module.rechargeShield = function (turret){
+        if (turret.shield.points <= turret.shield.max && 
+            turret.shield.up == true)
+            turret.shield.points += turret.shield.recharge_rate;
+    };
+    module.rechargeEnergy = function (turret){
+        if (turret.energy.points < turret.energy.max)
+            turret.energy.points += turret.energy.recharge_rate;
+        if (turret.energy.points >= turret.energy.max)
+            turret.energy.points = turret.energy.max;
+    };
+    module.disableShield = function (turret){
+        turret.shield.up = false;
+        module.restartShield(turret);
+    }
+    module.restartShield = function (turret){
+        setTimeout(function(){turret.shield.up = true;},
+                   turret.shield.cooldown * 1000);
+    }
+    module.sofreDano = function(turret, dano){
+        if (turret.shield.points > 0){
+            if (dano > turret.shield.points){
+                dano = dano - turret.shield.points;
+                turret.shield.points = 0;
+                module.disableShield(turret);
+                
+                turret.hull.points -= dano;
+            }
+            else
+                turret.shield.points -= dano; 
+        }
+        else {
+            turret.hull.points -= dano;
+        }
+    }
+    module.cooldownEnergy = function (turret){
+        turret.energy.overheat = false;
+    }
+    module.overheatEnergy = function (turret){
+        if (turret.energy.points < turret.energy.overheat_threshold){
+            turret.energy.overheat = true;
+            setTimeout(function(){module.cooldownEnergy(turret);},
+                   turret.energy.overheat_cooldown * 1000);
+        }
+    };
+    module.morte = function (turret){
+        turret.pos.x = -1600;
+        turret.pos.y = -900;
+        
+    }
+    module.respawn = function (turret){
+        turret.ast_kills = 0;
+        turret.player_kills = 0;
+        turret.hull.points = turret.hull.max;
+        turret.shield.points = turret.shield.max;
+        turret.energy.points = turret.energy.max;
+        turret.pos.x = Math.floor(Math.random() * (background.borda_direita - background.borda_esquerda) + background.borda_esquerda);
+        turret.pos.y = Math.floor(Math.random() * (background.borda_superior - background.borda_inferior) + background.borda_inferior);
+    }
+    module.respawnInTime = function(turret, time){
+        time = time * 1000;
+        setTimeout(function(){module.respawn(turret);}, time);
+    }
+    module.matouNave = function (turret, alvo){
+        turret.player_kills++;
+        module.morte(alvo);
     }
     module.para = function(){
                 this.vel = 0;
@@ -110,184 +158,3 @@ module.exports = function(background, camera, calc){
 
     return module;
 };
-        
-var inutil = {
-        // atualiza o angulo utilizando trigonometria
-        // a partir das coordenadas do cursor do mouse
-        // e chama a função de desenhar o turret
-        'gira' : function (){
-
-            var ca = (turret.x - coord.x);
-            var co = (turret.y - coord.y);
-
-            tangente = (co/ca);
-            atan = Math.round(Math.atan(tangente)*100)/100;
-
-            deg = atan * 180/3.14;
-            // console.log(deg);
-            //Falta tratar quando coord = background.background.height
-            if(coord.x > turret.x) {
-                if(coord.y >= turret.y) {
-        //            console.log('DireitaBaixo');
-                } else if(coord.x < turret.x){
-        //            console.log('DireitaCima');
-                }
-            } else {
-                atan+=4*180/3.14;
-                if(coord.y >= turret.y) {
-        //            console.log('EsquerdaBaixo');
-                } else {
-        //           console.log('EsquerdaCima');
-                }
-            }
-        },
-        //atira o laser se a energia eh maior do que 0
-        'atira' : function (){
-
-            // confere se a energia eh adequada
-            // e se nao estah em tempo de recarga
-            if(this.hud.stats.energy <= 1) {
-              this.hud.cooldown_time = true;
-              bool = 0;
-            }
-
-            if(this.hud.stats.energy >= 20 && this.hud.cooldown_time ==true) {
-              this.hud.cooldown_time = false;
-            }
-
-            if (this.hud.cooldown_time) {
-              return;
-            }
-
-            this.hud.descarregar_energia(1);
-
-            if(bool == 0)
-              return;
-
-            // se tudo estiver ok, atira
-            var tam = 14;
-            var base = 2;
-            var x0 = turret.x + turret.versor.x * turret.raio * base;
-            var x1 = turret.x + turret.versor.x * turret.raio * (tam + base);
-            var y0 = turret.y + turret.versor.y * turret.raio * base;
-            var y1 = turret.y + turret.versor.y * turret.raio * (tam + base);
-            var i;
-            // cria um vetor de coordenadas para testar nas colisoes
-            for (i = 0; i< tam; i++){
-                turret.vetorLaser[i] = new Laser(0,0);
-                turret.vetorLaser[i].x = (x0 + turret.versor.x * turret.raio * i);
-                turret.vetorLaser[i].y = (y0 + turret.versor.y * turret.raio * i);
-            }
-            // e passa coordenadas adaptadas pro canvas menor pra funcao de desenhar
-            var x = camera.background.width/2;
-            var y = camera.background.height/2;
-            x0 = x + turret.versor.x * turret.raio * base;
-            x1 = x + turret.versor.x * turret.raio * (tam + base);
-            y0 = y + turret.versor.y * turret.raio * base;
-            y1 = y + turret.versor.y * turret.raio * (tam + base);
-            turret.desenhaLaser(x0, y0, x1, y1);
-        },
-
-        // atualiza status do tiro de acordo com o evento de mouse
-        "atirou" : function(status_tiro){
-          bool = status_tiro;
-        },
-
-        // hud
-         'hud' : {
-          // stats deveria estar em outro lugar...
-          'stats' : {
-            vida: 10,
-            shield: 2,
-            kills: 0,
-            energy: 100
-          },
-          // desenha os stats na tela
-          'desenhar' : function(stats) {
-            ctx_turret.font = "30px Arial";
-            ctx_turret.fillStyle="green";
-            ctx_turret.fillText("HP: " + this.stats.vida, camera.background.width/22, camera.background.height/18)
-            ctx_turret.fillStyle='red';
-            ctx_turret.fillText('Kills: '+ this.stats.kills, camera.background.width/2.2, camera.background.height/18)
-            ctx_turret.fillStyle='blue';
-            ctx_turret.fillText('SH: ' + this.stats.shield, camera.background.width/22, camera.background.height/9)
-            ctx_turret.fillStyle='#1244AA';
-            ctx_turret.fillText('Energy: ' + this.stats.energy, camera.background.width/2.3, camera.background.height/1.05)
-            this.passivos();
-          },
-          // funcoes abaixo nao sei como funcionam, nao li ainda
-          // mas parece que deveriam fazer parte do turret e nao do hud
-          carregar_energia : function(rate) {
-            var min_energy = 0;
-            var max_energy = 100;
-            var that = this;
-            if(that.stats.energy >= min_energy && that.stats.energy < max_energy) {
-                if(that.prevent_energy == true) {
-                  that.prevent_energy = false;
-                  //setTimeout workaround
-
-                  window.setTimeout(function(){
-                    that.stats.energy+=1*rate;
-                    that.prevent_energy = true;
-                  }, 100);
-                }
-            }
-
-          },
-          descarregar_energia : function(rate) {
-            var max_energy = 100;
-            var min_energy = 0;
-            if(this.stats.energy > min_energy) {
-              this.stats.energy -= 1*rate;
-            } else {
-                //bloqueia Laser até chegar em x% energia.
-
-            }
-          },
-          carregar_shield : function(rate){
-            var max_shield = 2;
-            var min_shield = 0;
-            var that = this;
-
-            if(that.stats.shield >= min_shield && that.stats.shield < max_shield) {
-                if(that.prevent_shield == true) {
-                  that.prevent_shield = false;
-
-                  window.setTimeout(function(){
-                    that.stats.shield+=1*rate;
-                    that.prevent_shield = true;
-
-                  },5000);
-                }
-            }
-          },
-          descarregar_shield : function(quantidade) {
-            var max_shield = 3;
-            var min_shield = 0;
-            if(this.stats.shield <= max_shield && this.stats.shield > min_shield) {
-              this.stats.shield -= quantidade;
-            }
-
-          },
-          descarregar_vida : function(quantidade){
-            this.stats.vida -= quantidade;
-          },
-          tomar_dano : function(quantidade) {
-            if(quantidade <= this.stats.shield) {
-              this.descarregar_shield(quantidade);
-            } else {
-              this.descarregar_vida(quantidade - this.stats.shield);
-              this.descarregar_shield(this.stats.shield);
-            }
-          },
-          passivos : function() {
-
-            this.carregar_shield(1);
-            this.carregar_energia(1);
-
-          },
-          prevent_shield : true,
-          prevent_energy : true,
-          cooldown_time : false
-        }
-    }
