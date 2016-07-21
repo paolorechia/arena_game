@@ -39,6 +39,10 @@ socket.on('players_id', function(received_ids){
 //    console.log(other_players);
     players_id = received_ids;
 });
+socket.on('players_pointers', function(received_pointers){
+//    console.log(other_players);
+    players_pointers = received_pointers;
+});
 
 
 // funcoes de evento
@@ -94,9 +98,9 @@ function mainLoop(timestamp){
     // chamadas de desenho & calculo
     background.blit_turret();           // desenha no canvas da camera
     asteroides.desenhaTodos();          // desenha todos os asteroides do vetor
-    turret.desenhaTodosInimigos(my_id);
+    inimigo.desenhaTodos();
     calculo.versor(turret.versor);      // calcula vetor versor (de geometria analitica) do turret
-    turret.gira();                      // desenha o turret atualizado com a rotacao
+    turret.desenha(ctx_turret, turret.raio, turret.gira(turret, coord));                      // desenha o turret atualizado com a rotacao
     if (bool) {
         turret.atira();                 // apenas laser por enquanto
 //        limob demanda que puxa esse script (e taAsteroides();

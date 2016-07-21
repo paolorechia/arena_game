@@ -5,9 +5,6 @@ function Laser(x, y){
     this.y;
 }
 
-var players = [];
-var players_id = [];
-
 var turret = {
     // declaracao/incializacao de variaveis
     versor : new Versor(),
@@ -49,7 +46,7 @@ var turret = {
             turret.y = y;
     },
     // desenha o canhao (APENAS o canhao, o risco da onde sai o laser)
-    'desenhaCanhao' : function (ctx, raio, angulo){
+    'desenhaCanhao' : function (ctx, raio, angulo, nave){
         var x = camera.width/2;
         var y = camera.height/2;
         // salva contexto (necessario em funcao da translacao)
@@ -86,82 +83,33 @@ var turret = {
           ctx.stroke();
         }
     },
-    'desenhaInimigo' : function(inimigo){
-        /* variaveis auxiliares, pega coordenadas do canvas pequeno
-        (os quatro cantos) de um retangulo
-        //(turret.x, turret.y) = posicao do turret
-        */
-        var borda_esq = turret.x - camera.width/2;      
-        var borda_dir = turret.x + camera.width/2;
-        var borda_sup = turret.y - camera.height/2;
-        var borda_inf = turret.y + camera.height/2;
-        // confere se inimigoeroide entrou no canvas menor
-        if (inimigo.x > borda_esq && inimigo.x < borda_dir && inimigo.y > borda_sup && inimigo.y < borda_inf){
-            // e soh entao desenha na tela
+    'gira' : function (nave, cursor){
 
-            // calcula as coordenadas em relacao ao canvas menor
-            // (cada canvas teu o seu sistema de coordenadas)
-            var x = inimigo.x - borda_esq;
-            var y = inimigo.y - borda_sup;
-
-            // desenha o inimigoeroide
-            // strokeStyle = cor da linha
-            ctx_turret.strokeStyle = "#FFFFFF";
-            // comeca desenho
-            ctx_turret.beginPath();
-            // caminha um circulo nas coordenadas (x,y),
-            // de raio inimigo.tam * 5,
-            // 0??
-            // arco 2pi
-            ctx_turret.arc(x, y, turret.raio, 0, 2*Math.PI);
-            // desenha o caminho
-            ctx_turret.stroke();
-            // fillStyle = cor de preenchimento
-                ctx_turret.fillStyle = "#FF0000";
-            // preenche
-            ctx_turret.fill();
-        }
-    },
-    'desenhaTodosInimigos' : function(my_id){
-
-//        console.log(players);
-//        console.log(turret.x + ", " + turret.y);
-//        console.log(players.length);
-        for (var i = 0; i < players.length; i++){
-            if (players_id[i] != my_id){
-                turret.desenhaInimigo(players[i]);
-            }
-        }
-    },
-    // atualiza o angulo utilizando trigonometria
-    // a partir das coordenadas do cursor do mouse
-    // e chama a função de desenhar o turret
-    'gira' : function (){
-
-        var ca = (turret.x - coord.x);
-        var co = (turret.y - coord.y);
+        var ca = (nave.x - cursor.x);
+        var co = (nave.y - cursor.y);
 
         tangente = (co/ca);
         atan = Math.round(Math.atan(tangente)*100)/100;
 
         deg = atan * 180/3.14;
         // console.log(deg);
-        //Falta tratar quando coord = background.height
-        if(coord.x > turret.x) {
-            if(coord.y >= turret.y) {
+        //Falta tratar quando cursor = background.height
+        if(cursor.x > nave.x) {
+            if(cursor.y >= nave.y) {
     //            console.log('DireitaBaixo');
-            } else if(coord.x < turret.x){
+            } else if(cursor.x < nave.x){
     //            console.log('DireitaCima');
             }
         } else {
             atan+=4*180/3.14;
-            if(coord.y >= turret.y) {
+            if(cursor.y >= nave.y) {
     //            console.log('EsquerdaBaixo');
             } else {
     //           console.log('EsquerdaCima');
             }
         }
-        turret.desenha(ctx_turret, turret.raio, atan);
+        console.log(nave);
+        return atan;
     },
     // desenha laser (uma linha)
     'desenhaLaser' : function(x0, y0, x1, y1){
