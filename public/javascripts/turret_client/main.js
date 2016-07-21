@@ -93,7 +93,6 @@ function mainLoop(timestamp){
 
     // chamadas de desenho & calculo
     background.blit_turret();           // desenha no canvas da camera
-    asteroides.atualiza();              // atualiza vetor de asteroides
     asteroides.desenhaTodos();          // desenha todos os asteroides do vetor
     turret.desenhaTodosInimigos(my_id);
     calculo.versor(turret.versor);      // calcula vetor versor (de geometria analitica) do turret
@@ -103,7 +102,7 @@ function mainLoop(timestamp){
 //        limob demanda que puxa esse script (e taAsteroides();
     }
 //    console.log(turret.vetorLaser);
-    colisoes.confere();                 // confere colisao de tudo (asteroides, turret, laser, bordas)
+//    colisoes.confere();                 // confere colisao de tudo (asteroides, turret, laser, bordas)
     turret.vetorLaser.length = 0;       // reseta laser
     turret.hud.desenhar(turret.hud.stats);      // desenha hud
     requestAnimationFrame(mainLoop);            // chama proxima iteracao do loop
