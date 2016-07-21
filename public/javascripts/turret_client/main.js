@@ -44,6 +44,12 @@ socket.on('players_pointers', function(received_pointers){
     players_pointers = received_pointers;
 });
 
+var lasers = [];
+socket.on('lasers', function(received_lasers){
+    lasers = received_lasers;
+//    console.log(lasers);
+});
+
 
 // funcoes de evento
 
@@ -99,6 +105,7 @@ function mainLoop(timestamp){
     background.blit_turret();           // desenha no canvas da camera
     asteroides.desenhaTodos();          // desenha todos os asteroides do vetor
     inimigo.desenhaTodos();
+    inimigo.desenhaLasers();
     calculo.versor(turret.versor);      // calcula vetor versor (de geometria analitica) do turret
     turret.desenha(ctx_turret, turret.raio, turret.gira(turret, coord));                      // desenha o turret atualizado com a rotacao
     if (bool) {

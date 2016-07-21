@@ -45,9 +45,12 @@ module.exports = function(io){
             io.sockets.emit('message', i);
         }
 
-        if (i % 20 == 0){
+        if (i % 30 == 0){
             net.enviaTurrets();
             net.enviaAsteroides();
+            net.enviaLasers();
+        }
+        if (i % 60 == 0){
         }
 
         setTimeout(module.start, 1);
