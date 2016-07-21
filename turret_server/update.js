@@ -27,24 +27,22 @@ module.exports = function(players, asteroides, calc){
            turret.laser.vetor = [];
            return; 
         }
-        console.log(turret.laser.atirando);
         console.log("ATIRAAAANDO");
         calc.laserVersor(turret);
         
         var base = 2;
-        var x0 = turret.x + turret.laser.versor.x * turret.raio * base;
-        var x1 = turret.x + turret.laser.versor.x * turret.raio * (turret.laser.range + base);
-        var y0 = turret.y + turret.laser.versor.y * turret.raio * base;
-        var y1 = turret.y + turret.laser.versor.y * turret.raio * (turret.laser.range + base);
+        var x0 = turret.pos.x + turret.laser.versor.x * turret.raio * base;
+        var x1 = turret.pos.x + turret.laser.versor.x * turret.raio * (turret.laser.range + base);
+        var y0 = turret.pos.y + turret.laser.versor.y * turret.raio * base;
+        var y1 = turret.pos.y + turret.laser.versor.y * turret.raio * (turret.laser.range + base);
         var i;
         // cria um vetor de coordenadas para testar nas colisoes
-        console.log(turret.laser.range);
         for (i = 0; i < turret.laser.range; i++){
             turret.laser.vetor[i] = new calc.Coordenadas(0,0);
             turret.laser.vetor[i].x = (x0 + turret.laser.versor.x * turret.raio * i);
             turret.laser.vetor[i].y = (y0 + turret.laser.versor.y * turret.raio * i);
         }
-        console.log(turret);
+//        console.log(turret.laser.vetor);
     } 
     module.asteroides = function(){
         var i = 0;

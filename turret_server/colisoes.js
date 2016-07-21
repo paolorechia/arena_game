@@ -79,6 +79,23 @@ module.exports = function(asteroides, background, camera, players, calc){
                             turret.hud.stats.vida -=1;
                           }
                         */
+                 // e com algum laser do turret
+                    }
+                     if (turret.laser.vetor[0] != undefined){
+                            for (var j = 0; j < turret.laser.range; j++){
+                                x1 = turret.laser.vetor[j].x;
+                                y1 = turret.laser.vetor[j].y;
+                                dist = calc.distGeometrica(asteroide.x, asteroide.y, x1, y1)
+                                // se a distancia for inferior ao diametro do asteroide
+                                if (asteroides.vetor[i] != undefined){
+                                    if (dist < (asteroides.vetor[i].tam * 5)){
+                                        // o laser acertou, BAM
+                                        asteroides.destroi(i, 1);
+                                        // aumenta contador de kills
+            //                            turret.hud.stats.kills += 1;
+                                    }
+                                }
+                            }
                     }
                 }
             }
@@ -96,22 +113,6 @@ module.exports = function(asteroides, background, camera, players, calc){
                         turret.pos.y = turret.pos.y + (turret.versor.y * turret.vel);
                         turret.vel= turret.vel/2;
                     }
-                if (turret.laser.vetor[0] != undefined){
-//                    console.log("ATIRAAAANDO");
-                    for (var j = 0; j < turret.laser.range; j++){
-                        x1 = turret.laser.vetor[j].x;
-                        y1 = turret.laser.vetor[j].y;
-                        dist = calc.distGeometrica(turret.pos.x, turret.pos.y, x1, y1)
-                        // se a distancia for inferior ao diametro do asteroide
-                        if (dist < (asteroides.vetor[i].tam * 5)){
-                            // o laser acertou, BAM
-                            asteroides.destroi(i, 1);
-                            // aumenta contador de kills
-//                            turret.hud.stats.kills += 1;
-                            return;
-                        }
-                    }
-                }
             }
         }
         return module;
