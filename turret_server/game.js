@@ -23,7 +23,7 @@ module.exports = function(io){
     var turret = require ('./turret.js')(background, camera, calc);
     var asteroides = require('./asteroides.js')(background, calc);
     var players = {};
-    var update = require('./update.js')(players, asteroides, calc);
+    var update = require('./update.js')(players, asteroides, calc, turret);
     var net = require('./network.js')(io, players, asteroides, turret, update)
     var colisoes = require('./colisoes.js')(asteroides, background, camera, players, calc, turret);
 
@@ -40,7 +40,7 @@ module.exports = function(io){
         if (i % 10 == 0){
             update.asteroides();
             update.turrets();
-            update.laserTodos();
+            update.lasers();
             colisoes.tudo();
             io.sockets.emit('message', i);
         }
@@ -51,6 +51,10 @@ module.exports = function(io){
             net.enviaLasers();
         }
 
+        if (i % 100 == 0){
+            update.shields();
+            update.energies();
+        }
         if (i % 60 == 0){
             net.enviaStatus();
         /*
@@ -58,6 +62,7 @@ module.exports = function(io){
             console.log(players);
         */
         }
+
 
 
         setTimeout(module.start, 1);

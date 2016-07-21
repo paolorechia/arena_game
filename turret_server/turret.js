@@ -19,9 +19,11 @@ module.exports = function(background, camera, calc){
         this.acel= 4;
         this.turn_rate= 1;
         this.max_speed = 4;
-        this.hp = 100;
-        this.shield = 20;
-        this.energy = 100;
+        this.max_hp = 100;
+        this.max_shield = 20;
+        this.shield_recharge_rate = 1;
+        this.max_energy = 100;
+        this.energy_recharge_rate = 5;
         this.ast_kills = 0;
         this.player_kills = 0;
     }
@@ -38,12 +40,22 @@ module.exports = function(background, camera, calc){
         turret.pos.y = 0;
         
     }
+    module.rechargeShield = function (turret){
+        if (turret.shield <= turret.max_shield)
+            turret.shield += turret.shield_recharge_rate;
+    };
+    module.rechargeEnergy = function (turret){
+        if (turret.energy <= turret.max_energy)
+            turret.energy += turret.energy_recharge_rate;
+        if (turret.energy > turret.max_energy)
+            turret.energy = turret.max_energy;
+    };
     module.respawn = function (turret){
         turret.ast_kills = 0;
         turret.player_kills = 0;
-        turret.hp = 100;
-        turret.shield = 20;
-        turret.energy = 100;
+        turret.hp = turret.max_hp;
+        turret.shield = turret.max_shield;
+        turret.energy = turret.max_energy;
         turret.pos.x = Math.floor(Math.random() * (background.borda_direita - background.borda_esquerda) + background.borda_esquerda);
         turret.pos.y = Math.floor(Math.random() * (background.borda_superior - background.borda_inferior) + background.borda_inferior);
     }
@@ -55,6 +67,9 @@ module.exports = function(background, camera, calc){
     module.cria = function (){
         var turret = new module.Turret();
         // Math.random() * (max - min) + min
+        turret.hp = turret.max_hp;
+        turret.shield = turret.max_shield;
+        turret.energy = turret.max_energy;
         turret.pos.x = Math.floor(Math.random() * (background.borda_direita - background.borda_esquerda) + background.borda_esquerda);
         turret.pos.y = Math.floor(Math.random() * (background.borda_superior - background.borda_inferior) + background.borda_inferior);
         return turret;

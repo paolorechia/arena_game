@@ -1,7 +1,7 @@
 // that is, this code calculates what will happen in the
 // next iteration of the main loop, thus updating the game state
 
-module.exports = function(players, asteroides, calc){
+module.exports = function(players, asteroides, calc, turret){
    var module = {};
 
    module.turrets = function(){
@@ -23,11 +23,23 @@ module.exports = function(players, asteroides, calc){
         }
     }
     // atualiza estado do laser de todos os jogadores
-    module.laserTodos = function(){
+    module.lasers = function(){
         for (var id in players){
             module.laser(players[id]);
         }
     }
+    module.shields = function(){
+        for (var id in players){
+            var nave = players[id];
+            turret.rechargeShield(nave);
+        }
+    } 
+    module.energies = function(){
+        for (var id in players){
+            var nave = players[id];
+            turret.rechargeEnergy(nave);
+        }
+    } 
     module.laser = function (turret){
         if (turret.laser.atirando == 0){
            turret.laser.vetor = [];

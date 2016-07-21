@@ -71,6 +71,11 @@ module.exports = function(asteroides, background, camera, players, calc, turret)
                         nave.vel = nave.vel/2;
                         // diminui escudo e vida
                         turret.sofreDano(nave, asteroide.tam);
+                        if (nave.hp < 0)
+                        {
+                            turret.morte(nave);
+                            setTimeout(function(){module.respawn(alvo);}, 3000);
+                        }
                     }
                        
                  // e com algum laser da nave
