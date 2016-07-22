@@ -7,17 +7,17 @@ module.exports = function(background, camera, calc){
         this.versor = new calc.Versor();
         this.vetor = []; 
         this.range = 14;
-        this.damage = 1;
+        this.damage = 5;
         this.cost = 1;
     }
     module.Blaster = function(){
         this.atirando = 0;
         this.versor = new calc.Versor();
         this.vetor = [];
-        this.damage = 999;
-        this.speed = 10;
+        this.damage = 10;
+        this.speed = 20;
         this.duration = 2;
-        this.cost = 10;
+        this.cost = 5;
     }
     module.Shield = function(){
         this.up = true;

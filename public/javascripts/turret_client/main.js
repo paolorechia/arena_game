@@ -16,7 +16,9 @@ socket.on('asteroides', function(novo){
     asteroides.vetor = novo;
 });
 var blasters = [];
+var previous_blasters = [];
 socket.on('blasters', function(received_blasters){
+    previous_blasters = blasters;
     blasters = received_blasters;
 });
 var my_id = 0;
@@ -81,10 +83,14 @@ atirou = function(status_tiro){
 
 function desenhaBlasters(){
     for (var i = 0; i < blasters.length; i++){
-        desenhaBlaster(blasters[i]);
+        if (previous_blasters[i] != undefined)
+            desenhaBlaster(blasters[i], previous_blasters[i]);
     }
 }
-function desenhaBlaster(blaster){
+// um jeito interessante de desenhar que fiz para brincar eh
+// desenhar uma linha da nave ateh as coordenadas do inimigo
+// o efeito eh tipo um laser que vai em direcao ao inimigo 
+function desenhaBlaster(blaster, previous){
     var borda_esq = turret.x - camera.width/2;      
     var borda_dir = turret.x + camera.width/2;
     var borda_sup = turret.y - camera.height/2;
@@ -92,14 +98,13 @@ function desenhaBlaster(blaster){
         // e soh entao desenha na tela
         // calcula as coordenadas em relacao ao canvas menor
         // (cada canvas teu o seu sistema de coordenadas)
-    var id = players_id.indexOf(blaster.owner);
-    var x0 = players[id].x - borda_esq;
-    var y0 = players[id].y - borda_sup;
+    var x0 = previous.x - borda_esq;
+    var y0 = previous.y - borda_sup;
     var x1 = blaster.x - borda_esq;
     var y1 = blaster.y - borda_sup;
+    ctx_turret.strokeStyle= "#FF0000";
     ctx_turret.moveTo(x0, y0);
     ctx_turret.lineTo(x1, y1);
-    ctx_turret.strokeStyle = "FF0000";
     ctx_turret.stroke();
 }
 /* conjunto de eventos lidos a partir do mouse e do teclado,

@@ -160,11 +160,13 @@ module.exports = function(asteroides, background, camera, players, calc, turret,
 //                                console.log("distance is: ", dist);
                                 if (dist < asteroides.vetor[j].tam * 5){
 //                                   console.log("acertei um ast");
+                                   if (players[shot.owner] != undefined){
                                    asteroides.vetor[j].hp -= players[shot.owner].blaster.damage;
                                    blasters.vetor.splice(i, 1);
                                    if (asteroides.vetor[j].hp <= 0){
                                        asteroides.destroi(j);
                                     }
+                                   }
                                 }
                             }
                         }
