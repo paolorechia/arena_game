@@ -15,7 +15,6 @@ module.exports = function(background, camera, calc){
         this.versor = new calc.Versor();
         this.vetor = [];
         this.damage = 999;
-        this.size = 6;
         this.speed = 5;
         this.duration = 2;
         this.cost = 10;

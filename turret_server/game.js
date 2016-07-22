@@ -26,7 +26,7 @@ module.exports = function(io){
     var players = {};
     var update = require('./update.js')(players, asteroides, blasters, calc, turret);
     var net = require('./network.js')(io, players, asteroides, turret, update)
-    var colisoes = require('./colisoes.js')(asteroides, background, camera, players, calc, turret);
+    var colisoes = require('./colisoes.js')(asteroides, background, camera, players, calc, turret, blasters);
 
     var i = 0;
     // loop principal (infinito)
@@ -41,7 +41,8 @@ module.exports = function(io){
         if (i % 10 == 0){
             update.asteroides();
             update.turrets();
-            update.lasers();
+            update.shooting();
+            update.blasters();
             colisoes.tudo();
             io.sockets.emit('message', i);
         }

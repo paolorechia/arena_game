@@ -1,5 +1,5 @@
 // colisoes
-module.exports = function(asteroides, background, camera, players, calc, turret){
+module.exports = function(asteroides, background, camera, players, calc, turret, blasters){
     var module = {};
 
     // variaveis auxiliares 
@@ -18,6 +18,7 @@ module.exports = function(asteroides, background, camera, players, calc, turret)
             module.asteroides();
             // depois turrets
             module.naves();
+            module.shots();
         }
 
         // funcoes booleanas
@@ -46,8 +47,7 @@ module.exports = function(asteroides, background, camera, players, calc, turret)
                 else
                     return false;
         }
-
-        module.asteroides = function(){
+ module.asteroides = function(){
             for (i = 0; i < asteroides.vetor.length; i++){
                 // pega um asteroide do vetor
                 var asteroide = asteroides.vetor[i];
@@ -139,5 +139,40 @@ module.exports = function(asteroides, background, camera, players, calc, turret)
                    }
             }
         }
+        module.shots = function(){
+            for (var i = 0; i < blasters.vetor.length; i++){
+                shot = blasters.vetor[i];
+                if (shot != undefined){
+                    if (saiuMapa(shot.x, shot.y)){
+                        blasters.vetor.splice(i, 1);
+                    }
+                    else{
+                        for (var j = 0; j < asteroides.vetor.length; j++){
+                            if (asteroides.vetor[j] != undefined){
+                                dist = calc.distGeometrica(shot.x, shot.y,
+                                                           asteroides.vetor[j].x,
+                                                           asteroides.vetor[j].y);
+                                if (dist < asteroides.vetor[j].raio){
+                                   asteroides.destroi(j);
+                                   blasters.vetor.splice(i, 1);
+                                }
+                            }
+                        }
+                    }
+                    if (shot != undefined){
+                        for (var id in players){
+                            var alvo = players[id];
+                            dist = calc.distGeometrica(shot.x, shot.y,
+                                                       alvo.x, alvo.y);
+                            if (dist < alvo.raio){
+                                sofreDano(alvo, players[shot.owner].blaster.damage);
+                                blasters.vetor.splice(i, 1);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         return module;
 }

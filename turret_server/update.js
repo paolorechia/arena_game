@@ -23,9 +23,10 @@ module.exports = function(players, asteroides, blasters, calc, turret){
         }
     }
     // atualiza estado do laser de todos os jogadores
-    module.lasers = function(){
+    module.shooting = function(){
         for (var id in players){
             module.laser(players[id]);
+            module.blaster(players[id], id);
         }
     }
     module.shields = function(){
@@ -42,32 +43,39 @@ module.exports = function(players, asteroides, blasters, calc, turret){
         }
     } 
     module.blasters = function(){
-        
-    module.blaster = function(nave){
-        if (nave.blaster.atirando == 0 || turret.energy.overheat == true){
+        var i = 0;
+        var len = blasters.vetor.length;
+        for (i = 0; i < len; i++){
+            if (blasters.vetor[i] != undefined){
+                blasters.vetor[i].duration -= 1;
+                if (blasters.vetor[i].duration <= 0)
+                    blasters.vetor.splice(i, 1);
+                else{
+                    blasters.vetor[i].x += blasters.vetor[i].versor.x * blasters.vetor[i].speed;
+                    blasters.vetor[i].y += blasters.vetor[i].versor.y * blasters.vetor[i].speed;
+                }
+            }
+        }
+    }
+    module.blaster = function(nave, id){
+        if (nave.blaster.atirando == 0 || nave.energy.overheat == true){
             return;
         }
         nave.blaster.atirando = 0;
+        nave.energy.points -= nave.blaster.cost;
         console.log("shot a blaster!");
-        nave.blaster.versor = calc.versorArma(turret);
+        console.log(blasters.vetor);
+        nave.blaster.versor = calc.versorArma(nave);
         var base = 2;
         var x0 = nave.pos.x + nave.blaster.versor.x * nave.raio * base;
         var y0 = nave.pos.y + nave.blaster.versor.y * nave.raio * base;
-        tiro = new blasters.shot(x0, y0, 
+        tiro = new blasters.Shot(x0, y0, 
                                 nave.blaster.speed, 
-                                nave.blaster.size,
-                                nave.blaster.versor
+                                nave.blaster.versor,
+                                nave.blaster.duration * 100
                                 );
+        tiro.owner = id;
         blasters.vetor.push(tiro);
-    }
-        var i = 0;
-        var len = asteroides.vetor.length;
-        for (i = 0; i < len; i++){
-            // a cada interacao as coordenadas de um asteroide sao puxadas
-            // e multiplacadas pelo versor desse asteroide
-            asteroides.vetor[i].x += asteroides.vetor[i].v.x * asteroides.vetor[i].vel;
-            asteroides.vetor[i].y += asteroides.vetor[i].v.y * asteroides.vetor[i].vel;
-        }
     }
     module.laser = function (turret){
         if (turret.laser.atirando == 0 || turret.energy.overheat == true){
