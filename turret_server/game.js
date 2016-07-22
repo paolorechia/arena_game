@@ -38,7 +38,7 @@ module.exports = function(io){
                 asteroides.cria();
             }
         }
-        if (i % 120 == 0){
+        if (i % 30 == 0){
             update.asteroides();
             update.turrets();
             update.shooting();
