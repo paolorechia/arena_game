@@ -18,12 +18,13 @@ module.exports = function(io){
     };
     console.log(camera);
     console.log(background);
+    var blasters = require('./blasters.js')(camera);
     var calc = require('./calculo.js')(camera);
     console.log(calc);
     var turret = require ('./turret.js')(background, camera, calc);
     var asteroides = require('./asteroides.js')(background, calc);
     var players = {};
-    var update = require('./update.js')(players, asteroides, calc, turret);
+    var update = require('./update.js')(players, asteroides, blasters, calc, turret);
     var net = require('./network.js')(io, players, asteroides, turret, update)
     var colisoes = require('./colisoes.js')(asteroides, background, camera, players, calc, turret);
 

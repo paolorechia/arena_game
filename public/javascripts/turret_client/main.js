@@ -82,7 +82,7 @@ A cada escuta de evento é associada uma acao + uma funcao
 c_turret.addEventListener("mousemove", pegaCoordenadas, false);
 c_turret.addEventListener("mousedown", function(){ atirou(1)}, false);
 c_turret.addEventListener("mouseup", function(){ atirou(0)}, false);
-window.addEventListener("keydown", function(event){ turret.atualizaDirecao(event)}, false);
+window.addEventListener("keydown", function(event){ turret.atualizaInput(event)}, false);
 
 
 //incializacao de variaveis do loop principal

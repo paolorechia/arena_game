@@ -10,6 +10,16 @@ module.exports = function(background, camera, calc){
         this.damage = 1;
         this.cost = 1;
     }
+    module.Blaster = function(){
+        this.atirando = 0;
+        this.versor = new calc.Versor();
+        this.vetor = [];
+        this.damage = 999;
+        this.size = 6;
+        this.speed = 5;
+        this.duration = 2;
+        this.cost = 10;
+    }
     module.Shield = function(){
         this.up = true;
         this.points;
@@ -30,14 +40,18 @@ module.exports = function(background, camera, calc){
         this.points;
         this.resistance = 0;
     }
+    
     module.Turret = function (x, y){
         this.versor = new calc.Versor();
         this.pos = new calc.Coordenadas();
         this.cursor = new calc.Coordenadas();
         this.laser = new module.Laser();
+        this.blaster = new module.Blaster();
         this.shield = new module.Shield();
         this.energy = new module.Energy();
         this.hull = new module.Hull();
+        this.armas = ["laser", "blaster"]
+        this.arma_atual ="laser";
         this.raio = 15;
         this.vel = 0;
         this.acel= 4;
@@ -101,6 +115,20 @@ module.exports = function(background, camera, calc){
                    turret.energy.overheat_cooldown * 1000);
         }
     };
+    module.trocaArma = function(nave){
+        var i = nave.armas.indexOf(nave.arma_atual);
+        i = (i + 1) % (nave.armas.length);
+        nave.arma_atual = nave.armas[i];
+        console.log("troquei! agora uso: ", nave.arma_atual);
+    }
+    module.atira = function (nave, atirou){
+        if (nave.arma_atual == "laser")
+            nave.laser.atirando = atirou;
+        else if (nave.arma_atual =="blaster")
+            nave.blaster.atirando = atirou;
+        else
+            console.log("arma invalida!! le bugz");
+    }
     module.morte = function (turret){
         turret.pos.x = -1600;
         turret.pos.y = -900;
@@ -128,7 +156,7 @@ module.exports = function(background, camera, calc){
                 this.versor.x= 0;
                 this.versor.y= 0;
     }
-    module.atualizaDirecao = function (key, id, players){
+    module.processaInput= function (key, id, players){
            var turret = players[id];
 //           console.log(turret);
            if (key == 'w'){
@@ -153,6 +181,9 @@ module.exports = function(background, camera, calc){
                     turret.versor.x = (turret.versor.x - turret.turn_rate);
                 }
                 turret.vel += turret.acel;
+            }
+            if (key == ' '){
+                module.trocaArma(turret);
             }
     }
 

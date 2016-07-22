@@ -26,18 +26,22 @@ var turret = {
     
     // pega o evento de teclado, confere qual eh, atualiza o versor do turret
     // e incrementa velocidade
-    'atualizaDirecao' : function (event){
+    'atualizaInput' : function (event){
         if (event.key == 'w'){
-            socket.emit('direcao', 'w');
+            socket.emit('input', 'w');
         }
         if (event.key == 's'){
-            socket.emit('direcao', 's');
+            socket.emit('input', 's');
         }
         if (event.key == 'd'){
-            socket.emit('direcao', 'd');
+            socket.emit('input', 'd');
         }
         if (event.key == 'a'){
-            socket.emit('direcao', 'a');
+            socket.emit('input', 'a');
+        }
+        if (event.key == ' '){
+            console.log("mandando espaco");
+            socket.emit('input', ' ');
         }
     },
     // sempre executada no loop principal, move turret na direcao atual 

@@ -14,7 +14,7 @@ module.exports = function(stub){
         this.x = 0;
         this.y = 0;
     }
-    module.laserVersor= function(turret){
+    module.versorArma= function(turret){
             // pega coordenadas e desloca origem para o centro
             
             var x = turret.cursor.x - turret.pos.x;
@@ -25,8 +25,10 @@ module.exports = function(stub){
             var a = 1 / mod;
 
             // calcula versor
-            turret.laser.versor.x = x * a;
-            turret.laser.versor.y = y * a;
+            versor = new module.Versor;
+            versor.x = x * a;
+            versor.y = y * a;
+            return versor;
     }
     module.distGeometrica = function(x0, y0, x1, y1){
             var x = Math.pow((x0 - x1), 2);

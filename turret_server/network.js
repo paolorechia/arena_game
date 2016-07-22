@@ -11,10 +11,9 @@ module.exports = function(io, players, asteroides, turret, update){
         players[socket.id] = turret.cria();
         socket.emit('myid', socket.id);
         console.log(socket.id + " has connected");
-        socket.on('direcao', function(key){
-            console.log("recebi direcao: " + key);
-            turret.atualizaDirecao(key, socket.id, players);
-            socket.emit('direcao', (key));
+        socket.on('input', function(key){
+            console.log("recebi input: " + key);
+            turret.processaInput(key, socket.id, players);
         });
         socket.on('disconnect', function(){
             console.log(socket.id + " has disconnected");
@@ -31,7 +30,7 @@ module.exports = function(io, players, asteroides, turret, update){
         });
         socket.on('tiro', function(atirou){
 //            console.log(atirou);
-            players[socket.id].laser.atirando = atirou;
+            turret.atira(players[socket.id], atirou);
             if (atirou == 1){
                 console.log("TAC TACC TAC");
             }
