@@ -9,3 +9,5 @@ npm install favicon
 npm install cookie-parser
 npm install body-parser
 npm install socket.io
+npm install serve-favicon
+npm install morgan 
