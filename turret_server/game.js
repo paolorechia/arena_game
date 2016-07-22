@@ -38,7 +38,7 @@ module.exports = function(io){
                 asteroides.cria();
             }
         }
-        if (i % 10 == 0){
+        if (i % 20 == 0){
             update.asteroides();
             update.turrets();
             update.shooting();
@@ -47,18 +47,18 @@ module.exports = function(io){
             io.sockets.emit('message', i);
         }
 
-        if (i % 30 == 0){
+        if (i % 40 == 0){
             net.enviaTurrets();
             net.enviaAsteroides();
             net.enviaLasers();
             net.enviaBlasters();
         }
 
-        if (i % 100 == 0){
+        if (i % 90 == 0){
             update.shields();
             update.energies();
         }
-        if (i % 60 == 0){
+        if (i % 90 == 0){
             net.enviaStatus();
         /*
             console.log('\033c');
