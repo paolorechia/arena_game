@@ -25,7 +25,7 @@ module.exports = function(io){
     var asteroides = require('./asteroides.js')(background, calc);
     var players = {};
     var update = require('./update.js')(players, asteroides, blasters, calc, turret);
-    var net = require('./network.js')(io, players, asteroides, turret, update)
+    var net = require('./network.js')(io, players, asteroides, turret, update, blasters)
     var colisoes = require('./colisoes.js')(asteroides, background, camera, players, calc, turret, blasters);
 
     var i = 0;
@@ -51,6 +51,7 @@ module.exports = function(io){
             net.enviaTurrets();
             net.enviaAsteroides();
             net.enviaLasers();
+            net.enviaBlasters();
         }
 
         if (i % 100 == 0){
