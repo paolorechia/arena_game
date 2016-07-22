@@ -11,6 +11,7 @@ module.exports = function(background, camera, calc){
         this.cost = 1;
     }
     module.Blaster = function(){
+        this.on_cooldown = false;
         this.atirando = 0;
         this.versor = new calc.Versor();
         this.vetor = [];
@@ -18,6 +19,7 @@ module.exports = function(background, camera, calc){
         this.speed = 20;
         this.duration = 2;
         this.cost = 5;
+        this.cooldown_time = 50; // time between shots, AKA rate of fire
     }
     module.Shield = function(){
         this.up = true;
@@ -58,6 +60,13 @@ module.exports = function(background, camera, calc){
         this.max_speed = 4;
         this.ast_kills = 0;
         this.player_kills = 0;
+    }
+    module.blasterResetCooldown = function (blaster){
+            blaster.on_cooldown = false;
+    }
+    module.blasterSetCooldown = function(blaster){
+            blaster.on_cooldown = true;
+            setTimeout(function(){module.blasterResetCooldown(blaster);}, blaster.cooldown_time);
     }
     module.cria = function (){
         var turret = new module.Turret();

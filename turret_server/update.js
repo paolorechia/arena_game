@@ -58,10 +58,11 @@ module.exports = function(players, asteroides, blasters, calc, turret){
         }
     }
     module.blaster = function(nave, id){
-        if (nave.blaster.atirando == 0 || nave.energy.overheat == true){
+        if (nave.blaster.atirando == 0 || nave.energy.overheat == true ||
+            nave.blaster.on_cooldown == true){
             return;
         }
-        nave.blaster.atirando = 0;
+        turret.blasterSetCooldown(nave.blaster);
         nave.energy.points -= nave.blaster.cost;
         console.log("shot a blaster!");
 //        console.log(blasters.vetor);
