@@ -100,10 +100,11 @@ function desenhaBlaster(blaster, previous){
             // (cada canyvas teu o seu sistema de coordenadas)
         var x1 = blaster.x - borda_esq;
         var y1 = blaster.y - borda_sup;
-        vx = blaster.versor.x * blaster.speed * 2;
-        vy = blaster.versor.y * blaster.speed * 2;
-        var y0 = y1 + vy;
-        var x0 = x1 + vx;
+        console.log(blaster);
+        var x0 = (blaster.x - blaster.versor.x * 10);
+        var y0 = blaster.y - blaster.versor.y * 10;
+        console.log(x0, y0);
+        console.log(x1, y1);
         ctx_turret.beginPath();
         ctx_turret.strokeStyle= "#FF0000";
         ctx_turret.moveTo(x1, y1);

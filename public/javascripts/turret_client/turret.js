@@ -40,7 +40,6 @@ var turret = {
             socket.emit('input', 'a');
         }
         if (event.key == ' '){
-            console.log("mandando espaco");
             socket.emit('input', ' ');
         }
     },
