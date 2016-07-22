@@ -64,7 +64,7 @@ module.exports = function(players, asteroides, blasters, calc, turret){
         nave.blaster.atirando = 0;
         nave.energy.points -= nave.blaster.cost;
         console.log("shot a blaster!");
-        console.log(blasters.vetor);
+//        console.log(blasters.vetor);
         nave.blaster.versor = calc.versorArma(nave);
         var base = 2;
         var x0 = nave.pos.x + nave.blaster.versor.x * nave.raio * base;

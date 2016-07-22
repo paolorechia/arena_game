@@ -141,32 +141,55 @@ module.exports = function(asteroides, background, camera, players, calc, turret,
         }
         module.shots = function(){
             for (var i = 0; i < blasters.vetor.length; i++){
+//            console.log("im checking blasters colisions...");
                 shot = blasters.vetor[i];
                 if (shot != undefined){
+//                console.log("im checking if blaster left board...");
                     if (saiuMapa(shot.x, shot.y)){
+                        console.log("blaster left board...");
                         blasters.vetor.splice(i, 1);
                     }
                     else{
                         for (var j = 0; j < asteroides.vetor.length; j++){
+//                         console.log("im checking if blaster hits an ast...");
                             if (asteroides.vetor[j] != undefined){
+//                                console.log("found an ast candidate");
                                 dist = calc.distGeometrica(shot.x, shot.y,
                                                            asteroides.vetor[j].x,
                                                            asteroides.vetor[j].y);
-                                if (dist < asteroides.vetor[j].raio){
-                                   asteroides.destroi(j);
+//                                console.log("distance is: ", dist);
+                                if (dist < asteroides.vetor[j].tam * 5){
+//                                   console.log("acertei um ast");
+                                   asteroides.vetor[j].hp -= players[shot.owner].blaster.damage;
                                    blasters.vetor.splice(i, 1);
+                                   if (asteroides.vetor[j].hp <= 0){
+                                       asteroides.destroi(j);
+                                    }
                                 }
                             }
                         }
                     }
                     if (shot != undefined){
                         for (var id in players){
-                            var alvo = players[id];
-                            dist = calc.distGeometrica(shot.x, shot.y,
-                                                       alvo.x, alvo.y);
-                            if (dist < alvo.raio){
-                                sofreDano(alvo, players[shot.owner].blaster.damage);
-                                blasters.vetor.splice(i, 1);
+                                if (id != shot.owner){
+                                    var alvo = players[id];
+/*
+                                console.log('\033c');
+                                console.log(alvo);
+                                console.log(alvo.raio);
+*/
+                                dist = calc.distGeometrica(shot.x, shot.y,
+                                                           alvo.pos.x, alvo.pos.y);
+//                               console.log("distance is: ", dist);
+                                if (dist < alvo.raio){
+                                    turret.sofreDano(alvo, players[shot.owner].blaster.damage);
+                                    console.log("acertei uma nave ");
+                                    blasters.vetor.splice(i, 1);
+                                    if (alvo.hull.points < 0){
+                                         turret.matouNave(players[shot.owner], alvo)
+                                         turret.respawnInTime(alvo, 5);
+                                    }
+                                }
                             }
                         }
                     }
