@@ -1,7 +1,8 @@
 # bash script para configurar o ec2 automagicamente
 sudo yum -y update
 sudo yum -y install git
-curl --silent --location https://rpm.nodesource.com/setup_6.x | bash -yum -y install nodejs
+curl --silent --location https://rpm.nodesource.com/setup_6.x |sudo bash -
+yum -y install nodejs
 git clone https://bitbucket.org/diogomiloco/arena_game/
 cd arena_game
 npm install express
