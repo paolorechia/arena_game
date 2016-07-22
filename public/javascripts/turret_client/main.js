@@ -82,8 +82,8 @@ atirou = function(status_tiro){
 }
 
 function desenhaBlasters(){
-    for (var i = 0; i < blasters.length; i++){
-        if (previous_blasters[i] != undefined)
+    for (var i = 0; i < previous_blasters.length; i++){
+        if (previous_blasters[i] != undefined && blasters[i] != undefined)
             desenhaBlaster(blasters[i], previous_blasters[i]);
     }
 }
@@ -144,6 +144,7 @@ function mainLoop(timestamp){
     asteroides.desenhaTodos();          // desenha todos os asteroides do vetor
     inimigo.desenhaTodos();
     inimigo.desenhaLasers();
+    desenhaBlasters();
     calculo.versor(turret.versor);      // calcula vetor versor (de geometria analitica) do turret
     turret.desenha(ctx_turret, turret.raio, turret.gira(turret, coord));                      // desenha o turret atualizado com a rotacao
     if (bool) {
@@ -155,7 +156,6 @@ function mainLoop(timestamp){
     turret.vetorLaser.length = 0;       // reseta laser
     turret.hud.desenhar(turret.hud.stats);      // desenha hud
     requestAnimationFrame(mainLoop);            // chama proxima iteracao do loop
-    desenhaBlasters();
 }
 
 

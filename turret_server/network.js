@@ -73,7 +73,9 @@ module.exports = function(io, players, asteroides, turret, update, blasters){
             var range = players[id].laser.range;
             var first = players[id].laser.vetor[0];
             var last = players[id].laser.vetor[range-1];
-            lasers.push({first, last}); } //            console.log("sending lasers... ", lasers); io.sockets.emit('lasers', lasers);
+            lasers.push({first, last}); }
+  //          console.log("sending lasers... ", lasers); 
+            io.sockets.emit('lasers', lasers);
     }
     module.enviaStatus = function (){
         for (var id in io.sockets.connected){

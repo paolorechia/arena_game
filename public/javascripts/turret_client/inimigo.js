@@ -80,13 +80,12 @@ var inimigo = {
 
     'desenhaLasers' : function(){
         for (var i = 0; i < players.length; i++){
-            if (players_id[i] != my_id){
                var laser = lasers[i]; 
+               //console.log(laser);
                if (laser != undefined && laser.first != undefined){
                    inimigo.desenhaLaser(laser.first.x, laser.first.y,
                                        laser.last.x,  laser.last.y);
                }
-            }
         }
     },
     'desenhaTodos' : function(){
