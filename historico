@@ -1,0 +1,500 @@
+   37  cd ..
+   38  cd. .
+   39  cd ..
+   40  cd turret_server/
+   41  ls
+   42  vim colisoes.js 
+   43  cd ..
+   44  git add . --all
+   45  git commit -m "colisao do blaster corrigida, funfuncionando"
+   46  git push
+   47  cd turret_server/
+   48  ls
+   49  vim turret.js 
+   50  vim colisoes.js 
+   51  :q
+   52  cd arena_game/public/javascripts/turret_client/
+   53  ls
+   54  vim turret.js 
+   55  vim inimigo.js 
+   56  vim turret.js 
+   57  cd arena_game/turret_server/
+   58  ls
+   59  vim network.js 
+   60  vim turret.js 
+   61  vim update.js 
+   62  vim network.js 
+   63  vim game.js 
+   64  vim update.js 
+   65  vim turret.js 
+   66  vim turret.js 
+   67  vim calculo.js 
+   68  vim turret.js 
+   69  vim asteroides.js 
+   70  ls
+   71  vim game.js 
+   72  vim update.js 
+   73  cd ..
+   74  git add . --all
+   75  git commit -m "adicionado troca de arma; desenvolvendo blaster"
+   76  git push
+   77  cd turret_server/
+   78  ls
+   79  vim blasters.js 
+   80  vim update.js 
+   81  vim game.js 
+   82  vim update.js 
+   83  vim game.js 
+   84  vim turret.js 
+   85  vim update.js 
+   86  vim calculo.js 
+   87  vim update.js 
+   88  vim asteroides.js
+   89  vim update.js 
+   90  vim update.js 
+   91  vim colisoes.js 
+   92  cd ..
+   93  git add . --all
+   94  git commit -m "colisao de blaster programada, na nao funciona por algum motivo"
+   95  git push
+   96  cd turret_server/
+   97  ls
+   98  vim network.js 
+   99  vim network.js 
+  100  vim game.js 
+  101  vim network.js 
+  102  vim game.js 
+  103  vim turret.js 
+  104  vim colisoes.js 
+  105  vim game.js 
+  106  cd ..
+  107  ls
+  108  cd public/javascripts/turret_client/
+  109  ls
+  110  vim main.js 
+  111  cd ..
+  112  cd ..
+  113  ls
+  114  cd ..
+  115  ls
+  116  cd turret_server/
+  117  ls
+  118  vim turret.js 
+  119  vim turret.js 
+  120  cd ..
+  121  git add . --all
+  122  git commit -m "blaster pintado de vermelho, custo do blaster diminuido, dano do laser aumentado; consertar grafico do laser"
+  123  git push
+  124  ls
+  125  cd arena_game/turret_server/
+  126  ls
+  127  vim network.js 
+  128  cd arena_game/
+  129  cd turret_server/
+  130  ls
+  131  vim turret.js 
+  132  ls
+  133  cd arena_game/public/javascripts/turret_client/
+  134  ls
+  135  vim turret.js 
+  136  vim main.js 
+  137  vim inimigo.js 
+  138  cd arena_game/
+  139  node app.js 
+  140  node app.js 
+  141  node app.js 
+  142  node app.js 
+  143  node app.js 
+  144  node app.js 
+  145  node app.js 
+  146  node app.js 
+  147  node app.js 
+  148  node app.js 
+  149  node app.js 
+  150  node app.js 
+  151  node app.js 
+  152  node app.js 
+  153  node app.js 
+  154  node app.js 
+  155  node app.js 
+  156  node app.js 
+  157  node app.js 
+  158  node app.js 
+  159  node app.js 
+  160  node app.js 
+  161  node app.js 
+  162  node app.js 
+  163  node app.js 
+  164  node app.js 
+  165  node app.js 
+  166  node app.js 
+  167  node app.js 
+  168  node app.js 
+  169  node app.js 
+  170  node app.js 
+  171  node app.js 
+  172  node app.js 
+  173  node app.js 
+  174  node app.js 
+  175  node app.js 
+  176  node app.js 
+  177  node app.js 
+  178  node app.js 
+  179  node app.js 
+  180  node app.js 
+  181  node app.js 
+  182  node app.js 
+  183  node app.js 
+  184  node app.js 
+  185  node app.js 
+  186  node app.js 
+  187  node app.js 
+  188  node app.js 
+  189  node app.js 
+  190  node app.js 
+  191  node app.js 
+  192  node app.js 
+  193  node app.js 
+  194  node app.js 
+  195  node app.js 
+  196  node app.js 
+  197  node app.js 
+  198  node app.js 
+  199  node app.js 
+  200  node app.js 
+  201  node app.js 
+  202  node app.js 
+  203  node app.js 
+  204  ls
+  205  node app.js 
+  206  node app.js 
+  207  node app.js 
+  208  node app.js 
+  209  node app.js 
+  210  node app.js 
+  211  node app.js 
+  212  node app.js 
+  213  node app.js 
+  214  node app.js 
+  215  node app.js 
+  216  node app.js 
+  217  node app.js 
+  218  node app.js 
+  219  node app.js 
+  220  node app.js 
+  221  node app.js 
+  222  node app.js 
+  223  node app.js 
+  224  node app.js 
+  225  node app.js 
+  226  node app.js 
+  227  node app.js 
+  228  node app.js 
+  229  node app.js 
+  230  node app.js 
+  231  node app.js 
+  232  node app.js 
+  233  node app.js 
+  234  node app.js 
+  235  node app.js 
+  236  git push heroku master
+  237  git commit -m "deshabilitando laser para testar lag"
+  238  git push heroku master
+  239  cd turret_server/
+  240  ls
+  241  vim network.js 
+  242  cd ..
+  243  ls
+  244  vim setup_ec2.sh 
+  245  rm ec2-user\@ec2-52-67-69-138.sa-east-1.compute.amazonaws.com 
+  246  git add . --all
+  247  git comit -m "arrumando script..."
+  248  git commit -m "arrumando script..."
+  249  git push
+  250  cd arena_game/
+  251   scp -i ~/.ssh/paoloaws-key.pem ~/arena_game/install_ec2.sh ec2-user@ec2-52-67-69-138.sa-east-1.compute.amazonaws.com:~/
+  252  vim setup_ec2.sh 
+  253  vim setup_ec2.sh 
+  254  vim install_ec2.sh 
+  255  vim setup_ec2.sh 
+  256  vim stub
+  257  gx stub 
+  258  stub meusite
+  259  stub 
+  260  stub  scp -i ~/.ssh/paoloaws-key.pem ~/arena_game/install_ec2.sh ec2-user@ec2-52-67-69-138.sa-east-1.compute.amazonaws.com:~/
+  261  stub 
+  262  stub ec2-52-67-69-138.sa-east-1.compute.amazonaws.com
+  263  vim setup_ec2.sh 
+  264  setup_ec2.sh ec2-52-67-69-138.sa-east-1.compute.amazonaws.com
+  265  setup_ec2.sh ec2-52-67-69-138.sa-east-1.compute.amazonaws.com
+  266  ls
+  267  vim setup_ec2.sh 
+  268  chmod 400 install_ec2.sh 
+  269  ls -lh
+  270  setup_ec2.sh ec2-52-67-69-138.sa-east-1.compute.amazonaws.com
+  271  cd arena_game/
+  272  ls
+  273  cd public/javascripts/turret_client/
+  274  ls
+  275  vim inimigo.js 
+  276  vim main.js 
+  277  vim main.js 
+  278  vim main.js 
+  279  vim inimigo.js 
+  280  vim main.js 
+  281  vim inimigo.js 
+  282  vim main.js 
+  283  cd ..
+  284  cd ..
+  285  cd ..
+  286  ls
+  287  git add . --all
+  288  git commit -m "descomentado linha que nao envia lasers para os clientes"
+  289  git push
+  290  git push
+  291  git heroku push master
+  292  git push heroku master
+  293  cd turret_server/
+  294  ls
+  295  vim network.js 
+  296  cd ..
+  297  git add . --all
+  298  node app.js 
+  299  ls
+  300  setup_ec2.sh ec2-52-67-69-138.sa-east-1.compute.amazonaws.com
+  301  ls
+  302  vim setup_ec2.sh 
+  303  vim setup_ec2.sh 
+  304  vim setup_ec2.sh 
+  305  cat setup_ec2.sh 
+  306  scp -i ~/.ssh/paoloaws-key.pem ~/arena_game/install_e2.sh ec2-user@$1:~/
+  307  scp -i ~/.ssh/paoloaws-key.pem ~/arena_game/install_e2.sh ec2-user@ec2-52-67-69-138.sa-east-1.compute.amazonaws.com
+  308  vim setup_ec2.sh 
+  309  scp -i ~/.ssh/paoloaws-key.pem ~/arena_game/install_ec2.sh ec2-user@ec2-52-67-69-138.sa-east-1.compute.amazonaws.com
+  310  ssh -i ~/.ssh/paoloaws-key.pem ec2-user@$1
+  311  ssh -i ~/.ssh/paoloaws-key.pem ec2-user@ec2-52-67-69-138.sa-east-1.compute.amazonaws.com
+  312  scp -i ~/.ssh/paoloaws-key.pem ~/arena_game/install_ec2.sh ec2-user@ec2-52-67-69-138.sa-east-1.compute.amazonaws.com
+  313  ssh -i ~/.ssh/paoloaws-key.pem ec2-user@ec2-52-67-69-138.sa-east-1.compute.amazonaws.com
+  314  ssh -i ~/.ssh/paoloaws-key.pem ec2-user@ec2-52-67-69-138.sa-east-1.compute.amazonaws.com
+  315  ssh -i ~/.ssh/paoloaws-key.pem ec2-user@ec2-52-67-69-138.sa-east-1.compute.amazonaws.com
+  316* 
+  317  ssh pasr13@talisker.c3sl.ufpr.br
+  318  cd arena_game/
+  319  node app.js 
+  320  node app.js 
+  321  node app.js 
+  322  node app.js 
+  323  node app.js 
+  324  node app.js 
+  325  node app.js 
+  326  node app.js 
+  327  node app.js 
+  328  node app.js 
+  329  ls
+  330  cd arena_game/
+  331  ls
+  332  git status
+  333  rm stub 
+  334  ls
+  335  git add . --all
+  336  git commit -m "atualizando scripts"
+  337  git push
+  338  ls
+  339  cd turret_server/
+  340  ls
+  341  cd ..
+  342  cd public/
+  343  cd javascripts/
+  344  ls
+  345  cd turret_client/
+  346  ls
+  347  vim turret.js 
+  348  ls
+  349  vim main.js 
+  350  cd ..
+  351  cd ..
+  352  cd ..
+  353  ls
+  354  git add . --all
+  355  git commit -m "glitch do desenho arrumado, metodo substituído por um mais simplese"
+  356  git push
+  357  cd turret_server/
+  358  ls
+  359  vim turret.js 
+  360  vim network.js 
+  361  vim turret.js 
+  362  vim update.js 
+  363  vim turret.js 
+  364  vim turret.js 
+  365  vim blasters.js 
+  366  vim game.js 
+  367  vim update.js 
+  368  vim turret.js 
+  369  vim update.js 
+  370  vim turret.js 
+  371  git status
+  372  cd ..
+  373  ls
+  374  git push heroku master
+  375  ls
+  376  cd arena_game/
+  377  ls
+  378  cd turret_server/
+  379  ls
+  380  vim game.js
+  381  vim game.js
+  382  vim game.js
+  383  cd arena_game/turret_server/
+  384  vim update.js 
+  385  cd ..
+  386  cd turret_server/
+  387  vim update.js 
+  388  cd ..
+  389  node app.js 
+  390  node app.js 
+  391  cd turret_server/
+  392  vim update.js 
+  393  cd ..
+  394  git add . --all
+  395  git commit -m "blaster com disparo automatico"
+  396  git push
+  397  cd turret_server/
+  398  vim game.js 
+  399  node app
+  400  cd ..
+  401  node app.js 
+  402  node app.js 
+  403  node app.js 
+  404  node app.js 
+  405  node app.js 
+  406  node app.js 
+  407  git stash
+  408  git branch lento
+  409  git checkout lento
+  410  git stash apply
+  411  git commit -m "testando"
+  412  git push
+  413      git push --set-upstream origin lento
+  414  git push --set-upstream origin lento
+  415  git push heroku master
+  416  git push heroku lento
+  417  git push heroku lento:master
+  418  git push heroku lento:master -f
+  419  git push -f heroku lento:master
+  420  touch teste
+  421  ls
+  422  git add . --all
+  423  git commit -m "teste2"
+  424  git push -f heroku lento:master
+  425  ls
+  426  rm teste
+  427  git add . --all
+  428  git commit -m "testando 40:80:180"
+  429  git push heroku lento:master
+  430  git add . --all
+  431  git commit -m "testando 70:140:180"
+  432  git push heroku lento:master
+  433  git add . --all
+  434  git commit -m "testando 120:240:300"
+  435  git push heroku lento:master
+  436  node app.js 
+  437  node app.js 
+  438  git add . --all
+  439  git commit -m "testando 30:240:300"
+  440  git push heroku lento:master
+  441  git add . --all
+  442  git commit -m "testando 240:240:300"
+  443  git push heroku lento:master
+  444  git checkout master
+  445  node app.js 
+  446  ls
+  447  cd arena_game/
+  448  ls
+  449  cd turret_server/
+  450  ls
+  451  vim calculo.js 
+  452  vim game.js 
+  453  ls
+  454  cd arena_game/
+  455  ls
+  456  cd turret_server/
+  457  ls
+  458  vim game.js 
+  459  cd ..
+  460  git stash
+  461  git checkout lento
+  462  git stash apply
+  463  ls
+  464  git stash list
+  465  git stash drop all
+  466  git stash drop
+  467  git stash drop
+  468  git stash drop
+  469  git stash drop
+  470  git stash drop
+  471  git add . -al
+  472  git add . -all
+  473  git add . --all
+  474  git commit -m "no asteroid"
+  475  git push heroku lento:master
+  476  node app.js 
+  477  ls
+  478  cd turret_server/
+  479  ls
+  480  vim game.js 
+  481  cd ..
+  482  node app.js 
+  483  git add . --all
+  484  git commit -m "no asteroid"
+  485  git push heroku lento:master
+  486  ls
+  487  cd turret_server/
+  488  ls
+  489  vim turret.js 
+  490  vim game.js 
+  491  cd ..
+  492  node app.js 
+  493  git add . --all
+  494  git commit -m "acelerando..."
+  495  git push heroku lento:master
+  496  cd turret_server/
+  497  ls
+  498  cd network.js 
+  499  vim network.js 
+  500  git checkout master
+  501  ls
+  502  cd arena_game/
+  503  ls
+  504  vim todolist.txt
+  505  git status
+  506  vim install_ec2.sh 
+  507  ls
+  508  chmod 700 install_ec2.sh 
+  509  vim install_ec2.sh 
+  510  vim setup_ec2.sh 
+  511  vim todolist.txt 
+  512  vim setup_ec2.sh 
+  513  vim install_ec2.sh 
+  514* 
+  515  git status
+  516  vim todolist.txt 
+  517  git status
+  518  git add . --all
+  519  date
+  520  $(date) >> todolist.txt 
+  521  cat todolist.txt 
+  522  $(date) 
+  523  cat $(date) 
+  524  echo $(date) 
+  525  echo $(date) >> todolist.txt 
+  526  vim tofo
+  527  vim todolist.txt 
+  528  git add . --all
+  529  git commit -m "scripts ec2 aprimorados; todolist.txt adicionado -- hora de dar uma pausa"
+  530  git push
+  531  ssh -i ~/.ssh/paoloaws-key.pem ec2-user@ec2-52-67-69-138.sa-east-1.compute.amazonaws.com
+  532  ssh -i ~/.ssh/paoloaws-key.pem ec2-user@ec2ec2-52-67-3-47.sa-east-1.compute.amazonaws.com
+  533  ssh -i ~/.ssh/paoloaws-key.pem ec2-user@ec2ec2-52-67-3-47.sa-east-1.compute.amazonaws.com
+  534  ssh -i ~/.ssh/paoloaws-key.pem ec ec2-user@ec2-52-67-3-47.sa-east-1.compute.amazonaws.com
+  535  history
+  536  history > historico
