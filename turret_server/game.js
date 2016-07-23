@@ -32,14 +32,20 @@ module.exports = function(io){
     // loop principal (infinito)
     module.start = function(){
         i++;
-
+/*
         if (i % 10 == 0){
             if (asteroides.vetor.length < 40){
                 asteroides.cria();
             }
         }
+<<<<<<< Updated upstream
         if (i % 240 == 0){
             update.asteroides();
+=======
+*/
+        if (i % 10 == 0){
+//            update.asteroides();
+>>>>>>> Stashed changes
             update.turrets();
             update.shooting();
             update.blasters();
@@ -49,7 +55,7 @@ module.exports = function(io){
 
         if (i % 240 == 0){
             net.enviaTurrets();
-            net.enviaAsteroides();
+//            net.enviaAsteroides();
             net.enviaLasers();
             net.enviaBlasters();
         }
