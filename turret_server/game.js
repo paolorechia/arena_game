@@ -38,14 +38,11 @@ module.exports = function(io){
                 asteroides.cria();
             }
         }
-<<<<<<< Updated upstream
         if (i % 240 == 0){
             update.asteroides();
-=======
 */
         if (i % 10 == 0){
 //            update.asteroides();
->>>>>>> Stashed changes
             update.turrets();
             update.shooting();
             update.blasters();
