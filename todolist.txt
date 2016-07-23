@@ -1,0 +1,10 @@
+0. Corrigir bug do mouse que nao atualiza com o movimento;
+1. Marcar alvos de alguma forma quando sao acertados OU de acordo com a vida. Por exemplo, conforme um asteroide perde vida fica vermelho;
+1.b Exibir escudo dos adversários
+1.c Indicativo de força do escudo do inimigo
+2. Outras armas. Very explosions. Much cool;
+3. Menu de entrada no jogo, escolha de nave, armas etc;
+4. Outras naves;
+5. Movimento guiado por mouse, tiro por teclado;
+6. Movimento guiado por por teclado em dois eixos: aceleracao/freio; rotacao
+Fri Jul 22 22:59:26 BRT 2016
