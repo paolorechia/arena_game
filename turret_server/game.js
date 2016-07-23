@@ -50,18 +50,18 @@ module.exports = function(io){
             io.sockets.emit('message', i);
         }
 
-        if (i % 240 == 0){
+        if (i % 30 == 0){
             net.enviaTurrets();
 //            net.enviaAsteroides();
             net.enviaLasers();
             net.enviaBlasters();
         }
 
-        if (i % 300 == 0){
+        if (i % 100 == 0){
             update.shields();
             update.energies();
         }
-        if (i % 300 == 0){
+        if (i % 100 == 0){
             net.enviaStatus();
         /*
             console.log('\033c');
