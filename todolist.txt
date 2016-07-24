@@ -13,7 +13,25 @@ Fri Jul 22 22:59:26 BRT 2016
 
 7. rework possivel no laser: transformar em projétil, velocidade absurda, sem cooldown, dano inversamente proporcional ao tempo de propagação
 8. investigar bug no chromium -- um jogador ficou bugado e conseguia atirar 100% do tempo! haha
----------------------------
 
 
 Fri Jul 22 23:31:22 BRT 2016
+
+-----------------------------------------------
+1.d Adicionar atributo "hit" aos projéteis - dissociar a destruição do tiro da colisã, garantir primeiro que o cliente receba a informação de acerto antes de destruir; outra possibilidade é criar um outro vetor de projéteis com acerto;
+1.e A partir da informação de acerto criar efeito de splash nos projéteis para indicar graficamente o acerto;
+
+9. Teste de tempo de resposta do servidor (latency);
+
+10. Implementar DDNS na ec2 instance;
+
+11. Deixar ligado 24/7 por um mês inteiro para testar;
+
+12. Garantir que o servidor esteja sempre em uptime, com algum script que reinicializa o servidor quando crasha ou que ativa apenas quando há algum jogador conectado;
+
+3.b Deixar jogador escolher seu nick
+
+13. Construir um scoreboard para incentivar os jogadores;
+
+
+Sun Jul 24 10:46:45 BRT 2016

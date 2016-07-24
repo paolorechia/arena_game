@@ -1,3 +1,17 @@
+/*
+Copyright (C) 2016 PR & DM web dev, Inc - All rights reserved.
+Unauthorized copy, reproduction or distribution of this source code is strictly
+prohibited.
+Written by :
+1 - Paolo Rechia <paolorechia at gmail dot com>
+2 - Diogo Miloco <email...>
+
+July, 2016
+
+----------
+Please note that this code runs on top of socket.io, which is subject to the
+MIT licence*/ <a href=MITlicence.txt>, /* however all derived code is subject to the proprietary copyright described above. 
+*/
 /*puxa dois objetos tipo canvas do HTML gerado pelo node 
 o primeiro, background, eh usado para criar o espaco 
 (retangulo preto + pontos brancos)
