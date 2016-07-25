@@ -41,6 +41,8 @@ socket.on('myid', function(id){
 /* funcoes de inicializacao de variaveis*/
 
 
+var sound = document.getElementById("blaster");
+console.log(sound);
 //Versão antiga -- usar quando o bug da mira for corrigido -----
 //camera.setRes(1600, 900, c_turret);
 //--------------------------------------------------------------
@@ -192,6 +194,9 @@ function mainLoop(timestamp){
     turret.desenha(ctx_turret, turret.raio, turret.gira(turret, coord));                      // desenha o turret atualizado com a rotacao
     if (bool) {
         turret.atira();                 // apenas laser por enquanto
+        sound.pause();
+        sound.currentTime = 0.2;
+        sound.play();
 //        limob demanda que puxa esse script (e taAsteroides();
     }
 //    console.log(turret.vetorLaser);
