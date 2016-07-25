@@ -153,7 +153,10 @@ c_turret.addEventListener('mousemove', function(e) {
 
 //c_turret.addEventListener("mousemove", pegaCoordenadas, false);
 
-c_turret.addEventListener("mousedown", function(){ atirou(1)}, false);
+c_turret.addEventListener("mousedown", function(){ atirou(1); 
+                                                   sound.currentTime = 0.07;
+                                                   sound.play();},
+                                                   false);
 c_turret.addEventListener("mouseup", function(){ atirou(0)}, false);
 window.addEventListener("keydown", function(event){ turret.atualizaInput(event)}, false);
 
@@ -194,9 +197,6 @@ function mainLoop(timestamp){
     turret.desenha(ctx_turret, turret.raio, turret.gira(turret, coord));                      // desenha o turret atualizado com a rotacao
     if (bool) {
         turret.atira();                 // apenas laser por enquanto
-        sound.pause();
-        sound.currentTime = 0.2;
-        sound.play();
 //        limob demanda que puxa esse script (e taAsteroides();
     }
 //    console.log(turret.vetorLaser);
