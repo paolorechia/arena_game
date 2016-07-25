@@ -10,10 +10,10 @@ July, 2016
 
 ----------
 Please note that this code runs on top of socket.io, which is subject to the
-MIT licence however all derived code is subject to the proprietary copyright described above. 
+MIT licence however all derived code is subject to the proprietary copyright described above.
 */
-/*puxa dois objetos tipo canvas do HTML gerado pelo node 
-o primeiro, background, eh usado para criar o espaco 
+/*puxa dois objetos tipo canvas do HTML gerado pelo node
+o primeiro, background, eh usado para criar o espaco
 (retangulo preto + pontos brancos)
 o segundo c_turret, eh onde o jogo eh efetivamente desenhado e em varios
 trechos do codigo eh referenciado como camera
@@ -39,7 +39,14 @@ socket.on('myid', function(id){
    socket.emit('myid', my_id);
 });
 /* funcoes de inicializacao de variaveis*/
-camera.setRes(1600, 900, c_turret);
+
+
+//Versão antiga -- usar quando o bug da mira for corrigido -----
+//camera.setRes(1600, 900, c_turret);
+//--------------------------------------------------------------
+camera.setRes(window.innerWidth-3, window.innerHeight-3, c_turret);
+
+
 background.inicia(ctx_background, c_background);
 turret.inicia();
 
@@ -101,9 +108,9 @@ function desenhaBlasters(){
 }
 // um jeito interessante de desenhar que fiz para brincar eh
 // desenhar uma linha da nave ateh as coordenadas do inimigo
-// o efeito eh tipo um laser que vai em direcao ao inimigo 
+// o efeito eh tipo um laser que vai em direcao ao inimigo
 function desenhaBlaster(blaster, previous){
-    var borda_esq = turret.x - camera.width/2;      
+    var borda_esq = turret.x - camera.width/2;
     var borda_dir = turret.x + camera.width/2;
     var borda_sup = turret.y - camera.height/2;
     var borda_inf = turret.y + camera.height/2;
@@ -129,7 +136,21 @@ function desenhaBlaster(blaster, previous){
 na falta de um lugar melhor ainda estao aqui
 A cada escuta de evento é associada uma acao + uma funcao
 */
-c_turret.addEventListener("mousemove", pegaCoordenadas, false);
+
+
+
+//Nova forma de controlar o evento ---------------------------------------------
+var mousemove = document.createEvent('Event');
+mousemove.initEvent('mousemove', true, true);
+c_turret.addEventListener('mousemove', function(e) {
+  pegaCoordenadas(e);
+}, false)
+
+
+//------------------------------------------------------------------------------
+
+//c_turret.addEventListener("mousemove", pegaCoordenadas, false);
+
 c_turret.addEventListener("mousedown", function(){ atirou(1)}, false);
 c_turret.addEventListener("mouseup", function(){ atirou(0)}, false);
 window.addEventListener("keydown", function(event){ turret.atualizaInput(event)}, false);
@@ -146,12 +167,16 @@ ateh sistemas operacionais, sei lah pq chamam assim */
 
 function mainLoop(timestamp){
 
+
+    //c_turret.dispatchEvent(mousemove);
+
+
     tempo++;                // indice utilizado para criacao de asteroides
 //    console.log(tempo);
-    
+
     // condicional de controle de FPS, soh atualiza o quadro quando
     // o intervalo minimo de tempo eh passado
-    if (timestamp < lastFrameTimeMs + (1000/maxFPS)){   
+    if (timestamp < lastFrameTimeMs + (1000/maxFPS)){
         requestAnimationFrame(mainLoop);
         return;
     }

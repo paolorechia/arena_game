@@ -6,6 +6,7 @@ module.exports = function(io){
         height : 900,
         width : 1600,
     };
+
     var height = 3000;
     var width = 5000;
     var background = {

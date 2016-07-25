@@ -4,17 +4,40 @@ var camera = {
     height : 0,
     // seta tamanho do canvas menor
     setRes: function (width, height, canvas){
+        //Atua no canvas '#canvas_turret'
         canvas.width = width;
         canvas.height = height;
+        //--- Para alterar a resolução mantendo a res. do jogo (buga a mira)
+        //$(canvas).css('width', window.innerWidth-3)
+        //$(canvas).css('height', window.innerHeight-3)
+        //-------------------------
         camera.width = width;
         camera.height = height;
+        camera.updateResEvent(canvas);
+
+
     },
+    updateResEvent: function(canvas) {
+      window.addEventListener('resize', function(event) {
+
+        //--- Para alterar a resolução mantendo a res. do jogo (buga a mira)
+        //$(canvas).css('width', window.innerWidth-3)
+        //$(canvas).css('height', window.innerHeight-3)
+        //-------------------------
+        
+        canvas.width = window.innerWidth-3;
+        canvas.height = window.innerHeight-3;
+        camera.width = window.innerWidth-3;
+        camera.height =  window.innerHeight-3;
+
+      });
+    }
 }
 
 // objeto background, contem informacoes do canvas maior
 var background = {
     // declaracao de variaveis internas
-    imagem : new Image(), 
+    imagem : new Image(),
     imagem2 : 0,
     width : 0,
     height : 0,
@@ -46,7 +69,7 @@ var background = {
         }
     },
     'desenhaBorda' : function(ctx, camera){
-        ctx.strokeStyle = "#00002F";        
+        ctx.strokeStyle = "#00002F";
         ctx.lineWidth = 800;
         var largura = ctx.lineWidth/2;
         ctx.rect(camera.width/2 - largura, camera.height/2 - largura, background.width - camera.width + ctx.lineWidth, background.height - camera.height + ctx.lineWidth);
@@ -64,6 +87,5 @@ var background = {
         // salva background criado
         background.desenhaBorda(ctx, camera);
         background.grava(ctx, background.width, background.height);
-    },    
+    },
 }
-
