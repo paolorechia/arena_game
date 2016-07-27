@@ -160,13 +160,16 @@ c_turret.addEventListener('mousemove', function(e) {
 */
 
 
+var mobile_coord = [];
 //------------------------------------------------------------------------------
+c_turret.addEventListener("touchstart", pegaCoordenadasMobile, false);
 c_turret.addEventListener("touchstart", function(){ atirou(1); 
                                                    sound.currentTime = 0.07;
                                                    sound.play();},
                                                    false);
 c_turret.addEventListener("touchend", function(){ atirou(0)}, false);
-c_turret.addEventListener("touchmove", pegaCoordenadasMobile, false);
+//c_turret.addEventListener("touchmove", pegaCoordenadasMobile, false);
+c_turret.addEventListener("touchmove", turret.atualizaInputMobile, false);
 c_turret.addEventListener("mousemove", pegaCoordenadas, false);
 c_turret.addEventListener("mousedown", function(){ atirou(1); 
                                                    sound.currentTime = 0.07;
@@ -215,6 +218,17 @@ function mainLoop(timestamp){
     }
 //    console.log(turret.vetorLaser);
 //    colisoes.confere();                 // confere colisao de tudo (asteroides, turret, laser, bordas)
+    if (tempo % 50 == 0){
+        socket.emit('inputmobile', mobile_coord.length);
+        socket.emit('inputmobile', mobile_coord);
+        if (mobile_coord != undefined && mobile_coord[0] != undefined){
+            calculo.versor_mobile(turret.versor_mobile);
+        }
+        mobile_coord = [];
+        socket.emit('inputmobile', turret.versor_mobile);
+
+//        socket.emit('inputmobile', turret.versor_mobile);
+    }
     turret.vetorLaser.length = 0;       // reseta laser
     turret.hud.desenhar(turret.hud.stats);      // desenha hud
     requestAnimationFrame(mainLoop);            // chama proxima iteracao do loop

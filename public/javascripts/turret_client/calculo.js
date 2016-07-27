@@ -56,9 +56,20 @@ var calculo = {
         v.x = x * a;
         v.y = y * a;
     },
+    versor_mobile : function (v){
+        var len = mobile_coord.length;
+        var x = mobile_coord[0].x - mobile_coord[len-1].x;
+        var y = mobile_coord[0].y - mobile_coord[len-1].y;
+
+        var mod = Math.sqrt((Math.pow(x, 2) + Math.pow(y, 2)));
+        var a = 1 / mod;
+        v.x = x * a;
+        v.y = y * a;
+    },
     distGeometrica : function (x0, y0, x1, y1){
         var x = Math.pow((x0 - x1), 2);
         var y = Math.pow((y0 - y1), 2);
         return Math.sqrt(x + y);
     }
 }
+

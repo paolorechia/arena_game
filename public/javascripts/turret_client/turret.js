@@ -8,6 +8,7 @@ function Laser(x, y){
 var turret = {
     // declaracao/incializacao de variaveis
     versor : new Versor(),
+    versor_mobile : new Versor(),
     vetorLaser : [],
     raio : 15,
     vel : 0,
@@ -42,6 +43,12 @@ var turret = {
         if (event.key == ' '){
             socket.emit('input', ' ');
         }
+    },
+    'atualizaInputMobile' : function(event){
+        var coord = { x: event.touches[0].clientX,
+                      y: event.touches[0].clientY};
+        mobile_coord.push(coord);
+//        socket.emit('inputmobile', coord);
     },
     // sempre executada no loop principal, move turret na direcao atual 
     'move' : function(x, y){

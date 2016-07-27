@@ -12,8 +12,11 @@ module.exports = function(io, players, asteroides, turret, update, blasters){
         socket.emit('myid', socket.id);
         console.log(socket.id + " has connected");
         socket.on('input', function(key){
-            console.log("recebi input: " + key);
+        //    console.log("recebi input: " + key);
             turret.processaInput(key, socket.id, players);
+        });
+        socket.on('inputmobile', function(coord_mobile){
+            console.log(coord_mobile);
         });
         socket.on('disconnect', function(){
             console.log(socket.id + " has disconnected");
