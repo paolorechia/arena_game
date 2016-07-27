@@ -142,24 +142,31 @@ A cada escuta de evento é associada uma acao + uma funcao
 
 
 //Nova forma de controlar o evento ---------------------------------------------
+/*
 var mousemove = document.createEvent('Event');
 mousemove.initEvent('mousemove', true, true);
 c_turret.addEventListener('mousemove', function(e) {
   pegaCoordenadas(e);
 }, false)
+*/
 
 
 //------------------------------------------------------------------------------
-
-//c_turret.addEventListener("mousemove", pegaCoordenadas, false);
-
+c_turret.addEventListener("touchstart", function(){ atirou(1); 
+                                                   sound.currentTime = 0.07;
+                                                   sound.play();},
+                                                   false);
+c_turret.addEventListener("touchend", function(){ atirou(0)}, false);
+c_turret.addEventListener("touchmove", pegaCoordenadas, false);
+/*
+c_turret.addEventListener("mousemove", pegaCoordenadas, false);
 c_turret.addEventListener("mousedown", function(){ atirou(1); 
                                                    sound.currentTime = 0.07;
                                                    sound.play();},
                                                    false);
 c_turret.addEventListener("mouseup", function(){ atirou(0)}, false);
 window.addEventListener("keydown", function(event){ turret.atualizaInput(event)}, false);
-
+*/
 
 //incializacao de variaveis do loop principal
 var lastFrameTimeMs = 0;
