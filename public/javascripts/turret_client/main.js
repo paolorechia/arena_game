@@ -95,6 +95,15 @@ function pegaCoordenadas(event){
     coord.y += turret.y - camera.height/2;
     socket.emit('coord', coord);
 }
+function pegaCoordenadasMobile(event){
+    coord.x = event.touches[0].clientX;
+    coord.x -= c_turret.offsetLeft;
+    coord.x += turret.x - camera.width/2;
+    coord.y = event.touches[0].clientY;
+    coord.y -= c_turret.offsetTop;
+    coord.y += turret.y - camera.height/2;
+    socket.emit('coord', coord);
+}
 
 var bool = 0;
 atirou = function(status_tiro){
@@ -157,8 +166,7 @@ c_turret.addEventListener("touchstart", function(){ atirou(1);
                                                    sound.play();},
                                                    false);
 c_turret.addEventListener("touchend", function(){ atirou(0)}, false);
-c_turret.addEventListener("touchmove", pegaCoordenadas, false);
-/*
+c_turret.addEventListener("touchmove", pegaCoordenadasMobile, false);
 c_turret.addEventListener("mousemove", pegaCoordenadas, false);
 c_turret.addEventListener("mousedown", function(){ atirou(1); 
                                                    sound.currentTime = 0.07;
@@ -166,7 +174,6 @@ c_turret.addEventListener("mousedown", function(){ atirou(1);
                                                    false);
 c_turret.addEventListener("mouseup", function(){ atirou(0)}, false);
 window.addEventListener("keydown", function(event){ turret.atualizaInput(event)}, false);
-*/
 
 //incializacao de variaveis do loop principal
 var lastFrameTimeMs = 0;
