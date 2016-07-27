@@ -35,10 +35,8 @@ module.exports = function(io, players, asteroides, turret, update, blasters, cam
         });
         socket.on('coord', function(coord){
             var nave = players[socket.id];
-            if (nave.camera != undefined){
-                players[socket.id].cursor.x = coord.x + nave.pos.x - nave.camera.width/2; 
-                players[socket.id].cursor.y = coord.y + nave.pos.y - nave.camera.height/2; 
-            }
+            players[socket.id].cursor.x = coord.x;
+            players[socket.id].cursor.y = coord.y; 
 //           console.log(players[socket.id].cursor);
         });
         socket.on('tiro', function(atirou){

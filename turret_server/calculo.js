@@ -17,8 +17,12 @@ module.exports = function(stub){
     module.versorArma= function(turret){
             // pega coordenadas e desloca origem para o centro
             
-            var x = turret.cursor.x - turret.pos.x;
-            var y = turret.cursor.y - turret.pos.y;
+            if (turret.camera != undefined){
+                    console.log(turret.cursor, turret.pos, turret.camera);
+                    var x = turret.cursor.x - turret.camera.width/2;
+                    var y = turret.cursor.y - turret.camera.height/2;
+                console.log(x, y);
+            }
 
             // calcula modulo do vetor (x,y)
             var mod = Math.sqrt((Math.pow(x, 2) + Math.pow(y, 2)));
@@ -28,6 +32,7 @@ module.exports = function(stub){
             versor = new module.Versor;
             versor.x = x * a;
             versor.y = y * a;
+            console.log(versor);
             return versor;
     }
     module.distGeometrica = function(x0, y0, x1, y1){
