@@ -92,34 +92,12 @@ socket.on('status', function(estado){
 var draw_coord = {x : 0, y :0};
 function pegaCoordenadas(event){
     coord.x = event.clientX;
-//    console.log(c_turret.offsetLeft);
-//    coord.x -= c_turret.offsetLeft;
-//    coord.x += turret.x - camera.width/2;
     coord.y = event.clientY;
-//    console.log(c_turret.offsetTop);
-//    coord.y -= c_turret.offsetTop;
-//    coord.y += turret.y - camera.height/2;
-    draw_coord.x = coord.x;
-    draw_coord.y = coord.y;
-    draw_coord.x += turret.x - camera.width/2;
-    draw_coord.y += turret.y - camera.height/2;
     socket.emit('coord', coord);
 }
 function pegaCoordenadasMobile(event){
     coord.x = event.touches[0].clientX;
-/*
-    coord.x -= c_turret.offsetLeft;
-    coord.x += turret.x - camera.width/2;
-*/
     coord.y = event.touches[0].clientY;
-/*
-    coord.y -= c_turret.offsetTop;
-    coord.y += turret.y - camera.height/2;
-*/
-    draw_coord.x = coord.x;
-    draw_coord.y = coord.y;
-    draw_coord.x += turret.x - camera.width/2;
-    draw_coord.y += turret.y - camera.height/2;
     socket.emit('coord', coord);
 }
 
@@ -231,7 +209,7 @@ function mainLoop(timestamp){
     inimigo.desenhaLasers();
     desenhaBlasters();
     calculo.versor(turret.versor);      // calcula vetor versor (de geometria analitica) do turret
-    turret.desenha(ctx_turret, turret.raio, turret.gira(turret, draw_coord));                      // desenha o turret atualizado com a rotacao
+    turret.desenha(ctx_turret, turret.raio, turret.gira(turret, coord));                      // desenha o turret atualizado com a rotacao
     if (bool) {
         turret.atira();                 // apenas laser por enquanto
 //        limob demanda que puxa esse script (e taAsteroides();

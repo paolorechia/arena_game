@@ -96,8 +96,11 @@ var turret = {
     },
     'gira' : function (nave, cursor){
 
-        var ca = (nave.x - cursor.x);
-        var co = (nave.y - cursor.y);
+        var cx = cursor.x + nave.x - camera.width/2;
+        var cy = cursor.y + nave.y - camera.height/2;
+
+        var ca = (nave.x - cx);
+        var co = (nave.y - cy);
 
         tangente = (co/ca);
         atan = Math.round(Math.atan(tangente)*100)/100;
@@ -105,15 +108,15 @@ var turret = {
         deg = atan * 180/3.14;
         // console.log(deg);
         //Falta tratar quando cursor = background.height
-        if(cursor.x > nave.x) {
-            if(cursor.y >= nave.y) {
+        if(cx > nave.x) {
+            if(cy >= nave.y) {
     //            console.log('DireitaBaixo');
-            } else if(cursor.x < nave.x){
+            } else if(cx < nave.x){
     //            console.log('DireitaCima');
             }
         } else {
             atan+=4*180/3.14;
-            if(cursor.y >= nave.y) {
+            if(cy >= nave.y) {
     //            console.log('EsquerdaBaixo');
             } else {
     //           console.log('EsquerdaCima');
