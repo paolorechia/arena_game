@@ -218,16 +218,16 @@ function mainLoop(timestamp){
     }
 //    console.log(turret.vetorLaser);
 //    colisoes.confere();                 // confere colisao de tudo (asteroides, turret, laser, bordas)
-    if (tempo % 50 == 0){
-        socket.emit('inputmobile', mobile_coord.length);
-        socket.emit('inputmobile', mobile_coord);
+    // if abaixo calcula um versor a partir do ultimo touch n drag
+    // e manda para o servidor
+    if (tempo % 10 == 0){
+//        socket.emit('inputmobile', mobile_coord.length);
+//        socket.emit('inputmobile', mobile_coord);
         if (mobile_coord != undefined && mobile_coord[0] != undefined){
             calculo.versor_mobile(turret.versor_mobile);
+            socket.emit('inputmobile', turret.versor_mobile);
+            mobile_coord = [];
         }
-        mobile_coord = [];
-        socket.emit('inputmobile', turret.versor_mobile);
-
-//        socket.emit('inputmobile', turret.versor_mobile);
     }
     turret.vetorLaser.length = 0;       // reseta laser
     turret.hud.desenhar(turret.hud.stats);      // desenha hud

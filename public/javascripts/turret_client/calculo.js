@@ -58,8 +58,8 @@ var calculo = {
     },
     versor_mobile : function (v){
         var len = mobile_coord.length;
-        var x = mobile_coord[0].x - mobile_coord[len-1].x;
-        var y = mobile_coord[0].y - mobile_coord[len-1].y;
+        var x = mobile_coord[len-1].x - mobile_coord[0].x;
+        var y = mobile_coord[len-1].y - mobile_coord[0].y;
 
         var mod = Math.sqrt((Math.pow(x, 2) + Math.pow(y, 2)));
         var a = 1 / mod;
