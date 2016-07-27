@@ -83,7 +83,7 @@ module.exports = function(players, asteroides, blasters, calc, turret){
     module.laser = function (turret){
         if (turret.laser.atirando == 0 || turret.energy.overheat == true ||
             turret.energy.points < turret.energy.threshold){
-           turret.laser.vetor = [];
+            turret.laser.vetor = [];
            return; 
         }
 //        console.log("ATIRAAAANDO meu LAAAAASER");

@@ -139,7 +139,7 @@ var turret = {
     },
     // atualiza status do tiro de acordo com o evento de mouse
     "atirou" : function(status_tiro){
-      bool = status_tiro;
+        bool = status_tiro;
     },
 
     // hud
@@ -170,19 +170,24 @@ var turret = {
         var button = ctx_turret.measureText("Weapon: " 
                                                 + turret.hud.stats.weapon);
         var top_side = camera.height/9 - 20;
+        /*
         console.log(coord.x, coord.y);
         console.log(camera.width/22, camera.width/22 + button.width);
         console.log(camera.height/9, camera.height/7);
-        if (!turret.weapon_cooldown){
-            turret.weapon_cooldown = true;
-            setTimeout(function(){turret.weapon_cooldown = false;}, 4000);
-        }
+        */
         if (coord.x > camera.width/22 && 
             coord.x < camera.width/22 + button.width){
-                console.log("entre os X's"); 
+//                console.log("entre os X's"); 
                 if (coord.y > top_side && coord.y < camera.height/9){
-                    bool = 0;
-                    socket.emit('input', ' ');   //manda um espaço para o servidor
+                    
+                    if (!turret.weapon_cooldown){
+                        turret.weapon_cooldown = true;
+                    
+                        setTimeout(function(){turret.weapon_cooldown = false;}, 4000);
+                    
+                        bool = 0;
+                        socket.emit('input', ' ');   //manda um espaço para o servidor
+                    }
                 }
         }
                                         //sinaliza a troca de arma

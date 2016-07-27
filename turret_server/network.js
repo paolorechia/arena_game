@@ -1,6 +1,6 @@
 // handles the socket communication between server and clients
 
-module.exports = function(io, players, asteroides, turret, update, blasters){
+module.exports = function(io, players, asteroides, turret, update, blasters, camera){
     var module = {};
 
     // setup the HTTP connection to use only websocket and deny polling
@@ -28,9 +28,18 @@ module.exports = function(io, players, asteroides, turret, update, blasters){
         socket.on('myid', function(id){
             console.log("find an use for myid socket.on or delete it");
         });
+        socket.on('camera', function(camera){
+            console.log(camera);
+            players[socket.id].camera = camera;
+            console.log(players[socket.id].camera);
+        });
         socket.on('coord', function(coord){
-            players[socket.id].cursor.x = coord.x; 
-            players[socket.id].cursor.y = coord.y; 
+            var nave = players[socket.id];
+            if (nave.camera != undefined){
+                players[socket.id].cursor.x = coord.x + nave.pos.x - nave.camera.width/2; 
+                players[socket.id].cursor.y = coord.y + nave.pos.y - nave.camera.height/2; 
+            }
+//           console.log(players[socket.id].cursor);
         });
         socket.on('tiro', function(atirou){
 //            console.log(atirou);

@@ -46,7 +46,9 @@ console.log(sound);
 //Versão antiga -- usar quando o bug da mira for corrigido -----
 //camera.setRes(1600, 900, c_turret);
 //--------------------------------------------------------------
-camera.setRes(window.innerWidth-3, window.innerHeight-3, c_turret);
+camera.setRes(window.innerWidth-50, window.innerHeight-50, c_turret);
+console.log(window.innerWidth, window.innerHeight);
+console.log(camera);
 
 
 background.inicia(ctx_background, c_background);
@@ -87,13 +89,20 @@ socket.on('status', function(estado){
 
 // funcoes de evento
 
+var draw_coord = {x : 0, y :0};
 function pegaCoordenadas(event){
     coord.x = event.clientX;
+//    console.log(c_turret.offsetLeft);
 //    coord.x -= c_turret.offsetLeft;
 //    coord.x += turret.x - camera.width/2;
     coord.y = event.clientY;
+//    console.log(c_turret.offsetTop);
 //    coord.y -= c_turret.offsetTop;
 //    coord.y += turret.y - camera.height/2;
+    draw_coord.x = coord.x;
+    draw_coord.y = coord.y;
+    draw_coord.x += turret.x - camera.width/2;
+    draw_coord.y += turret.y - camera.height/2;
     socket.emit('coord', coord);
 }
 function pegaCoordenadasMobile(event){
@@ -107,13 +116,18 @@ function pegaCoordenadasMobile(event){
     coord.y -= c_turret.offsetTop;
     coord.y += turret.y - camera.height/2;
 */
+    draw_coord.x = coord.x;
+    draw_coord.y = coord.y;
+    draw_coord.x += turret.x - camera.width/2;
+    draw_coord.y += turret.y - camera.height/2;
     socket.emit('coord', coord);
 }
 
 var bool = 0;
 atirou = function(status_tiro){
       bool = status_tiro;
-      socket.emit('tiro', bool);
+      if (!turret.weapon_cooldown)
+          socket.emit('tiro', bool);
 }
 
 function desenhaBlasters(){
@@ -217,7 +231,7 @@ function mainLoop(timestamp){
     inimigo.desenhaLasers();
     desenhaBlasters();
     calculo.versor(turret.versor);      // calcula vetor versor (de geometria analitica) do turret
-    turret.desenha(ctx_turret, turret.raio, turret.gira(turret, coord));                      // desenha o turret atualizado com a rotacao
+    turret.desenha(ctx_turret, turret.raio, turret.gira(turret, draw_coord));                      // desenha o turret atualizado com a rotacao
     if (bool) {
         turret.atira();                 // apenas laser por enquanto
 //        limob demanda que puxa esse script (e taAsteroides();
@@ -249,6 +263,8 @@ console.log("1 c4n 7yp3 t0 c0ns0l3!");
 // inicia iteracoes no loop principal
 setTimeout(function(){
    console.log("my id is: " + my_id);
+   socket.emit('camera', camera);
    requestAnimationFrame(mainLoop);
 },
    2000);
+
