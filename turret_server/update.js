@@ -78,7 +78,7 @@ module.exports = function(players, asteroides, blasters, calc, turret){
                                 );
         tiro.owner = id;
         blasters.vetor.push(tiro);
-        nave.cooldown_troca_arma= false;
+ //       nave.cooldown_troca_arma= false;
     }
     module.laser = function (turret){
         if (turret.laser.atirando == 0 || turret.energy.overheat == true ||
@@ -100,7 +100,7 @@ module.exports = function(players, asteroides, blasters, calc, turret){
             turret.laser.vetor[i].y = (y0 + turret.laser.versor.y * turret.raio * i);
         }
 //        console.log(turret.laser.vetor);
-        turret.cooldown_troca_arma= false;
+//        turret.cooldown_troca_arma= false;
     } 
     module.asteroides = function(){
         var i = 0;
