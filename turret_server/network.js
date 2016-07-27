@@ -87,7 +87,8 @@ module.exports = function(io, players, asteroides, turret, update, blasters){
                           shield:       players[id].shield.points, 
                           energy:       players[id].energy.points,
                           ast_kills:    players[id].ast_kills,
-                          player_kills: players[id].player_kills};
+                          player_kills: players[id].player_kills,
+                          weapon:       players[id].arma_atual};
             socket = io.sockets.connected[id];
             socket.emit('status', estado); 
         }  

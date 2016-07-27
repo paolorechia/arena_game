@@ -19,6 +19,7 @@ var turret = {
     vy : 0,
     x : 0,
     y : 0,
+    weapon_cooldown : false,
     // inicializa posicao do turret
     'inicia' : function(){
         turret.x = background.width/2;
@@ -148,19 +149,43 @@ var turret = {
             vida: 10,
             shield: 2,
             kills: 0,
-            energy: 100
+            energy: 100,
+            weapon: 'laser'
           },
           // desenha os stats na tela
           'desenhar' : function(stats) {
             ctx_turret.font = "30px Arial";
             ctx_turret.fillStyle="green";
             ctx_turret.fillText("HP: " + this.stats.vida, camera.width/22, camera.height/18)
+            ctx_turret.fillText("Weapon: " + this.stats.weapon, camera.width/22, camera.height/9)
             ctx_turret.fillStyle='red';
             ctx_turret.fillText('Kills: '+ this.stats.kills, camera.width/2.2, camera.height/18)
             ctx_turret.fillStyle='blue';
-            ctx_turret.fillText('SH: ' + this.stats.shield, camera.width/22, camera.height/9)
+            ctx_turret.fillText('SH: ' + this.stats.shield, camera.width/22, camera.height/6)
             ctx_turret.fillStyle='#1244AA';
             ctx_turret.fillText('Energy: ' + this.stats.energy, camera.width/2.3, camera.height/1.05)
           },
+    },
+    'trocaArmaClique' : function(){
+        var button = ctx_turret.measureText("Weapon: " 
+                                                + turret.hud.stats.weapon);
+        var top_side = camera.height/9 - 20;
+        console.log(coord.x, coord.y);
+        console.log(camera.width/22, camera.width/22 + button.width);
+        console.log(camera.height/9, camera.height/7);
+        if (!turret.weapon_cooldown){
+            turret.weapon_cooldown = true;
+            setTimeout(function(){turret.weapon_cooldown = false;}, 2000);
+        }
+        if (coord.x > camera.width/22 && 
+            coord.x < camera.width/22 + button.width){
+                console.log("entre os X's"); 
+                if (coord.y > top_side && coord.y < camera.height/9){
+                    bool = 0;
+                    socket.emit('input', ' ');   //manda um espaço para o servidor
+                }
+        }
+                                        //sinaliza a troca de arma
     }
+         
 }

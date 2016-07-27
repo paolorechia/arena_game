@@ -82,26 +82,31 @@ socket.on('status', function(estado){
     turret.hud.stats.shield = estado.shield;
     turret.hud.stats.energy = estado.energy;
     turret.hud.stats.kills = estado.player_kills;
+    turret.hud.stats.weapon = estado.weapon;
 });
 
 // funcoes de evento
 
 function pegaCoordenadas(event){
     coord.x = event.clientX;
-    coord.x -= c_turret.offsetLeft;
-    coord.x += turret.x - camera.width/2;
+//    coord.x -= c_turret.offsetLeft;
+//    coord.x += turret.x - camera.width/2;
     coord.y = event.clientY;
-    coord.y -= c_turret.offsetTop;
-    coord.y += turret.y - camera.height/2;
+//    coord.y -= c_turret.offsetTop;
+//    coord.y += turret.y - camera.height/2;
     socket.emit('coord', coord);
 }
 function pegaCoordenadasMobile(event){
     coord.x = event.touches[0].clientX;
+/*
     coord.x -= c_turret.offsetLeft;
     coord.x += turret.x - camera.width/2;
+*/
     coord.y = event.touches[0].clientY;
+/*
     coord.y -= c_turret.offsetTop;
     coord.y += turret.y - camera.height/2;
+*/
     socket.emit('coord', coord);
 }
 
@@ -204,6 +209,7 @@ function mainLoop(timestamp){
     }
     lastFrameTimeMs = timestamp;
 
+    turret.trocaArmaClique();
     // chamadas de desenho & calculo
     background.blit_turret();           // desenha no canvas da camera
     asteroides.desenhaTodos();          // desenha todos os asteroides do vetor
