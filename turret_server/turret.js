@@ -53,6 +53,7 @@ module.exports = function(background, camera, calc){
         this.hull = new module.Hull();
         this.armas = ["laser", "blaster"]
         this.arma_atual ="laser";
+        this.cooldown_troca_arma = false;
         this.raio = 15;
         this.vel = 0;
         this.acel= 4;
@@ -124,18 +125,25 @@ module.exports = function(background, camera, calc){
         }
     };
     module.trocaArma = function(nave){
-        var i = nave.armas.indexOf(nave.arma_atual);
-        i = (i + 1) % (nave.armas.length);
-        nave.arma_atual = nave.armas[i];
-        console.log("troquei! agora uso: ", nave.arma_atual);
+        console.log("pediu troca de arma");
+        if (nave.cooldown_troca_arma == false){
+            nave.cooldown_troca_arma = true;
+            setTimeout(function(){nave.cooldown_troca_arma = false;},
+                                  2000);
+            var i = nave.armas.indexOf(nave.arma_atual);
+            i = (i + 1) % (nave.armas.length);
+            nave.arma_atual = nave.armas[i];
+            console.log("troquei! agora uso: ", nave.arma_atual);
+        }
     }
     module.atira = function (nave, atirou){
-        if (nave.arma_atual == "laser")
-            nave.laser.atirando = atirou;
-        else if (nave.arma_atual =="blaster")
-            nave.blaster.atirando = atirou;
-        else
-            console.log("arma invalida!! le bugz");
+            nave.cooldown_troca_arma = true;
+            if (nave.arma_atual == "laser")
+                nave.laser.atirando = atirou;
+            else if (nave.arma_atual =="blaster")
+                nave.blaster.atirando = atirou;
+            else
+                console.log("arma invalida!! le bugz");
     }
     module.morte = function (turret){
         turret.pos.x = -1600;
