@@ -175,7 +175,7 @@ var turret = {
         console.log(camera.height/9, camera.height/7);
         if (!turret.weapon_cooldown){
             turret.weapon_cooldown = true;
-            setTimeout(function(){turret.weapon_cooldown = false;}, 2000);
+            setTimeout(function(){turret.weapon_cooldown = false;}, 4000);
         }
         if (coord.x > camera.width/22 && 
             coord.x < camera.width/22 + button.width){

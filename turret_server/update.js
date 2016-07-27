@@ -59,7 +59,8 @@ module.exports = function(players, asteroides, blasters, calc, turret){
     }
     module.blaster = function(nave, id){
         if (nave.blaster.atirando == 0 || nave.energy.overheat == true ||
-            nave.blaster.on_cooldown == true){
+            nave.blaster.on_cooldown == true || 
+            nave.energy.points < nave.energy.threshold){
             return;
         }
         turret.blasterSetCooldown(nave.blaster);
@@ -79,7 +80,8 @@ module.exports = function(players, asteroides, blasters, calc, turret){
         blasters.vetor.push(tiro);
     }
     module.laser = function (turret){
-        if (turret.laser.atirando == 0 || turret.energy.overheat == true){
+        if (turret.laser.atirando == 0 || turret.energy.overheat == true ||
+            turret.energy.points < turret.energy.threshold){
            turret.laser.vetor = [];
            return; 
         }
