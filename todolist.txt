@@ -35,3 +35,29 @@ Fri Jul 22 23:31:22 BRT 2016
 
 
 Sun Jul 24 10:46:45 BRT 2016
+
+---------------------------------------------------------
+
+0 --> solução implementada não está boa, experimentar mudanças
+
+14. Construir centros de gravidade, estrelas, planetas etc
+
+15. Expandir tamanho do mapa, descobrir uma maneira ágil
+
+16. Melhorar jogabilidade mobile, por enquanto está injogável
+
+17. Criar diferentes tipos de dano, calor, eletricidade, energia, projétil etc
+
+18. Criar lojas em planetas
+
+19. Batalha de times.
+
+20. Inteligencia Artificial
+
+21. Naves maiores.
+
+22. Refactoring do código de cliente utilizando modularizacao de CommonJS (browsify ou webpack)
+
+23. Revisao periódica de código
+
+Wed Jul 27 18:04:56 BRT 2016
