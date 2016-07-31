@@ -22,7 +22,7 @@ var stub = 0;
 var data = require('./data.js')(stub);
 var socket = io({transports: ['websocket']});
 
-var input = require('./input.js')(stub);
+var input = require('./input.js')(socket);
 var c_background = document.getElementById("background");
 var c_turret = document.getElementById("canvas_turret");
 var ctx_background = c_background.getContext("2d");
@@ -179,11 +179,11 @@ c_turret.addEventListener("touchend", function(){ atirou(0)}, false);
 //c_turret.addEventListener("touchmove", pegaCoordenadasMobile, false);
 c_turret.addEventListener("touchmove", input.atualizaMobile, false);
 c_turret.addEventListener("mousemove", pegaCoordenadas, false);
-c_turret.addEventListener("mousedown", function(){ atirou(1); 
+c_turret.addEventListener("mousedown", function(){ input.mousePress(1); 
                                                    sound.currentTime = 0.07;
                                                    sound.play();},
                                                    false);
-c_turret.addEventListener("mouseup", function(){ atirou(0)}, false);
+c_turret.addEventListener("mouseup", function(){ input.mousePress(0)}, false);
 window.addEventListener("keydown", function(event){ input.atualiza(event)}, false);
 
 //incializacao de variaveis do loop principal
@@ -212,15 +212,15 @@ function mainLoop(timestamp){
     }
     lastFrameTimeMs = timestamp;
     // chamadas de desenho & calculo
-    draw.turret(camera, ctx_turret);           // desenha no canvas da camera
+    draw.camera(camera, ctx_turret);           // desenha no canvas da camera
     draw.allAsteroids();          // desenha todos os asteroides do vetor
     draw.allEnemies();
     draw.allLasers();
     desenhaBlasters();
     calculo.versor(turret.versor);      // calcula vetor versor (de geometria analitica) do turret
-    turret.desenha(ctx_turret, turret.raio, turret.gira(turret, data.coord));                      // desenha o turret atualizado com a rotacao
+    draw.turret(ctx_turret, turret.raio, calculo.anguloGiro(turret, data.coord));                      // desenha o turret atualizado com a rotacao
     if (bool) {
-        turret.atira();                 // apenas laser por enquanto
+        input.mousePress(); 
 //        limob demanda que puxa esse script (e taAsteroides();
     }
 //    console.log(turret.vetorLaser);
@@ -230,14 +230,14 @@ function mainLoop(timestamp){
     if (tempo % 10 == 0){
 //        socket.emit('inputmobile', mobile_data.coord.length);
 //        socket.emit('inputmobile', mobile_data.coord);
-        if (mobile_coord != undefined && mobile_data.coord[0] != undefined){
+        if (mobile_coord != undefined && mobile_coord[0] != undefined){
             calculo.versor_mobile(turret.versor_mobile);
             socket.emit('inputmobile', turret.versor_mobile);
             mobile_coord = [];
         }
     }
     turret.vetorLaser.length = 0;       // reseta laser
-    turret.hud.desenhar(turret.hud.stats);      // desenha hud
+    draw.hud();      // desenha hud
     requestAnimationFrame(mainLoop);            // chama proxima iteracao do loop
 }
 

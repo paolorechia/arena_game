@@ -270,7 +270,7 @@ module.exports = function(turret, camera, background, data, ctx_turret, my_id, c
         ctx.fill();
         cano(ctx, raio, angulo);
         //Se tem shield, desenha o shield----------
-        if(this.hud.stats.shield > 0) {
+        if(turret.shield > 0) {
           ctx.strokeStyle = "#1244AA";
           ctx.beginPath();
           ctx.arc(x, y, raio*1.3, 0, 2*Math.PI);
@@ -314,19 +314,19 @@ module.exports = function(turret, camera, background, data, ctx_turret, my_id, c
         }
     },
           // desenha os stats na tela
-    module.hud = function(stats) {
+    module.hud = function() {
             ctx_turret.font = "30px Arial";
             ctx_turret.fillStyle="green";
-            ctx_turret.fillText("HP: " + this.stats.vida, camera.width/22, camera.height/18)
-            ctx_turret.fillText("Weapon: " + this.stats.weapon, camera.width/22, camera.height/9)
+            ctx_turret.fillText("HP: " + turret.vida, camera.width/22, camera.height/18)
+            ctx_turret.fillText("Weapon: " + turret.weapon, camera.width/22, camera.height/9)
             ctx_turret.fillStyle='red';
-            ctx_turret.fillText('Kills: '+ this.stats.kills, camera.width/2.2, camera.height/18)
+            ctx_turret.fillText('Kills: '+ turret.kills, camera.width/2.2, camera.height/18)
             ctx_turret.fillStyle='blue';
-            ctx_turret.fillText('SH: ' + this.stats.shield, camera.width/22, camera.height/6)
+            ctx_turret.fillText('SH: ' + turret.shield, camera.width/22, camera.height/6)
             ctx_turret.fillStyle='#1244AA';
-            ctx_turret.fillText('Energy: ' + this.stats.energy, camera.width/2.3, camera.height/1.05)
+            ctx_turret.fillText('Energy: ' + turret.energy, camera.width/2.3, camera.height/1.05)
     };
-    module.turret = function(camera, ctx){
+    module.camera = function(camera, ctx){
         ctx.drawImage(background.imagem, turret.x - camera.width/2, turret.y - camera.height/2, camera.width, camera.height,0, 0, camera.width, camera.height);
     module.enemy = function(inimigo, cursor){
         /* variaveis auxiliares, pega coordenadas do canvas pequeno
@@ -391,7 +391,7 @@ module.exports = function(turret, camera, background, data, ctx_turret, my_id, c
 }
 
 },{}],6:[function(require,module,exports){
-module.exports = function(stub){
+module.exports = function(socket){
     var module = {};
     module.atualiza = function (event){
         if (event.key == 'w'){
@@ -410,10 +410,13 @@ module.exports = function(stub){
             socket.emit('input', ' ');
         }
     };
-    atualizaMobile = function(event){
+    module.atualizaMobile = function(event){
         var coord = { x: event.touches[0].clientX,
                       y: event.touches[0].clientY};
         mobile_coord.push(coord);
+    };
+    module.mousePress = function(status_tiro){
+      bool = status_tiro;
     };
     return module;
 }
@@ -443,7 +446,7 @@ var stub = 0;
 var data = require('./data.js')(stub);
 var socket = io({transports: ['websocket']});
 
-var input = require('./input.js')(stub);
+var input = require('./input.js')(socket);
 var c_background = document.getElementById("background");
 var c_turret = document.getElementById("canvas_turret");
 var ctx_background = c_background.getContext("2d");
@@ -600,11 +603,11 @@ c_turret.addEventListener("touchend", function(){ atirou(0)}, false);
 //c_turret.addEventListener("touchmove", pegaCoordenadasMobile, false);
 c_turret.addEventListener("touchmove", input.atualizaMobile, false);
 c_turret.addEventListener("mousemove", pegaCoordenadas, false);
-c_turret.addEventListener("mousedown", function(){ atirou(1); 
+c_turret.addEventListener("mousedown", function(){ input.mousePress(1); 
                                                    sound.currentTime = 0.07;
                                                    sound.play();},
                                                    false);
-c_turret.addEventListener("mouseup", function(){ atirou(0)}, false);
+c_turret.addEventListener("mouseup", function(){ input.mousePress(0)}, false);
 window.addEventListener("keydown", function(event){ input.atualiza(event)}, false);
 
 //incializacao de variaveis do loop principal
@@ -633,15 +636,15 @@ function mainLoop(timestamp){
     }
     lastFrameTimeMs = timestamp;
     // chamadas de desenho & calculo
-    draw.turret(camera, ctx_turret);           // desenha no canvas da camera
+    draw.camera(camera, ctx_turret);           // desenha no canvas da camera
     draw.allAsteroids();          // desenha todos os asteroides do vetor
     draw.allEnemies();
     draw.allLasers();
     desenhaBlasters();
     calculo.versor(turret.versor);      // calcula vetor versor (de geometria analitica) do turret
-    turret.desenha(ctx_turret, turret.raio, turret.gira(turret, data.coord));                      // desenha o turret atualizado com a rotacao
+    draw.turret(ctx_turret, turret.raio, calculo.anguloGiro(turret, data.coord));                      // desenha o turret atualizado com a rotacao
     if (bool) {
-        turret.atira();                 // apenas laser por enquanto
+        input.mousePress(); 
 //        limob demanda que puxa esse script (e taAsteroides();
     }
 //    console.log(turret.vetorLaser);
@@ -651,14 +654,14 @@ function mainLoop(timestamp){
     if (tempo % 10 == 0){
 //        socket.emit('inputmobile', mobile_data.coord.length);
 //        socket.emit('inputmobile', mobile_data.coord);
-        if (mobile_coord != undefined && mobile_data.coord[0] != undefined){
+        if (mobile_coord != undefined && mobile_coord[0] != undefined){
             calculo.versor_mobile(turret.versor_mobile);
             socket.emit('inputmobile', turret.versor_mobile);
             mobile_coord = [];
         }
     }
     turret.vetorLaser.length = 0;       // reseta laser
-    turret.hud.desenhar(turret.hud.stats);      // desenha hud
+    draw.hud();      // desenha hud
     requestAnimationFrame(mainLoop);            // chama proxima iteracao do loop
 }
 
@@ -681,37 +684,30 @@ setTimeout(function(){
 module.exports = function (camera, background, data){
     var module = {};
 
-    module.turret = {
-        versor : new data.Versor(),
-        versor_mobile : new data.Versor(),
-        vetorLaser : [],
-        raio : 15,
-        vel : 0,
-        acel: 4,
-        turn_rate: 1,
-        max_speed : 4,
-        vx : 0,
-        vy : 0,
-        x : 0,
-        y : 0,
-        vida: 10,
-        shield: 2,
-        kills: 0,
-        energy: 100,
-        weapon: 'laser',
-        weapon_cooldown : false,
-    };
+    module.versor = new data.Versor(),
+    module.versor_mobile = new data.Versor(),
+    module.vetorLaser = [],
+    module.raio = 15,
+    module.vel = 0,
+    module.acel= 4,
+    module.turn_rate= 1,
+    module.max_speed = 4,
+    module.vx = 0,
+    module.vy = 0,
+    module.x = 0,
+    module.y = 0,
+    module.vida= 10,
+    module.shield= 2,
+    module.kills= 0,
+    module.energy= 100,
+    module.weapon= 'laser',
+    module.weapon_cooldown = false,
         // inicializa posicao do turret
     module.inicia = function(){
             module.x = background.width/2;
             module.y = background.height/2;
+            
     };
-        // atualiza status do tiro de acordo com o evento de mouse
-    module.atirou = function(status_tiro){
-            bool = status_tiro;
-    };
-    // blit_turret -> 1. corta o module gigantesco na posicao certa;
-    // 2. desenha ele na tela
     return module;
 }
 

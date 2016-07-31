@@ -1,4 +1,4 @@
-module.exports = function(stub){
+module.exports = function(socket){
     var module = {};
     module.atualiza = function (event){
         if (event.key == 'w'){
@@ -17,10 +17,13 @@ module.exports = function(stub){
             socket.emit('input', ' ');
         }
     };
-    atualizaMobile = function(event){
+    module.atualizaMobile = function(event){
         var coord = { x: event.touches[0].clientX,
                       y: event.touches[0].clientY};
         mobile_coord.push(coord);
+    };
+    module.mousePress = function(status_tiro){
+      bool = status_tiro;
     };
     return module;
 }

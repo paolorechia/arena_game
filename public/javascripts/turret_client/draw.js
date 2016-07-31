@@ -75,7 +75,7 @@ module.exports = function(turret, camera, background, data, ctx_turret, my_id, c
         ctx.fill();
         cano(ctx, raio, angulo);
         //Se tem shield, desenha o shield----------
-        if(this.hud.stats.shield > 0) {
+        if(turret.shield > 0) {
           ctx.strokeStyle = "#1244AA";
           ctx.beginPath();
           ctx.arc(x, y, raio*1.3, 0, 2*Math.PI);
@@ -119,19 +119,19 @@ module.exports = function(turret, camera, background, data, ctx_turret, my_id, c
         }
     },
           // desenha os stats na tela
-    module.hud = function(stats) {
+    module.hud = function() {
             ctx_turret.font = "30px Arial";
             ctx_turret.fillStyle="green";
-            ctx_turret.fillText("HP: " + this.stats.vida, camera.width/22, camera.height/18)
-            ctx_turret.fillText("Weapon: " + this.stats.weapon, camera.width/22, camera.height/9)
+            ctx_turret.fillText("HP: " + turret.vida, camera.width/22, camera.height/18)
+            ctx_turret.fillText("Weapon: " + turret.weapon, camera.width/22, camera.height/9)
             ctx_turret.fillStyle='red';
-            ctx_turret.fillText('Kills: '+ this.stats.kills, camera.width/2.2, camera.height/18)
+            ctx_turret.fillText('Kills: '+ turret.kills, camera.width/2.2, camera.height/18)
             ctx_turret.fillStyle='blue';
-            ctx_turret.fillText('SH: ' + this.stats.shield, camera.width/22, camera.height/6)
+            ctx_turret.fillText('SH: ' + turret.shield, camera.width/22, camera.height/6)
             ctx_turret.fillStyle='#1244AA';
-            ctx_turret.fillText('Energy: ' + this.stats.energy, camera.width/2.3, camera.height/1.05)
+            ctx_turret.fillText('Energy: ' + turret.energy, camera.width/2.3, camera.height/1.05)
     };
-    module.turret = function(camera, ctx){
+    module.camera = function(camera, ctx){
         ctx.drawImage(background.imagem, turret.x - camera.width/2, turret.y - camera.height/2, camera.width, camera.height,0, 0, camera.width, camera.height);
     module.enemy = function(inimigo, cursor){
         /* variaveis auxiliares, pega coordenadas do canvas pequeno
