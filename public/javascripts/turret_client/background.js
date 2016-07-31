@@ -20,8 +20,8 @@ module.exports = function(camera){
     };
     // blit_turret -> 1. corta o module gigantesco na posicao certa;
     // 2. desenha ele na tela
-    module.blit_turret = function(camera){
-        ctx_turret.drawImage(module.imagem, turret.x - camera.width/2, turret.y - camera.height/2, camera.width, camera.height,0, 0, camera.width, camera.height);
+    module.blit_turret = function(camera, ctx){
+        ctx.drawImage(module.imagem, turret.x - camera.width/2, turret.y - camera.height/2, camera.width, camera.height,0, 0, camera.width, camera.height);
     };
 
     // preenche module com pontos brancos que representam estrelas

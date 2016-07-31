@@ -64,6 +64,7 @@ console.log(camera);
 background.inicia(ctx_background, c_background);
 turret.inicia();
 
+console.log(turret);
 socket.on('movimento', function(nova_pos){
 //    console.log(nova_pos);
     turret.x = (nova_pos.x);
@@ -90,25 +91,23 @@ socket.on('lasers', function(received_lasers){
 });
 
 socket.on('status', function(estado){
-    turret.hud.stats.vida = estado.hp;
-    turret.hud.stats.shield = estado.shield;
-    turret.hud.stats.energy = estado.energy;
-    turret.hud.stats.kills = estado.player_kills;
-    turret.hud.stats.weapon = estado.weapon;
+    turret.vida = estado.hp;
+    turret.shield = estado.shield;
+    turret.energy = estado.energy;
+    turret.kills = estado.player_kills;
+    turret.weapon = estado.weapon;
 });
 
 // funcoes de evento
-
-var draw_coord = {x : 0, y :0};
 function pegaCoordenadas(event){
-    coord.x = event.clientX;
-    coord.y = event.clientY;
-    socket.emit('coord', coord);
+    data.coord.x = event.clientX;
+    data.coord.y = event.clientY;
+    socket.emit('data.coord', data.coord);
 }
 function pegaCoordenadasMobile(event){
-    coord.x = event.touches[0].clientX;
-    coord.y = event.touches[0].clientY;
-    socket.emit('coord', coord);
+    data.coord.x = event.touches[0].clientX;
+    data.coord.y = event.touches[0].clientY;
+    socket.emit('data.coord', data.coord);
 }
 
 var bool = 0;
@@ -125,7 +124,7 @@ function desenhaBlasters(){
     }
 }
 // um jeito interessante de desenhar que fiz para brincar eh
-// desenhar uma linha da nave ateh as coordenadas do inimigo
+// desenhar uma linha da nave ateh as data.coordenadas do inimigo
 // o efeito eh tipo um laser que vai em direcao ao inimigo
 function desenhaBlaster(blaster, previous){
     var borda_esq = turret.x - camera.width/2;
@@ -135,8 +134,8 @@ function desenhaBlaster(blaster, previous){
     // confere se inimigoeroide entrou no canvas menor
     if (blaster.x > borda_esq && blaster.x < borda_dir && blaster.y > borda_sup && blaster.y < borda_inf){
             // e soh entao desenha na tela
-            // calcula as coordenadas em relacao ao canvas menor
-            // (cada canyvas teu o seu sistema de coordenadas)
+            // calcula as data.coordenadas em relacao ao canvas menor
+            // (cada canyvas teu o seu sistema de data.coordenadas)
         var x1 = blaster.x - borda_esq;
         var y1 = blaster.y - borda_sup;
         vx = blaster.versor.x * blaster.speed * 2;
@@ -176,14 +175,14 @@ c_turret.addEventListener("touchstart", function(){ atirou(1);
                                                    false);
 c_turret.addEventListener("touchend", function(){ atirou(0)}, false);
 //c_turret.addEventListener("touchmove", pegaCoordenadasMobile, false);
-c_turret.addEventListener("touchmove", turret.atualizaInputMobile, false);
+c_turret.addEventListener("touchmove", input.atualizaMobile, false);
 c_turret.addEventListener("mousemove", pegaCoordenadas, false);
 c_turret.addEventListener("mousedown", function(){ atirou(1); 
                                                    sound.currentTime = 0.07;
                                                    sound.play();},
                                                    false);
 c_turret.addEventListener("mouseup", function(){ atirou(0)}, false);
-window.addEventListener("keydown", function(event){ turret.atualizaInput(event)}, false);
+window.addEventListener("keydown", function(event){ input.atualiza(event)}, false);
 
 //incializacao de variaveis do loop principal
 var lastFrameTimeMs = 0;
@@ -210,16 +209,14 @@ function mainLoop(timestamp){
         return;
     }
     lastFrameTimeMs = timestamp;
-
-    turret.trocaArmaClique();
     // chamadas de desenho & calculo
-    background.blit_turret();           // desenha no canvas da camera
+    background.blit_turret(camera, ctx_turret);           // desenha no canvas da camera
     draw.allAsteroids();          // desenha todos os asteroides do vetor
     inimigo.desenhaTodos();
     inimigo.desenhaLasers();
     desenhaBlasters();
     calculo.versor(turret.versor);      // calcula vetor versor (de geometria analitica) do turret
-    turret.desenha(ctx_turret, turret.raio, turret.gira(turret, coord));                      // desenha o turret atualizado com a rotacao
+    turret.desenha(ctx_turret, turret.raio, turret.gira(turret, data.coord));                      // desenha o turret atualizado com a rotacao
     if (bool) {
         turret.atira();                 // apenas laser por enquanto
 //        limob demanda que puxa esse script (e taAsteroides();
@@ -229,9 +226,9 @@ function mainLoop(timestamp){
     // if abaixo calcula um versor a partir do ultimo touch n drag
     // e manda para o servidor
     if (tempo % 10 == 0){
-//        socket.emit('inputmobile', mobile_coord.length);
-//        socket.emit('inputmobile', mobile_coord);
-        if (mobile_coord != undefined && mobile_coord[0] != undefined){
+//        socket.emit('inputmobile', mobile_data.coord.length);
+//        socket.emit('inputmobile', mobile_data.coord);
+        if (mobile_coord != undefined && mobile_data.coord[0] != undefined){
             calculo.versor_mobile(turret.versor_mobile);
             socket.emit('inputmobile', turret.versor_mobile);
             mobile_coord = [];

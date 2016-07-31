@@ -23,8 +23,8 @@ module.exports = function (camera, background, data){
     };
         // inicializa posicao do turret
     module.inicia = function(){
-            turret.x = background.width/2;
-            turret.y = background.height/2;
+            module.x = background.width/2;
+            module.y = background.height/2;
     };
         // atualiza status do tiro de acordo com o evento de mouse
     module.atirou = function(status_tiro){
