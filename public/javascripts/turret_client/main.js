@@ -22,7 +22,7 @@ var stub = 0;
 var data = require('./data.js')(stub);
 var socket = io({transports: ['websocket']});
 
-var input = require('./input.js')(socket);
+var input = require('./input.js')(socket, data);
 var c_background = document.getElementById("background");
 var c_turret = document.getElementById("canvas_turret");
 var ctx_background = c_background.getContext("2d");
@@ -47,7 +47,6 @@ socket.on('message', function(message){
 socket.on('asteroides', function(novo){
     data.asteroids = novo;
 });
-var blasters = [];
 socket.on('blasters', function(received_blasters){
     blasters = received_blasters;
 });
@@ -110,46 +109,6 @@ function pegaCoordenadasMobile(event){
     data.coord.x = event.touches[0].clientX;
     data.coord.y = event.touches[0].clientY;
     socket.emit('data.coord', data.coord);
-}
-
-var bool = 0;
-atirou = function(status_tiro){
-      bool = status_tiro;
-      if (!turret.weapon_cooldown)
-          socket.emit('tiro', bool);
-}
-
-function desenhaBlasters(){
-    for (var i = 0; i < blasters.length; i++){
-        if (blasters[i] != undefined)
-            desenhaBlaster(blasters[i]);
-    }
-}
-// um jeito interessante de desenhar que fiz para brincar eh
-// desenhar uma linha da nave ateh as data.coordenadas do inimigo
-// o efeito eh tipo um laser que vai em direcao ao inimigo
-function desenhaBlaster(blaster, previous){
-    var borda_esq = turret.x - camera.width/2;
-    var borda_dir = turret.x + camera.width/2;
-    var borda_sup = turret.y - camera.height/2;
-    var borda_inf = turret.y + camera.height/2;
-    // confere se inimigoeroide entrou no canvas menor
-    if (blaster.x > borda_esq && blaster.x < borda_dir && blaster.y > borda_sup && blaster.y < borda_inf){
-            // e soh entao desenha na tela
-            // calcula as data.coordenadas em relacao ao canvas menor
-            // (cada canyvas teu o seu sistema de data.coordenadas)
-        var x1 = blaster.x - borda_esq;
-        var y1 = blaster.y - borda_sup;
-        vx = blaster.versor.x * blaster.speed * 2;
-        vy = blaster.versor.y * blaster.speed * 2;
-        var y0 = y1 + vy;
-        var x0 = x1 + vx;
-        ctx_turret.beginPath();
-        ctx_turret.strokeStyle= "#FF0000";
-        ctx_turret.moveTo(x1, y1);
-        ctx_turret.lineTo(x0, y0);
-        ctx_turret.stroke();
-    }
 }
 /* conjunto de eventos lidos a partir do mouse e do teclado,
 na falta de um lugar melhor ainda estao aqui
@@ -216,10 +175,10 @@ function mainLoop(timestamp){
     draw.allAsteroids();          // desenha todos os asteroides do vetor
     draw.allEnemies();
     draw.allLasers();
-    desenhaBlasters();
+    draw.allBlasters();
     calculo.versor(turret.versor);      // calcula vetor versor (de geometria analitica) do turret
     draw.turret(ctx_turret, turret.raio, calculo.anguloGiro(turret, data.coord));                      // desenha o turret atualizado com a rotacao
-    if (bool) {
+    if (data.atirou) {
         input.mousePress(); 
 //        limob demanda que puxa esse script (e taAsteroides();
     }
@@ -236,7 +195,6 @@ function mainLoop(timestamp){
             mobile_coord = [];
         }
     }
-    turret.vetorLaser.length = 0;       // reseta laser
     draw.hud();      // desenha hud
     requestAnimationFrame(mainLoop);            // chama proxima iteracao do loop
 }

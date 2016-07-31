@@ -192,5 +192,38 @@ module.exports = function(turret, camera, background, data, ctx_turret, my_id, c
     };
 }
 
+// um jeito interessante de desenhar que fiz para brincar eh
+// desenhar uma linha da nave ateh as data.coordenadas do inimigo
+// o efeito eh tipo um laser que vai em direcao ao inimigo
+    module.blaster = function(blaster, previous){
+        var borda_esq = turret.x - camera.width/2;
+        var borda_dir = turret.x + camera.width/2;
+        var borda_sup = turret.y - camera.height/2;
+        var borda_inf = turret.y + camera.height/2;
+        // confere se inimigoeroide entrou no canvas menor
+        if (blaster.x > borda_esq && blaster.x < borda_dir && blaster.y > borda_sup && blaster.y < borda_inf){
+                // e soh entao desenha na tela
+                // calcula as data.coordenadas em relacao ao canvas menor
+                // (cada canyvas teu o seu sistema de data.coordenadas)
+            var x1 = blaster.x - borda_esq;
+            var y1 = blaster.y - borda_sup;
+            vx = blaster.versor.x * blaster.speed * 2;
+            vy = blaster.versor.y * blaster.speed * 2;
+            var y0 = y1 + vy;
+            var x0 = x1 + vx;
+            ctx_turret.beginPath();
+            ctx_turret.strokeStyle= "#FF0000";
+            ctx_turret.moveTo(x1, y1);
+            ctx_turret.lineTo(x0, y0);
+            ctx_turret.stroke();
+        }
+    };
+
+    module.allBlasters = function(){
+        for (var i = 0; i < blasters.length; i++){
+            if (data.blasters[i] != undefined)
+                module.blaster(blasters[i]);
+        }
+    };
     return module;
 }

@@ -2,6 +2,7 @@ module.exports = function(stub){
     var module = {};
     module.asteroids = [];
     module.lasers = [];
+    module.blasters = [];
     module.players = [];
     module.players_id = [];
     module.players_pointers = [];
@@ -14,5 +15,7 @@ module.exports = function(stub){
         this.x = 0;
         this.y = 0;
     }
+
+    module.atirou = 0;
     return module;
 }

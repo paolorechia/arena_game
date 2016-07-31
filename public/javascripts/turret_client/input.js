@@ -1,4 +1,4 @@
-module.exports = function(socket){
+module.exports = function(socket, data){
     var module = {};
     module.atualiza = function (event){
         if (event.key == 'w'){
@@ -23,7 +23,9 @@ module.exports = function(socket){
         mobile_coord.push(coord);
     };
     module.mousePress = function(status_tiro){
-      bool = status_tiro;
+          data.atirou = status_tiro;
+          console.log(status_tiro);
+          socket.emit('tiro', data.atirou);
     };
     return module;
 }
