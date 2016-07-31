@@ -56,14 +56,14 @@ module.exports = function(camera){
 }
 
 },{}],2:[function(require,module,exports){
-module.exports = function(stub){
+module.exports = function(camera, data, turret){
     var module = {};
 
     // objeto de coorenadas X, Y do cursor do mouse
-    // imprimir coordenadas pro console
+    // imprimir data.coordenadas pro console
     module.logCoordenadas= function(){
-        var x = coord.x.toString();
-        var y = coord.y.toString();
+        var x = data.coord.x.toString();
+        var y = data.coord.y.toString();
         var string = "x = ";
         string = string.concat(x);
         string = string.concat("; y = ");
@@ -71,9 +71,9 @@ module.exports = function(stub){
         console.log(string);
     };
     module.versor = function (v){
-        // pega coordenadas e desloca origem para o centro
-        var x = coord.x - turret.x;
-        var y = coord.y - turret.y;
+        // pega data.coordenadas e desloca origem para o centro
+        var x = data.coord.x - turret.x;
+        var y = data.coord.y - turret.y;
 
         // calcula modulo do vetor (x,y)
         var mod = Math.sqrt((Math.pow(x, 2) + Math.pow(y, 2)));
@@ -84,9 +84,9 @@ module.exports = function(stub){
         v.y = y * a;
     };
     module.versor_mobile = function (v){
-        var len = mobile_coord.length;
-        var x = mobile_coord[len-1].x - mobile_coord[0].x;
-        var y = mobile_coord[len-1].y - mobile_coord[0].y;
+        var len = mobile_data.coord.length;
+        var x = mobile_data.coord[len-1].x - mobile_data.coord[0].x;
+        var y = mobile_data.coord[len-1].y - mobile_data.coord[0].y;
 
         var mod = Math.sqrt((Math.pow(x, 2) + Math.pow(y, 2)));
         var a = 1 / mod;
@@ -98,6 +98,38 @@ module.exports = function(stub){
         var y = Math.pow((y0 - y1), 2);
         return Math.sqrt(x + y);
     };
+    module.anguloGiro = function (nave, cursor){
+
+        var cx = cursor.x + nave.x - camera.width/2;
+        var cy = cursor.y + nave.y - camera.height/2;
+
+        var ca = (nave.x - cx);
+        var co = (nave.y - cy);
+
+        tangente = (co/ca);
+        atan = Math.round(Math.atan(tangente)*100)/100;
+
+        deg = atan * 180/3.14;
+     // console.log(deg);
+        //Falta tratar quando cursor = background.height
+        if(cursor.x > nave.x) {
+            if(cursor.y >= nave.y) {
+    //            console.log('DireitaBaixo');
+            } else if(cursor.x < nave.x){
+    //            console.log('DireitaCima');
+            }
+        } else {
+            atan+=4*180/3.14;
+            if(cursor.y >= nave.y) {
+    //            console.log('EsquerdaBaixo');
+            } else {
+    //           console.log('EsquerdaCima');
+            }
+        }
+        //console.log(nave);
+        return atan;
+    };
+
     return module;
 }
 
@@ -144,6 +176,11 @@ module.exports = function(stub){
 module.exports = function(stub){
     var module = {};
     module.asteroids = [];
+    module.lasers = [];
+    module.players = [];
+    module.players_id = [];
+    module.players_pointers = [];
+
     module.coord = {
         x:0,
         y:0
@@ -156,7 +193,7 @@ module.exports = function(stub){
 }
 
 },{}],5:[function(require,module,exports){
-module.exports = function(turret, camera, background){
+module.exports = function(turret, camera, background, data, ctx_turret, my_id, calculo){
     var module = {};
     module.asteroid = function(ast){
         /* variaveis auxiliares, pega coordenadas do canvas pequeno
@@ -240,51 +277,42 @@ module.exports = function(turret, camera, background){
           ctx.stroke();
         }
     };
-    gira = function (nave, cursor){
+    module.laser = function(x0, y0, x1, y1){
+        var borda_esq = turret.x - camera.width/2;      
+        var borda_dir = turret.x + camera.width/2;
+        var borda_sup = turret.y - camera.height/2;
+        var borda_inf = turret.y + camera.height/2;
+            // e soh entao desenha na tela
 
-        var cx = cursor.x + nave.x - camera.width/2;
-        var cy = cursor.y + nave.y - camera.height/2;
-
-        var ca = (nave.x - cx);
-        var co = (nave.y - cy);
-
-        tangente = (co/ca);
-        atan = Math.round(Math.atan(tangente)*100)/100;
-
-        deg = atan * 180/3.14;
-     // console.log(deg);
-        //Falta tratar quando cursor = background.height
-        if(cursor.x > nave.x) {
-            if(cursor.y >= nave.y) {
-    //            console.log('DireitaBaixo');
-            } else if(cursor.x < nave.x){
-    //            console.log('DireitaCima');
-            }
-        } else {
-            atan+=4*180/3.14;
-            if(cursor.y >= nave.y) {
-    //            console.log('EsquerdaBaixo');
-            } else {
-    //           console.log('EsquerdaCima');
-            }
-        }
-        //console.log(nave);
-        return atan;
+            // calcula as coordenadas em relacao ao canvas menor
+            // (cada canvas teu o seu sistema de coordenadas)
+        var x0 = x0 - borda_esq;
+        var y0 = y0 - borda_sup;
+        var x1 = x1 - borda_esq;
+        var y1 = y1 - borda_sup;
+        ctx_turret.beginPath();
+        // move para inicio da linha
+        ctx_turret.moveTo(x0,y0);
+        // seta largura da linha
+        ctx_turret.lineWidth=turret.raio*0.2;
+        // cor
+        ctx_turret.strokeStyle="#00ff00";
+        // coordenada destino
+        ctx_turret.lineTo(x1, y1);
+        // desenha
+        ctx_turret.stroke();
     };
-    module.selfLasers = function (){
-        for (i = 0; i < players.length; i++){
-            if (players_id[i] == my_id){
-                var laser = lasers[i];
-                if (laser != undefined && laser.first != undefined){
-                    x0 = laser.first.x;
-                    y0 = laser.first.y;
-                    x1 = laser.last.x;
-                    y1 = laser.last.y;
-                    inimigo.desenhaLaser(x0, y0, x1, y1);
-                }
-            }
+
+    module.allLasers = function(){
+        for (var i = 0; i < data.players.length; i++){
+               var laser = data.lasers[i]; 
+               //console.log(laser);
+               if (laser != undefined && laser.first != undefined){
+                   module.laser(laser.first.x, laser.first.y,
+                                       laser.last.x,  laser.last.y);
+               }
         }
-    };
+    },
           // desenha os stats na tela
     module.hud = function(stats) {
             ctx_turret.font = "30px Arial";
@@ -300,7 +328,64 @@ module.exports = function(turret, camera, background){
     };
     module.turret = function(camera, ctx){
         ctx.drawImage(background.imagem, turret.x - camera.width/2, turret.y - camera.height/2, camera.width, camera.height,0, 0, camera.width, camera.height);
+    module.enemy = function(inimigo, cursor){
+        /* variaveis auxiliares, pega coordenadas do canvas pequeno
+        (os quatro cantos) de um retangulo
+        //(turret.x, turret.y) = posicao do turret
+        */
+        var angulo = calculo.anguloGiro(inimigo, cursor);
+        var borda_esq = turret.x - camera.width/2;      
+        var borda_dir = turret.x + camera.width/2;
+        var borda_sup = turret.y - camera.height/2;
+        var borda_inf = turret.y + camera.height/2;
+        // confere se inimigoeroide entrou no canvas menor
+        if (inimigo.x > borda_esq && inimigo.x < borda_dir && inimigo.y > borda_sup && inimigo.y < borda_inf){
+        // e soh entao desenha na tela
+
+        // calcula as coordenadas em relacao ao canvas menor
+        // (cada canvas teu o seu sistema de coordenadas)
+        var x = inimigo.x - borda_esq;
+        var y = inimigo.y - borda_sup;
+
+        // desenha o inimigoeroide
+        // strokestyle = cor da linha
+        ctx_turret.strokeStyle = "#ffffff";
+        // comeca desenho
+        ctx_turret.beginPath();
+        // caminha um circulo nas coordenadas (x,y),
+        // de raio inimigo.tam * 5,
+        // 0??
+        // arco 2pi
+        ctx_turret.arc(x, y, turret.raio, 0, 2*Math.pi);
+        // desenha o caminho
+        ctx_turret.stroke();
+        // fillstyle = cor de preenchimento
+            ctx_turret.fillstyle = "#ff0000";
+        // preenche
+        ctx_turret.fill();
+        ctx_turret.save();
+        // desloca origem para as coordendas (x,y)
+        ctx_turret.translate(x, y);
+        // rotaciona a imagem de acordo o angulo
+        ctx_turret.rotate(angulo);
+        // move para a origem (que agora eh (x, y))
+        ctx_turret.moveTo(0, 0)
+        ctx_turret.lineWidth = turret.raio * 0.2;
+        ctx_turret.lineTo(turret.raio * 2, 0);
+        ctx_turret.stroke();
+        // restaura contexto
+        ctx_turret.restore();
+        }
     };
+
+    module.allEnemies = function(){
+        for (var i = 0; i < data.players.length; i++){
+            if (data.players_id[i] != my_id){
+                module.enemy(data.players[i], data.players_pointers[i]);
+            }
+        }
+    };
+}
 
     return module;
 }
@@ -356,8 +441,8 @@ trechos do codigo eh referenciado como camera
 */
 var stub = 0;
 var data = require('./data.js')(stub);
-var calculo = require('./calculo.js')(stub);
 var socket = io({transports: ['websocket']});
+
 var input = require('./input.js')(stub);
 var c_background = document.getElementById("background");
 var c_turret = document.getElementById("canvas_turret");
@@ -365,8 +450,16 @@ var ctx_background = c_background.getContext("2d");
 var ctx_turret = c_turret.getContext("2d");
 var camera = require('./camera.js')(ctx_turret);
 var background = require('./background.js')(ctx_background);
+
+var my_id = 0;
+socket.on('myid', function(id){
+   my_id = id;
+   socket.emit('myid', my_id);
+});
+
 var turret = require('./turret.js')(camera, background, data);
-var draw = require('./draw.js')(turret, camera, background);
+var calculo = require('./calculo.js')(camera, data, turret);
+var draw = require('./draw.js')(turret, camera, background, data, ctx_turret,my_id, calculo);
 
 
 socket.on('message', function(message){
@@ -378,11 +471,6 @@ socket.on('asteroides', function(novo){
 var blasters = [];
 socket.on('blasters', function(received_blasters){
     blasters = received_blasters;
-});
-var my_id = 0;
-socket.on('myid', function(id){
-   my_id = id;
-   socket.emit('myid', my_id);
 });
 /* funcoes de inicializacao de variaveis*/
 
@@ -409,20 +497,19 @@ socket.on('movimento', function(nova_pos){
 });
 socket.on('players', function(received_players){
 //    console.log(other_players);
-    players = received_players;
+    data.players = received_players;
 });
 socket.on('players_id', function(received_ids){
 //    console.log(other_players);
-    players_id = received_ids;
+    data.players_id = received_ids;
 });
 socket.on('players_pointers', function(received_pointers){
 //    console.log(other_players);
-    players_pointers = received_pointers;
+    data.players_pointers = received_pointers;
 });
 
-var lasers = [];
 socket.on('lasers', function(received_lasers){
-    lasers = received_lasers;
+    data.lasers = received_lasers;
 //    console.log(lasers);
 });
 
@@ -548,8 +635,8 @@ function mainLoop(timestamp){
     // chamadas de desenho & calculo
     draw.turret(camera, ctx_turret);           // desenha no canvas da camera
     draw.allAsteroids();          // desenha todos os asteroides do vetor
-    inimigo.desenhaTodos();
-    inimigo.desenhaLasers();
+    draw.allEnemies();
+    draw.allLasers();
     desenhaBlasters();
     calculo.versor(turret.versor);      // calcula vetor versor (de geometria analitica) do turret
     turret.desenha(ctx_turret, turret.raio, turret.gira(turret, data.coord));                      // desenha o turret atualizado com a rotacao

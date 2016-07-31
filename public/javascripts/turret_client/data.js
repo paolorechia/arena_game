@@ -1,6 +1,11 @@
 module.exports = function(stub){
     var module = {};
     module.asteroids = [];
+    module.lasers = [];
+    module.players = [];
+    module.players_id = [];
+    module.players_pointers = [];
+
     module.coord = {
         x:0,
         y:0

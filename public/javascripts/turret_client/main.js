@@ -20,8 +20,8 @@ trechos do codigo eh referenciado como camera
 */
 var stub = 0;
 var data = require('./data.js')(stub);
-var calculo = require('./calculo.js')(stub);
 var socket = io({transports: ['websocket']});
+
 var input = require('./input.js')(stub);
 var c_background = document.getElementById("background");
 var c_turret = document.getElementById("canvas_turret");
@@ -29,8 +29,16 @@ var ctx_background = c_background.getContext("2d");
 var ctx_turret = c_turret.getContext("2d");
 var camera = require('./camera.js')(ctx_turret);
 var background = require('./background.js')(ctx_background);
+
+var my_id = 0;
+socket.on('myid', function(id){
+   my_id = id;
+   socket.emit('myid', my_id);
+});
+
 var turret = require('./turret.js')(camera, background, data);
-var draw = require('./draw.js')(turret, camera, background);
+var calculo = require('./calculo.js')(camera, data, turret);
+var draw = require('./draw.js')(turret, camera, background, data, ctx_turret,my_id, calculo);
 
 
 socket.on('message', function(message){
@@ -42,11 +50,6 @@ socket.on('asteroides', function(novo){
 var blasters = [];
 socket.on('blasters', function(received_blasters){
     blasters = received_blasters;
-});
-var my_id = 0;
-socket.on('myid', function(id){
-   my_id = id;
-   socket.emit('myid', my_id);
 });
 /* funcoes de inicializacao de variaveis*/
 
@@ -73,20 +76,19 @@ socket.on('movimento', function(nova_pos){
 });
 socket.on('players', function(received_players){
 //    console.log(other_players);
-    players = received_players;
+    data.players = received_players;
 });
 socket.on('players_id', function(received_ids){
 //    console.log(other_players);
-    players_id = received_ids;
+    data.players_id = received_ids;
 });
 socket.on('players_pointers', function(received_pointers){
 //    console.log(other_players);
-    players_pointers = received_pointers;
+    data.players_pointers = received_pointers;
 });
 
-var lasers = [];
 socket.on('lasers', function(received_lasers){
-    lasers = received_lasers;
+    data.lasers = received_lasers;
 //    console.log(lasers);
 });
 
@@ -212,8 +214,8 @@ function mainLoop(timestamp){
     // chamadas de desenho & calculo
     draw.turret(camera, ctx_turret);           // desenha no canvas da camera
     draw.allAsteroids();          // desenha todos os asteroides do vetor
-    inimigo.desenhaTodos();
-    inimigo.desenhaLasers();
+    draw.allEnemies();
+    draw.allLasers();
     desenhaBlasters();
     calculo.versor(turret.versor);      // calcula vetor versor (de geometria analitica) do turret
     turret.desenha(ctx_turret, turret.raio, turret.gira(turret, data.coord));                      // desenha o turret atualizado com a rotacao
