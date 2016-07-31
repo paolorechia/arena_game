@@ -18,16 +18,21 @@ o primeiro, background, eh usado para criar o espaco
 o segundo c_turret, eh onde o jogo eh efetivamente desenhado e em varios
 trechos do codigo eh referenciado como camera
 */
+var stub = 0;
+var data = require('./data.js')(stub);
+var draw = require('./draw.js')(stub);
 var socket = io({transports: ['websocket']});
 var c_background = document.getElementById("background");
+var background = require('./background.js')(c_background);
 var c_turret = document.getElementById("canvas_turret");
+var camera = require('./camera.js')(c_turret);
 var ctx_background = c_background.getContext("2d");
 var ctx_turret = c_turret.getContext("2d");
 socket.on('message', function(message){
 //    console.log(message);
 });
 socket.on('asteroides', function(novo){
-    asteroides.vetor = novo;
+    data.asteroids = novo;
 });
 var blasters = [];
 socket.on('blasters', function(received_blasters){
@@ -46,7 +51,7 @@ console.log(sound);
 //Versão antiga -- usar quando o bug da mira for corrigido -----
 //camera.setRes(1600, 900, c_turret);
 //--------------------------------------------------------------
-camera.setRes(window.innerWidth-50, window.innerHeight-50, c_turret);
+camera.setRes(window.innerWidth-10, window.innerHeight-10, c_turret);
 console.log(window.innerWidth, window.innerHeight);
 console.log(camera);
 
@@ -204,7 +209,7 @@ function mainLoop(timestamp){
     turret.trocaArmaClique();
     // chamadas de desenho & calculo
     background.blit_turret();           // desenha no canvas da camera
-    asteroides.desenhaTodos();          // desenha todos os asteroides do vetor
+    draw.allAsteroids();          // desenha todos os asteroides do vetor
     inimigo.desenhaTodos();
     inimigo.desenhaLasers();
     desenhaBlasters();

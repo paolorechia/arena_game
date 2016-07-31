@@ -1,11 +1,161 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+module.exports = function(camera){
+    var module = {};
+    
+    // objeto module, contem informacoes do canvas maior
+    // declaracao de variaveis internas
+    module.imagem = new Image();
+    imagem2 = 0;
+    width = 0;
+    height = 0;
+    // funcoes
+    // grava -> recebe um canvas, gera uma imagem .png e salva o link
+    // em module.imagem.src
+    grava = function(ctx, width, height){
+        module.imagem.src = ctx.canvas.toDataURL("image/png");
+    };
+    // blit -> redesenha o module no canvas menor (camera)
+    // nao eh necessaria no momento
+    blit = function(module){
+        ctx_turret.drawImage(module, 0, 0);
+    };
+    // blit_turret -> 1. corta o module gigantesco na posicao certa;
+    // 2. desenha ele na tela
+    module.blit_turret = function(camera){
+        ctx_turret.drawImage(module.imagem, turret.x - camera.width/2, turret.y - camera.height/2, camera.width, camera.height,0, 0, camera.width, camera.height);
+    };
+
+    // preenche module com pontos brancos que representam estrelas
+    populaEstrelas = function(ctx, num){
+        var i;
+        ctx.fillStyle = "#FFFFFF";
+        for (i=0; i<num; i++){
+            var x = Math.floor((Math.random() * module.width) + 1);
+            var y = Math.floor((Math.random() * module.height) + 1);
+            ctx.fillRect(x, y, 1, 1);
+        }
+    };
+    desenhaBorda = function(ctx, camera){
+        ctx.strokeStyle = "#00002F";
+        ctx.lineWidth = 800;
+        var largura = ctx.lineWidth/2;
+        ctx.rect(camera.width/2 - largura, camera.height/2 - largura, module.width - camera.width + ctx.lineWidth, module.height - camera.height + ctx.lineWidth);
+        ctx.stroke();
+    };
+    // inicializa as variaveis internas ao module
+    module.inicia = function (ctx, canvas){
+        module.width = canvas.width;
+        module.height = canvas.height;
+        // Preenche module com preto
+        ctx.fillStyle = "#000000";
+        ctx.fillRect(0,0,module.width,module.height);
+        // e com estrelas
+        populaEstrelas(ctx, module.width/4);
+// salva module criado
+        desenhaBorda(ctx, camera);
+        grava(ctx, module.width, module.height);
+    };    
+    return module;
+}
+
+},{}],2:[function(require,module,exports){
+module.exports = function(stub){
+    var module = {};
+    // objeto camera, contem dimensoes do canvas menor
+    module.width = 0;
+    module.height = 0;
+        // seta tamanho do canvas menor
+    module.updateResEvent = function(canvas) {
+          window.addEventListener('resize', function(event) {
+
+            //--- Para alterar a resolução mantendo a res. do jogo (buga a mira)
+            //$(canvas).css('width', window.innerWidth-3)
+            //$(canvas).css('height', window.innerHeight-3)
+            //-------------------------
+            
+            canvas.width = window.innerWidth-3;
+            canvas.height = window.innerHeight-3;
+            module.width = window.innerWidth-3;
+            module.height =  window.innerHeight-3;
+
+          });
+    };
+    module.setRes = function (width, height, canvas){
+            //Atua no canvas '#canvas_turret'
+            canvas.width = width;
+            canvas.height = height;
+            //--- Para alterar a resolução mantendo a res. do jogo (buga a mira)
+            //$(canvas).css('width', window.innerWidth-3)
+            //$(canvas).css('height', window.innerHeight-3)
+            //-------------------------
+            module.width = width;
+            module.height = height;
+            module.updateResEvent(canvas);
+
+
+    };
+    return module;
+}
+
+},{}],3:[function(require,module,exports){
 module.exports = function(stub){
     var module = {};
     module.asteroids = [];
     return module;
 }
 
-},{}],2:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
+module.exports = function(stub){
+    var module = {};
+    module.asteroid = function(ast){
+        /* variaveis auxiliares, pega coordenadas do canvas pequeno
+        (os quatro cantos) de um retangulo
+        //(turret.x, turret.y) = posicao do turret
+        */
+        var borda_esq = turret.x - camera.width/2;      
+        var borda_dir = turret.x + camera.width/2;
+        var borda_sup = turret.y - camera.height/2;
+        var borda_inf = turret.y + camera.height/2;
+        // confere se asteroide entrou no canvas menor
+        if (ast.x > borda_esq && ast.x < borda_dir && ast.y > borda_sup && ast.y < borda_inf){
+            // e soh entao desenha na tela
+
+            // calcula as coordenadas em relacao ao canvas menor
+            // (cada canvas teu o seu sistema de coordenadas)
+            var x = ast.x - borda_esq;
+            var y = ast.y - borda_sup;
+
+            // desenha o asteroide
+            // strokeStyle = cor da linha
+            ctx_turret.strokeStyle = "#FFFFFF";
+            // comeca desenho
+            ctx_turret.beginPath();
+            // caminha um circulo nas coordenadas (x,y),
+            // de raio ast.tam * 5,
+            // 0??
+            // arco 2pi
+            ctx_turret.arc(x, y, ast.tam * 5, 0, 2*Math.PI);
+            // desenha o caminho
+            ctx_turret.stroke();
+            // fillStyle = cor de preenchimento
+            ctx_turret.fillStyle = "#FFFFFF";
+            // preenche
+            ctx_turret.fill();
+        }
+    };
+    // desenha todos os asteroides
+    module.allAsteroids = function(){
+        var i;
+        var len = data.asteroids.length;
+        for (i = 0; i < len; i++){
+            module.asteroid(data.asteroids[i]);
+        }
+
+    };
+    return module;
+}
+
+},{}],5:[function(require,module,exports){
 /*
 Copyright (C) 2016 PR & DM web dev, Inc - All rights reserved.
 Unauthorized copy, reproduction or distribution of this source code is strictly
@@ -28,10 +178,12 @@ trechos do codigo eh referenciado como camera
 */
 var stub = 0;
 var data = require('./data.js')(stub);
-// var draw = require('./draw.js')(stub);
+var draw = require('./draw.js')(stub);
 var socket = io({transports: ['websocket']});
 var c_background = document.getElementById("background");
+var background = require('./background.js')(c_background);
 var c_turret = document.getElementById("canvas_turret");
+var camera = require('./camera.js')(c_turret);
 var ctx_background = c_background.getContext("2d");
 var ctx_turret = c_turret.getContext("2d");
 socket.on('message', function(message){
@@ -57,7 +209,7 @@ console.log(sound);
 //Versão antiga -- usar quando o bug da mira for corrigido -----
 //camera.setRes(1600, 900, c_turret);
 //--------------------------------------------------------------
-camera.setRes(window.innerWidth-50, window.innerHeight-50, c_turret);
+camera.setRes(window.innerWidth-10, window.innerHeight-10, c_turret);
 console.log(window.innerWidth, window.innerHeight);
 console.log(camera);
 
@@ -258,4 +410,4 @@ setTimeout(function(){
    2000);
 
 
-},{"./data.js":1}]},{},[2]);
+},{"./background.js":1,"./camera.js":2,"./data.js":3,"./draw.js":4}]},{},[5]);
