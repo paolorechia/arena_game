@@ -1,4 +1,4 @@
-module.exports = function(stub){
+module.exports = function(turret, camera, background){
     var module = {};
     module.asteroid = function(ast){
         /* variaveis auxiliares, pega coordenadas do canvas pequeno
@@ -140,5 +140,9 @@ module.exports = function(stub){
             ctx_turret.fillStyle='#1244AA';
             ctx_turret.fillText('Energy: ' + this.stats.energy, camera.width/2.3, camera.height/1.05)
     };
+    module.turret = function(camera, ctx){
+        ctx.drawImage(background.imagem, turret.x - camera.width/2, turret.y - camera.height/2, camera.width, camera.height,0, 0, camera.width, camera.height);
+    };
+
     return module;
 }

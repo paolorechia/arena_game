@@ -18,11 +18,6 @@ module.exports = function(camera){
     blit = function(module){
         ctx_turret.drawImage(module, 0, 0);
     };
-    // blit_turret -> 1. corta o module gigantesco na posicao certa;
-    // 2. desenha ele na tela
-    module.blit_turret = function(camera, ctx){
-        ctx.drawImage(module.imagem, turret.x - camera.width/2, turret.y - camera.height/2, camera.width, camera.height,0, 0, camera.width, camera.height);
-    };
 
     // preenche module com pontos brancos que representam estrelas
     populaEstrelas = function(ctx, num){
@@ -31,10 +26,12 @@ module.exports = function(camera){
         for (i=0; i<num; i++){
             var x = Math.floor((Math.random() * module.width) + 1);
             var y = Math.floor((Math.random() * module.height) + 1);
-            ctx.fillRect(x, y, 1, 1);
+            var width = Math.floor(Math.random() * 3 + 1);
+            ctx.fillRect(x, y, width, width);
         }
     };
     desenhaBorda = function(ctx, camera){
+        ctx.beginPath();
         ctx.strokeStyle = "#00002F";
         ctx.lineWidth = 800;
         var largura = ctx.lineWidth/2;

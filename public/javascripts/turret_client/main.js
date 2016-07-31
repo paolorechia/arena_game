@@ -21,7 +21,6 @@ trechos do codigo eh referenciado como camera
 var stub = 0;
 var data = require('./data.js')(stub);
 var calculo = require('./calculo.js')(stub);
-var draw = require('./draw.js')(stub);
 var socket = io({transports: ['websocket']});
 var input = require('./input.js')(stub);
 var c_background = document.getElementById("background");
@@ -31,6 +30,7 @@ var ctx_turret = c_turret.getContext("2d");
 var camera = require('./camera.js')(ctx_turret);
 var background = require('./background.js')(ctx_background);
 var turret = require('./turret.js')(camera, background, data);
+var draw = require('./draw.js')(turret, camera, background);
 
 
 socket.on('message', function(message){
@@ -210,7 +210,7 @@ function mainLoop(timestamp){
     }
     lastFrameTimeMs = timestamp;
     // chamadas de desenho & calculo
-    background.blit_turret(camera, ctx_turret);           // desenha no canvas da camera
+    draw.turret(camera, ctx_turret);           // desenha no canvas da camera
     draw.allAsteroids();          // desenha todos os asteroides do vetor
     inimigo.desenhaTodos();
     inimigo.desenhaLasers();

@@ -19,11 +19,6 @@ module.exports = function(camera){
     blit = function(module){
         ctx_turret.drawImage(module, 0, 0);
     };
-    // blit_turret -> 1. corta o module gigantesco na posicao certa;
-    // 2. desenha ele na tela
-    module.blit_turret = function(camera, ctx){
-        ctx.drawImage(module.imagem, turret.x - camera.width/2, turret.y - camera.height/2, camera.width, camera.height,0, 0, camera.width, camera.height);
-    };
 
     // preenche module com pontos brancos que representam estrelas
     populaEstrelas = function(ctx, num){
@@ -32,10 +27,12 @@ module.exports = function(camera){
         for (i=0; i<num; i++){
             var x = Math.floor((Math.random() * module.width) + 1);
             var y = Math.floor((Math.random() * module.height) + 1);
-            ctx.fillRect(x, y, 1, 1);
+            var width = Math.floor(Math.random() * 3 + 1);
+            ctx.fillRect(x, y, width, width);
         }
     };
     desenhaBorda = function(ctx, camera){
+        ctx.beginPath();
         ctx.strokeStyle = "#00002F";
         ctx.lineWidth = 800;
         var largura = ctx.lineWidth/2;
@@ -159,7 +156,7 @@ module.exports = function(stub){
 }
 
 },{}],5:[function(require,module,exports){
-module.exports = function(stub){
+module.exports = function(turret, camera, background){
     var module = {};
     module.asteroid = function(ast){
         /* variaveis auxiliares, pega coordenadas do canvas pequeno
@@ -301,6 +298,10 @@ module.exports = function(stub){
             ctx_turret.fillStyle='#1244AA';
             ctx_turret.fillText('Energy: ' + this.stats.energy, camera.width/2.3, camera.height/1.05)
     };
+    module.turret = function(camera, ctx){
+        ctx.drawImage(background.imagem, turret.x - camera.width/2, turret.y - camera.height/2, camera.width, camera.height,0, 0, camera.width, camera.height);
+    };
+
     return module;
 }
 
@@ -356,7 +357,6 @@ trechos do codigo eh referenciado como camera
 var stub = 0;
 var data = require('./data.js')(stub);
 var calculo = require('./calculo.js')(stub);
-var draw = require('./draw.js')(stub);
 var socket = io({transports: ['websocket']});
 var input = require('./input.js')(stub);
 var c_background = document.getElementById("background");
@@ -366,6 +366,7 @@ var ctx_turret = c_turret.getContext("2d");
 var camera = require('./camera.js')(ctx_turret);
 var background = require('./background.js')(ctx_background);
 var turret = require('./turret.js')(camera, background, data);
+var draw = require('./draw.js')(turret, camera, background);
 
 
 socket.on('message', function(message){
@@ -545,7 +546,7 @@ function mainLoop(timestamp){
     }
     lastFrameTimeMs = timestamp;
     // chamadas de desenho & calculo
-    background.blit_turret(camera, ctx_turret);           // desenha no canvas da camera
+    draw.turret(camera, ctx_turret);           // desenha no canvas da camera
     draw.allAsteroids();          // desenha todos os asteroides do vetor
     inimigo.desenhaTodos();
     inimigo.desenhaLasers();
@@ -622,7 +623,8 @@ module.exports = function (camera, background, data){
     module.atirou = function(status_tiro){
             bool = status_tiro;
     };
-
+    // blit_turret -> 1. corta o module gigantesco na posicao certa;
+    // 2. desenha ele na tela
     return module;
 }
 

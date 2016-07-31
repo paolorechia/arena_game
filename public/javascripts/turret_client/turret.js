@@ -30,7 +30,8 @@ module.exports = function (camera, background, data){
     module.atirou = function(status_tiro){
             bool = status_tiro;
     };
-
+    // blit_turret -> 1. corta o module gigantesco na posicao certa;
+    // 2. desenha ele na tela
     return module;
 }
 
