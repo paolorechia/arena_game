@@ -113,5 +113,32 @@ module.exports = function(stub){
         //console.log(nave);
         return atan;
     };
+    module.selfLasers = function (){
+        for (i = 0; i < players.length; i++){
+            if (players_id[i] == my_id){
+                var laser = lasers[i];
+                if (laser != undefined && laser.first != undefined){
+                    x0 = laser.first.x;
+                    y0 = laser.first.y;
+                    x1 = laser.last.x;
+                    y1 = laser.last.y;
+                    inimigo.desenhaLaser(x0, y0, x1, y1);
+                }
+            }
+        }
+    };
+          // desenha os stats na tela
+    module.hud = function(stats) {
+            ctx_turret.font = "30px Arial";
+            ctx_turret.fillStyle="green";
+            ctx_turret.fillText("HP: " + this.stats.vida, camera.width/22, camera.height/18)
+            ctx_turret.fillText("Weapon: " + this.stats.weapon, camera.width/22, camera.height/9)
+            ctx_turret.fillStyle='red';
+            ctx_turret.fillText('Kills: '+ this.stats.kills, camera.width/2.2, camera.height/18)
+            ctx_turret.fillStyle='blue';
+            ctx_turret.fillText('SH: ' + this.stats.shield, camera.width/22, camera.height/6)
+            ctx_turret.fillStyle='#1244AA';
+            ctx_turret.fillText('Energy: ' + this.stats.energy, camera.width/2.3, camera.height/1.05)
+    };
     return module;
 }

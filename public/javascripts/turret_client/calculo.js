@@ -1,49 +1,18 @@
-// objeto de coorenadas X, Y do cursor do mouse
-var coord = {
-    x:0,
-    y:0
-}
+module.exports = function(stub){
+    var module = {};
 
-// funcao para pegar as coordenadas do mouse
-// atualiza coord.x e coord.y
-/*
-function pegaCoordenadas(event){
-    coord.x = event.clientX;
-    coord.x -= c_turret.offsetLeft;
-    coord.x += turret.x - camera.width/2;
-    coord.y = event.clientY;
-    coord.y -= c_turret.offsetTop;
-    coord.y += turret.y - camera.height/2;
-//    return coord;
-}
-*/
-
-// imprimir coordenadas pro console
-function logCoordenadas(){
-    var x = coord.x.toString();
-    var y = coord.y.toString();
-    var string = "x = ";
-    string = string.concat(x);
-    string = string.concat("; y = ");
-    string = string.concat(y);
-    console.log(string);
-}
-
-
-// exemplo de pseudo-classe
-// ver funcao de atirar para exemplo de uso
-// versor = vetor de modulo unitario (conceito de GA)
-function Versor(){
-    this.x = 0;
-    this.y = 0;
-}
-
-
-// exemplo de objeto que contém apenas funcoes
-// invocado na forma "objeto.funcao()"
-var calculo = {
-    // recebe um versor e atualiza valor dele
-    versor : function (v){
+    // objeto de coorenadas X, Y do cursor do mouse
+    // imprimir coordenadas pro console
+    module.logCoordenadas= function(){
+        var x = coord.x.toString();
+        var y = coord.y.toString();
+        var string = "x = ";
+        string = string.concat(x);
+        string = string.concat("; y = ");
+        string = string.concat(y);
+        console.log(string);
+    };
+    module.versor = function (v){
         // pega coordenadas e desloca origem para o centro
         var x = coord.x - turret.x;
         var y = coord.y - turret.y;
@@ -55,8 +24,8 @@ var calculo = {
         // calcula versor
         v.x = x * a;
         v.y = y * a;
-    },
-    versor_mobile : function (v){
+    };
+    module.versor_mobile = function (v){
         var len = mobile_coord.length;
         var x = mobile_coord[len-1].x - mobile_coord[0].x;
         var y = mobile_coord[len-1].y - mobile_coord[0].y;
@@ -65,11 +34,11 @@ var calculo = {
         var a = 1 / mod;
         v.x = x * a;
         v.y = y * a;
-    },
-    distGeometrica : function (x0, y0, x1, y1){
+    };
+    module.distGeometrica = function (x0, y0, x1, y1){
         var x = Math.pow((x0 - x1), 2);
         var y = Math.pow((y0 - y1), 2);
         return Math.sqrt(x + y);
-    }
+    };
+    return module;
 }
-

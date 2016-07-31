@@ -20,6 +20,7 @@ trechos do codigo eh referenciado como camera
 */
 var stub = 0;
 var data = require('./data.js')(stub);
+var calculo = require('./calculo.js')(stub);
 var draw = require('./draw.js')(stub);
 var socket = io({transports: ['websocket']});
 var input = require('./input.js')(stub);
@@ -29,7 +30,7 @@ var ctx_background = c_background.getContext("2d");
 var ctx_turret = c_turret.getContext("2d");
 var camera = require('./camera.js')(ctx_turret);
 var background = require('./background.js')(ctx_background);
-var turret = require('./turret.js')(camera, background);
+var turret = require('./turret.js')(camera, background, data);
 
 
 socket.on('message', function(message){

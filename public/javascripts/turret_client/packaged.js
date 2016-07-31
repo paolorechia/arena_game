@@ -61,6 +61,52 @@ module.exports = function(camera){
 },{}],2:[function(require,module,exports){
 module.exports = function(stub){
     var module = {};
+
+    // objeto de coorenadas X, Y do cursor do mouse
+    // imprimir coordenadas pro console
+    module.logCoordenadas= function(){
+        var x = coord.x.toString();
+        var y = coord.y.toString();
+        var string = "x = ";
+        string = string.concat(x);
+        string = string.concat("; y = ");
+        string = string.concat(y);
+        console.log(string);
+    };
+    module.versor = function (v){
+        // pega coordenadas e desloca origem para o centro
+        var x = coord.x - turret.x;
+        var y = coord.y - turret.y;
+
+        // calcula modulo do vetor (x,y)
+        var mod = Math.sqrt((Math.pow(x, 2) + Math.pow(y, 2)));
+        var a = 1 / mod;
+
+        // calcula versor
+        v.x = x * a;
+        v.y = y * a;
+    };
+    module.versor_mobile = function (v){
+        var len = mobile_coord.length;
+        var x = mobile_coord[len-1].x - mobile_coord[0].x;
+        var y = mobile_coord[len-1].y - mobile_coord[0].y;
+
+        var mod = Math.sqrt((Math.pow(x, 2) + Math.pow(y, 2)));
+        var a = 1 / mod;
+        v.x = x * a;
+        v.y = y * a;
+    };
+    module.distGeometrica = function (x0, y0, x1, y1){
+        var x = Math.pow((x0 - x1), 2);
+        var y = Math.pow((y0 - y1), 2);
+        return Math.sqrt(x + y);
+    };
+    return module;
+}
+
+},{}],3:[function(require,module,exports){
+module.exports = function(stub){
+    var module = {};
     // objeto camera, contem dimensoes do canvas menor
     module.width = 0;
     module.height = 0;
@@ -97,14 +143,22 @@ module.exports = function(stub){
     return module;
 }
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 module.exports = function(stub){
     var module = {};
     module.asteroids = [];
+    module.coord = {
+        x:0,
+        y:0
+    };
+    module.Versor = function(){
+        this.x = 0;
+        this.y = 0;
+    }
     return module;
 }
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 module.exports = function(stub){
     var module = {};
     module.asteroid = function(ast){
@@ -152,10 +206,133 @@ module.exports = function(stub){
         }
 
     };
+    cano = function (ctx, raio, angulo, nave){
+        var x = camera.width/2;
+        var y = camera.height/2;
+        // salva contexto (necessario em funcao da translacao)
+        ctx.save();
+        // desloca origem para as coordendas (x,y)
+        ctx.translate(x, y);
+        // rotaciona a imagem de acordo o angulo
+        ctx.rotate(angulo);
+        // move para a origem (que agora eh (x, y))
+        ctx.moveTo(0, 0)
+        ctx.lineWidth = raio * 0.2;
+        ctx.lineTo(raio * 2, 0);
+        ctx.stroke();
+        // restaura contexto
+        ctx.restore();
+    };
+
+    // desenha o corpo do turret e chama a funcao cano
+    module.turret = function (ctx, raio, angulo){
+        var x = camera.width/2;
+        var y = camera.height/2;
+        ctx.strokeStyle = "#f0470e";
+        ctx.beginPath();
+        ctx.arc(x, y, raio, 0, 2*Math.PI);
+        ctx.stroke();
+        ctx.fillStyle = "#005252";
+        ctx.fill();
+        cano(ctx, raio, angulo);
+        //Se tem shield, desenha o shield----------
+        if(this.hud.stats.shield > 0) {
+          ctx.strokeStyle = "#1244AA";
+          ctx.beginPath();
+          ctx.arc(x, y, raio*1.3, 0, 2*Math.PI);
+          ctx.stroke();
+        }
+    };
+    gira = function (nave, cursor){
+
+        var cx = cursor.x + nave.x - camera.width/2;
+        var cy = cursor.y + nave.y - camera.height/2;
+
+        var ca = (nave.x - cx);
+        var co = (nave.y - cy);
+
+        tangente = (co/ca);
+        atan = Math.round(Math.atan(tangente)*100)/100;
+
+        deg = atan * 180/3.14;
+     // console.log(deg);
+        //Falta tratar quando cursor = background.height
+        if(cursor.x > nave.x) {
+            if(cursor.y >= nave.y) {
+    //            console.log('DireitaBaixo');
+            } else if(cursor.x < nave.x){
+    //            console.log('DireitaCima');
+            }
+        } else {
+            atan+=4*180/3.14;
+            if(cursor.y >= nave.y) {
+    //            console.log('EsquerdaBaixo');
+            } else {
+    //           console.log('EsquerdaCima');
+            }
+        }
+        //console.log(nave);
+        return atan;
+    };
+    module.selfLasers = function (){
+        for (i = 0; i < players.length; i++){
+            if (players_id[i] == my_id){
+                var laser = lasers[i];
+                if (laser != undefined && laser.first != undefined){
+                    x0 = laser.first.x;
+                    y0 = laser.first.y;
+                    x1 = laser.last.x;
+                    y1 = laser.last.y;
+                    inimigo.desenhaLaser(x0, y0, x1, y1);
+                }
+            }
+        }
+    };
+          // desenha os stats na tela
+    module.hud = function(stats) {
+            ctx_turret.font = "30px Arial";
+            ctx_turret.fillStyle="green";
+            ctx_turret.fillText("HP: " + this.stats.vida, camera.width/22, camera.height/18)
+            ctx_turret.fillText("Weapon: " + this.stats.weapon, camera.width/22, camera.height/9)
+            ctx_turret.fillStyle='red';
+            ctx_turret.fillText('Kills: '+ this.stats.kills, camera.width/2.2, camera.height/18)
+            ctx_turret.fillStyle='blue';
+            ctx_turret.fillText('SH: ' + this.stats.shield, camera.width/22, camera.height/6)
+            ctx_turret.fillStyle='#1244AA';
+            ctx_turret.fillText('Energy: ' + this.stats.energy, camera.width/2.3, camera.height/1.05)
+    };
     return module;
 }
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
+module.exports = function(stub){
+    var module = {};
+    module.atualiza = function (event){
+        if (event.key == 'w'){
+            socket.emit('input', 'w');
+        }
+        if (event.key == 's'){
+            socket.emit('input', 's');
+        }
+        if (event.key == 'd'){
+            socket.emit('input', 'd');
+        }
+        if (event.key == 'a'){
+            socket.emit('input', 'a');
+        }
+        if (event.key == ' '){
+            socket.emit('input', ' ');
+        }
+    };
+    atualizaMobile = function(event){
+        var coord = { x: event.touches[0].clientX,
+                      y: event.touches[0].clientY};
+        mobile_coord.push(coord);
+    };
+    return module;
+}
+
+},{}],7:[function(require,module,exports){
 /*
 Copyright (C) 2016 PR & DM web dev, Inc - All rights reserved.
 Unauthorized copy, reproduction or distribution of this source code is strictly
@@ -178,14 +355,19 @@ trechos do codigo eh referenciado como camera
 */
 var stub = 0;
 var data = require('./data.js')(stub);
+var calculo = require('./calculo.js')(stub);
 var draw = require('./draw.js')(stub);
 var socket = io({transports: ['websocket']});
+var input = require('./input.js')(stub);
 var c_background = document.getElementById("background");
 var c_turret = document.getElementById("canvas_turret");
 var ctx_background = c_background.getContext("2d");
 var ctx_turret = c_turret.getContext("2d");
 var camera = require('./camera.js')(ctx_turret);
 var background = require('./background.js')(ctx_background);
+var turret = require('./turret.js')(camera, background, data);
+
+
 socket.on('message', function(message){
 //    console.log(message);
 });
@@ -410,4 +592,42 @@ setTimeout(function(){
    2000);
 
 
-},{"./background.js":1,"./camera.js":2,"./data.js":3,"./draw.js":4}]},{},[5]);
+},{"./background.js":1,"./calculo.js":2,"./camera.js":3,"./data.js":4,"./draw.js":5,"./input.js":6,"./turret.js":8}],8:[function(require,module,exports){
+module.exports = function (camera, background, data){
+    var module = {};
+
+    module.turret = {
+        versor : new data.Versor(),
+        versor_mobile : new data.Versor(),
+        vetorLaser : [],
+        raio : 15,
+        vel : 0,
+        acel: 4,
+        turn_rate: 1,
+        max_speed : 4,
+        vx : 0,
+        vy : 0,
+        x : 0,
+        y : 0,
+        vida: 10,
+        shield: 2,
+        kills: 0,
+        energy: 100,
+        weapon: 'laser',
+        weapon_cooldown : false,
+    };
+        // inicializa posicao do turret
+    module.inicia = function(){
+            turret.x = background.width/2;
+            turret.y = background.height/2;
+    };
+        // atualiza status do tiro de acordo com o evento de mouse
+    module.atirou = function(status_tiro){
+            bool = status_tiro;
+    };
+
+    return module;
+}
+
+
+},{}]},{},[7]);
