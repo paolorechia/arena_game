@@ -22,12 +22,16 @@ var stub = 0;
 var data = require('./data.js')(stub);
 var draw = require('./draw.js')(stub);
 var socket = io({transports: ['websocket']});
+var input = require('./input.js')(stub);
 var c_background = document.getElementById("background");
-var background = require('./background.js')(c_background);
 var c_turret = document.getElementById("canvas_turret");
-var camera = require('./camera.js')(c_turret);
 var ctx_background = c_background.getContext("2d");
 var ctx_turret = c_turret.getContext("2d");
+var camera = require('./camera.js')(ctx_turret);
+var background = require('./background.js')(ctx_background);
+var turret = require('./turret.js')(camera, background);
+
+
 socket.on('message', function(message){
 //    console.log(message);
 });
