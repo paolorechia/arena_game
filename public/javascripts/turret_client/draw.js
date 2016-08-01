@@ -153,20 +153,21 @@ module.exports = function(turret, camera, background, data, ctx_turret, my_id, c
         var y = inimigo.y - borda_sup;
 
         // desenha o inimigoeroide
-        // strokestyle = cor da linha
-        ctx_turret.strokeStyle = "#ffffff";
         // comeca desenho
         ctx_turret.beginPath();
+        // strokestyle = cor da linha
+        ctx_turret.strokeStyle = "#FFFFFF";
         // caminha um circulo nas coordenadas (x,y),
         // de raio inimigo.tam * 5,
         // 0??
         // arco 2pi
-        ctx_turret.arc(x, y, turret.raio, 0, 2*Math.pi);
         // desenha o caminho
-        ctx_turret.stroke();
         // fillstyle = cor de preenchimento
-            ctx_turret.fillstyle = "#ff0000";
+        
+        ctx_turret.arc(x, y, turret.raio, 0, 2*Math.PI);
+        ctx_turret.fillStyle = "#FF0000";
         // preenche
+        ctx_turret.stroke();
         ctx_turret.fill();
         ctx_turret.save();
         // desloca origem para as coordendas (x,y)
@@ -184,6 +185,8 @@ module.exports = function(turret, camera, background, data, ctx_turret, my_id, c
     };
 
     module.allEnemies = function(){
+        console.log(data.players);
+        console.log(data.players_id, my_id);
         for (var i = 0; i < data.players.length; i++){
             if (data.players_id[i] != my_id){
                 module.enemy(data.players[i], data.players_pointers[i]);
