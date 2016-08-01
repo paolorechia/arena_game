@@ -509,7 +509,7 @@ socket.on('asteroides', function(novo){
     data.asteroids = novo;
 });
 socket.on('blasters', function(received_blasters){
-    blasters = received_blasters;
+    data.blasters = received_blasters;
 });
 /* funcoes de inicializacao de variaveis*/
 
@@ -634,7 +634,7 @@ function mainLoop(timestamp){
     // chamadas de desenho & calculo
     draw.camera(camera, ctx_turret);           // desenha no canvas da camera
     draw.allAsteroids();          // desenha todos os asteroides do vetor
-    draw.allEnemies();
+//    draw.allEnemies();
     draw.allLasers();
     draw.allBlasters();
     calculo.versor(turret.versor);      // calcula vetor versor (de geometria analitica) do turret

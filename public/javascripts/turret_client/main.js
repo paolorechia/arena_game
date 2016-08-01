@@ -48,7 +48,7 @@ socket.on('asteroides', function(novo){
     data.asteroids = novo;
 });
 socket.on('blasters', function(received_blasters){
-    blasters = received_blasters;
+    data.blasters = received_blasters;
 });
 /* funcoes de inicializacao de variaveis*/
 
