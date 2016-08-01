@@ -22,12 +22,19 @@ module.exports = function(camera){
     // preenche module com pontos brancos que representam estrelas
     populaEstrelas = function(ctx, num){
         var i;
-        ctx.fillStyle = "#FFFFFF";
         for (i=0; i<num; i++){
+            var color1 = Math.floor(Math.random() * 254 + 1);
+            var color2 = Math.floor(Math.random() * 254 + 1);
+            var color3 = Math.floor(Math.random() * 254 + 1);
+            ctx.fillStyle = "rgb(" + color1 + "," + color2 + "," + color3 + ")";
+            ctx.strokeStyle = "rgb(" + color1 + "," + color2 + "," + color3 + ")";
             var x = Math.floor((Math.random() * module.width) + 1);
             var y = Math.floor((Math.random() * module.height) + 1);
             var width = Math.floor(Math.random() * 3 + 1);
-            ctx.fillRect(x, y, width, width);
+            ctx.beginPath();
+            ctx.arc(x, y, width, 0, 2*Math.PI);
+            ctx.stroke();
+            ctx.fill();
         }
     };
     desenhaBorda = function(ctx, camera){
