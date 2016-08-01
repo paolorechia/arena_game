@@ -462,8 +462,6 @@ module.exports = function(turret, camera, background, data, ctx_turret, calculo)
                 ctx_turret.stroke();
                 var x1 = x1 - vx/3;
                 var y1 = y1 - vy/3;
-    //            var y0 = y0 + vy/3;
-    //            var x0 = x0 + vx/3;
                 
                 ctx_turret.beginPath();
                 ctx_turret.strokeStyle = "rgba(255, 0, 0, 0.5)";
@@ -473,13 +471,23 @@ module.exports = function(turret, camera, background, data, ctx_turret, calculo)
             }
             else{
                 ctx_turret.beginPath();
-                ctx_turret.fillStyle = "rgba(255, 255, 0, 0.5)";
+                ctx_turret.fillStyle = "rgba(255, 50, 0, 0.5)";
                 ctx_turret.arc(x1, y1, 20, 0, Math.PI);
                 ctx_turret.fill();
                 ctx_turret.beginPath();
-                ctx_turret.fillStyle = "rgba(255, 255, 0, 1)";
-                ctx_turret.arc(x1, y1, 10, 0, Math.PI);
-                ctx_turret.fill();
+                
+                for (var i = 0; i < 5; i++){
+                    ctx_turret.beginPath();
+                    ctx_turret.strokeStyle = "rgba(255, 50, 0, 0.8)";
+                    ctx_turret.moveTo(x1, y1);
+                    var vx = Math.floor(Math.random() * 60);
+                    var vy = Math.floor(Math.random() * 60);
+                    var x0 = x1 + vx;
+                    var y0 = y1 + vy;
+                    ctx_turret.lineTo(x0, y0); 
+                    ctx_turret.stroke();
+                }
+                
             }
         }
     };
