@@ -1,4 +1,3 @@
-0. Corrigir bug do mouse que nao atualiza com o movimento;
 1. Marcar alvos de alguma forma quando sao acertados OU de acordo com a vida. Por exemplo, conforme um asteroide perde vida fica vermelho;
 1.b Exibir escudo dos adversários
 1.c Indicativo de força do escudo do inimigo
@@ -38,7 +37,6 @@ Sun Jul 24 10:46:45 BRT 2016
 
 ---------------------------------------------------------
 
-0 --> solução implementada não está boa, experimentar mudanças
 
 14. Construir centros de gravidade, estrelas, planetas etc
 

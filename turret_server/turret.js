@@ -6,8 +6,8 @@ module.exports = function(background, camera, calc){
         this.atirando = 0;
         this.versor = new calc.Versor();
         this.vetor = []; 
-        this.range = 14;
-        this.damage = 5;
+        this.range = 28;
+        this.damage = 1;
         this.cost = 1;
     }
     module.Blaster = function(){
