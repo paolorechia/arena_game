@@ -320,7 +320,19 @@ module.exports = function(turret, camera, background, data, ctx_turret, calculo)
         // move para inicio da linha
         ctx_turret.moveTo(x0,y0);
         // seta largura da linha
-        ctx_turret.lineWidth=turret.raio*0.2;
+        ctx_turret.lineWidth=turret.raio*0.3;
+        // cor
+        ctx_turret.strokeStyle="rgba(0, 180, 0, 0.7)";
+        // coordenada destino
+        ctx_turret.lineTo(x1, y1);
+        // desenha
+        ctx_turret.stroke();
+
+        ctx_turret.beginPath();
+        // move para inicio da linha
+        ctx_turret.moveTo(x0,y0);
+        // seta largura da linha
+        ctx_turret.lineWidth=turret.raio*0.1;
         // cor
         ctx_turret.strokeStyle="#00ff00";
         // coordenada destino
