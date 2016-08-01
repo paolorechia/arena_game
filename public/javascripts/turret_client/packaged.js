@@ -27,14 +27,27 @@ module.exports = function(camera){
             var color1 = Math.floor(Math.random() * 254 + 1);
             var color2 = Math.floor(Math.random() * 254 + 1);
             var color3 = Math.floor(Math.random() * 254 + 1);
-            ctx.fillStyle = "rgb(" + color1 + "," + color2 + "," + color3 + ")";
-            ctx.strokeStyle = "rgb(" + color1 + "," + color2 + "," + color3 + ")";
+            var alpha = 0.1;
             var x = Math.floor((Math.random() * module.width) + 1);
             var y = Math.floor((Math.random() * module.height) + 1);
-            var width = Math.floor(Math.random() * 3 + 1);
+            var width = Math.floor(Math.random() * 2 + 1);
+
             ctx.beginPath();
-            ctx.arc(x, y, width, 0, 2*Math.PI);
-            ctx.stroke();
+            ctx.fillStyle = "rgba(" + color1 + "," + color2 + "," + color3 + "," + alpha+ ")";
+            ctx.arc(x, y, width * 5, 0, 2*Math.PI);
+
+            ctx.fill();
+
+
+            ctx.beginPath();
+            ctx.fillStyle = "rgba(" + color1 + "," + color2 + "," + color3 + "," + alpha * 2+ ")";
+            ctx.arc(x, y, width * 3, 0, 2*Math.PI);
+
+            ctx.fill();
+
+            ctx.beginPath(); 
+            ctx.fillStyle = "rgba(" + color1 + "," + color2 + "," + color3 + +"," + 1 + ")";
+            ctx.arc(x, y, width/2, 0, 2*Math.PI);
             ctx.fill();
         }
     };
