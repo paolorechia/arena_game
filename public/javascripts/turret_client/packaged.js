@@ -418,9 +418,9 @@ module.exports = function(turret, camera, background, data, ctx_turret, my_id, c
     };
 
     module.allBlasters = function(){
-        for (var i = 0; i < blasters.length; i++){
+        for (var i = 0; i < data.blasters.length; i++){
             if (data.blasters[i] != undefined)
-                module.blaster(blasters[i]);
+                module.blaster(data.blasters[i]);
         }
     };
     return module;
@@ -565,12 +565,12 @@ socket.on('status', function(estado){
 function pegaCoordenadas(event){
     data.coord.x = event.clientX;
     data.coord.y = event.clientY;
-    socket.emit('data.coord', data.coord);
+    socket.emit('coord', data.coord);
 }
 function pegaCoordenadasMobile(event){
     data.coord.x = event.touches[0].clientX;
     data.coord.y = event.touches[0].clientY;
-    socket.emit('data.coord', data.coord);
+    socket.emit('coord', data.coord);
 }
 /* conjunto de eventos lidos a partir do mouse e do teclado,
 na falta de um lugar melhor ainda estao aqui
@@ -640,10 +640,7 @@ function mainLoop(timestamp){
     draw.allBlasters();
     calculo.versor(turret.versor);      // calcula vetor versor (de geometria analitica) do turret
     draw.turret(ctx_turret, turret.raio, calculo.anguloGiro(turret, data.coord));                      // desenha o turret atualizado com a rotacao
-    if (data.atirou) {
-        input.mousePress(); 
 //        limob demanda que puxa esse script (e taAsteroides();
-    }
 //    console.log(turret.vetorLaser);
 //    colisoes.confere();                 // confere colisao de tudo (asteroides, turret, laser, bordas)
     // if abaixo calcula um versor a partir do ultimo touch n drag
@@ -659,8 +656,8 @@ function mainLoop(timestamp){
     }
     draw.hud();      // desenha hud
     requestAnimationFrame(mainLoop);            // chama proxima iteracao do loop
-}
 
+}
 
 // testando firebug
 console.log("1 c4n 7yp3 t0 c0ns0l3!");

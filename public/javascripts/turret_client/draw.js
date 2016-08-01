@@ -220,9 +220,9 @@ module.exports = function(turret, camera, background, data, ctx_turret, my_id, c
     };
 
     module.allBlasters = function(){
-        for (var i = 0; i < blasters.length; i++){
+        for (var i = 0; i < data.blasters.length; i++){
             if (data.blasters[i] != undefined)
-                module.blaster(blasters[i]);
+                module.blaster(data.blasters[i]);
         }
     };
     return module;
