@@ -288,6 +288,21 @@ module.exports = function(turret, camera, background, data, ctx_turret, calculo)
     module.turret = function (ctx, raio, angulo){
         var x = camera.width/2;
         var y = camera.height/2;
+        if(turret.shield > 0) {
+          //sombra
+          ctx.beginPath();
+          ctx.strokeStyle = "rgba(10, 10, 255, 0.3)";
+          ctx.lineWidth = turret.shield / 10;
+          ctx.arc(x, y, raio*1.4, 0, 2*Math.PI);
+          ctx.stroke();
+
+          //luz intensa
+          ctx.beginPath();
+          ctx.strokeStyle = "rgba(100, 100, 200, 1)";
+          ctx.lineWidth = 1;
+          ctx.arc(x, y, raio*1.4, 0, 2*Math.PI);
+          ctx.stroke();
+        }
         ctx.strokeStyle = "#f0470e";
         ctx.beginPath();
         ctx.arc(x, y, raio, 0, 2*Math.PI);
@@ -296,12 +311,6 @@ module.exports = function(turret, camera, background, data, ctx_turret, calculo)
         ctx.fill();
         cano(ctx, raio, angulo);
         //Se tem shield, desenha o shield----------
-        if(turret.shield > 0) {
-          ctx.strokeStyle = "#1244AA";
-          ctx.beginPath();
-          ctx.arc(x, y, raio*1.3, 0, 2*Math.PI);
-          ctx.stroke();
-        }
     };
     module.laser = function(x0, y0, x1, y1){
         var borda_esq = turret.x - camera.width/2;      
