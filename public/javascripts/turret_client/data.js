@@ -17,5 +17,6 @@ module.exports = function(stub){
     }
 
     module.atirou = 0;
+    module.my_id = 0;
     return module;
 }

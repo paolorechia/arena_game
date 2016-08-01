@@ -1,4 +1,4 @@
-module.exports = function(turret, camera, background, data, ctx_turret, my_id, calculo){
+module.exports = function(turret, camera, background, data, ctx_turret, calculo){
     var module = {};
     module.asteroid = function(ast){
         /* variaveis auxiliares, pega coordenadas do canvas pequeno
@@ -185,10 +185,8 @@ module.exports = function(turret, camera, background, data, ctx_turret, my_id, c
     };
 
     module.allEnemies = function(){
-        console.log(data.players);
-        console.log(data.players_id, my_id);
         for (var i = 0; i < data.players.length; i++){
-            if (data.players_id[i] != my_id){
+            if (data.players_id[i] != data.my_id){
                 module.enemy(data.players[i], data.players_pointers[i]);
             }
         }

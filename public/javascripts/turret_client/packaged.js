@@ -134,7 +134,7 @@ module.exports = function(camera, data, turret){
 }
 
 },{}],3:[function(require,module,exports){
-module.exports = function(stub){
+module.exports = function(socket){
     var module = {};
     // objeto camera, contem dimensoes do canvas menor
     module.width = 0;
@@ -152,6 +152,8 @@ module.exports = function(stub){
             canvas.height = window.innerHeight-3;
             module.width = window.innerWidth-3;
             module.height =  window.innerHeight-3;
+            var camera = { width: module.width, height: module.height};
+            socket.emit('camera', camera);
 
           });
     };
@@ -192,11 +194,12 @@ module.exports = function(stub){
     }
 
     module.atirou = 0;
+    module.my_id = 0;
     return module;
 }
 
 },{}],5:[function(require,module,exports){
-module.exports = function(turret, camera, background, data, ctx_turret, my_id, calculo){
+module.exports = function(turret, camera, background, data, ctx_turret, calculo){
     var module = {};
     module.asteroid = function(ast){
         /* variaveis auxiliares, pega coordenadas do canvas pequeno
@@ -383,10 +386,8 @@ module.exports = function(turret, camera, background, data, ctx_turret, my_id, c
     };
 
     module.allEnemies = function(){
-        console.log(data.players);
-        console.log(data.players_id, my_id);
         for (var i = 0; i < data.players.length; i++){
-            if (data.players_id[i] != my_id){
+            if (data.players_id[i] != data.my_id){
                 module.enemy(data.players[i], data.players_pointers[i]);
             }
         }
@@ -486,23 +487,21 @@ var stub = 0;
 var data = require('./data.js')(stub);
 var socket = io({transports: ['websocket']});
 
+socket.on('myid', function(id){
+   data.my_id = id;
+   socket.emit('myid', data.my_id);
+});
+
 var input = require('./input.js')(socket, data);
 var c_background = document.getElementById("background");
 var c_turret = document.getElementById("canvas_turret");
 var ctx_background = c_background.getContext("2d");
 var ctx_turret = c_turret.getContext("2d");
-var camera = require('./camera.js')(ctx_turret);
+var camera = require('./camera.js')(socket);
 var background = require('./background.js')(ctx_background);
-
-var my_id = 0;
-socket.on('myid', function(id){
-   my_id = id;
-   socket.emit('myid', my_id);
-});
-
 var turret = require('./turret.js')(camera, background, data);
 var calculo = require('./calculo.js')(camera, data, turret);
-var draw = require('./draw.js')(turret, camera, background, data, ctx_turret,my_id, calculo);
+var draw = require('./draw.js')(turret, camera, background, data, ctx_turret,calculo);
 
 
 socket.on('message', function(message){
@@ -668,7 +667,7 @@ console.log("1 c4n 7yp3 t0 c0ns0l3!");
 // execucao principal aqui
 // inicia iteracoes no loop principal
 setTimeout(function(){
-   console.log("my id is: " + my_id);
+   console.log("my id is: " + data.my_id);
    socket.emit('camera', camera);
    requestAnimationFrame(mainLoop);
 },

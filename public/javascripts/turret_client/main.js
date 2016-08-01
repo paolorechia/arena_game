@@ -22,23 +22,21 @@ var stub = 0;
 var data = require('./data.js')(stub);
 var socket = io({transports: ['websocket']});
 
+socket.on('myid', function(id){
+   data.my_id = id;
+   socket.emit('myid', data.my_id);
+});
+
 var input = require('./input.js')(socket, data);
 var c_background = document.getElementById("background");
 var c_turret = document.getElementById("canvas_turret");
 var ctx_background = c_background.getContext("2d");
 var ctx_turret = c_turret.getContext("2d");
-var camera = require('./camera.js')(ctx_turret);
+var camera = require('./camera.js')(socket);
 var background = require('./background.js')(ctx_background);
-
-var my_id = 0;
-socket.on('myid', function(id){
-   my_id = id;
-   socket.emit('myid', my_id);
-});
-
 var turret = require('./turret.js')(camera, background, data);
 var calculo = require('./calculo.js')(camera, data, turret);
-var draw = require('./draw.js')(turret, camera, background, data, ctx_turret,my_id, calculo);
+var draw = require('./draw.js')(turret, camera, background, data, ctx_turret,calculo);
 
 
 socket.on('message', function(message){
@@ -204,7 +202,7 @@ console.log("1 c4n 7yp3 t0 c0ns0l3!");
 // execucao principal aqui
 // inicia iteracoes no loop principal
 setTimeout(function(){
-   console.log("my id is: " + my_id);
+   console.log("my id is: " + data.my_id);
    socket.emit('camera', camera);
    requestAnimationFrame(mainLoop);
 },

@@ -1,4 +1,4 @@
-module.exports = function(stub){
+module.exports = function(socket){
     var module = {};
     // objeto camera, contem dimensoes do canvas menor
     module.width = 0;
@@ -16,6 +16,8 @@ module.exports = function(stub){
             canvas.height = window.innerHeight-3;
             module.width = window.innerWidth-3;
             module.height =  window.innerHeight-3;
+            var camera = { width: module.width, height: module.height};
+            socket.emit('camera', camera);
 
           });
     };
