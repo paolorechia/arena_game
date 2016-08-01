@@ -88,6 +88,8 @@ module.exports = function(asteroides, background, camera, players, calc, turret,
                                 if (asteroides.vetor[i] != undefined){
                                     if (dist < (asteroides.vetor[i].tam * 5)){
                                         // o laser acertou, BAM
+                                        nave.laser.hit = true;
+                                        nave.laser.hitnumber = j;
                                         asteroides.vetor[i].hp--;
 //                                        console.log("its a hit!", 
 //                                        asteroides.vetor[i].hp);
@@ -127,6 +129,8 @@ module.exports = function(asteroides, background, camera, players, calc, turret,
                             
                                     if (dist < (alvo.raio)){
                                        turret.sofreDano(alvo, nave.laser.damage);  
+                                       nave.laser.hit = true;
+                                       nave.laser.hitnumber = j;
                                        if (alvo.hull.points < 0){
                                          turret.matouNave(nave, alvo)
                                          turret.respawnInTime(alvo, 5);

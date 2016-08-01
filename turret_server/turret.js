@@ -9,6 +9,8 @@ module.exports = function(background, camera, calc){
         this.range = 28;
         this.damage = 1;
         this.cost = 1;
+        this.hit = false;
+        this.hitnumber = 0;
     }
     module.Blaster = function(){
         this.on_cooldown = false;

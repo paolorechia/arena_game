@@ -6,6 +6,7 @@ module.exports = function(stub){
         this.speed=  speed;
         this.versor = versor;
         this.duration = duration;
+        this.hit = false;
     }
     module.vetor=[];
     return module;

@@ -81,10 +81,20 @@ module.exports = function(io, players, asteroides, turret, update, blasters, cam
     module.enviaLasers = function (){
         var lasers = [];
         for (var id in io.sockets.connected){
-            var range = players[id].laser.range;
             var first = players[id].laser.vetor[0];
-            var last = players[id].laser.vetor[range-1];
-            lasers.push({first, last}); }
+            var hit = players[id].laser.hit;
+            if (hit){
+                var first = players[id].laser.vetor[0];
+                var j = players[id].laser.hitnumber;
+                var last = players[id].laser.vetor[j];
+            }
+            else{
+                var range = players[id].laser.range;
+                var last = players[id].laser.vetor[range-1];
+            }     
+            lasers.push({first, last, hit}); 
+    }
+                
   //          console.log("sending lasers... ", lasers); 
             io.sockets.emit('lasers', lasers);
     }

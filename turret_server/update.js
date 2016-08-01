@@ -87,6 +87,8 @@ module.exports = function(players, asteroides, blasters, calc, turret){
            return; 
         }
 //        console.log("ATIRAAAANDO meu LAAAAASER");
+        turret.laser.hit = false;
+        turret.laser.hitnumber = 0;
         turret.laser.versor = calc.versorArma(turret);
         turret.energy.points -= turret.laser.cost;
         var base = 2;
