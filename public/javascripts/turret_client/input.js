@@ -24,7 +24,6 @@ module.exports = function(socket, data){
     };
     module.mousePress = function(status_tiro){
           data.atirou = status_tiro;
-          console.log(status_tiro);
           socket.emit('tiro', data.atirou);
     };
     return module;
