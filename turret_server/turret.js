@@ -24,7 +24,7 @@ module.exports = function(background, camera, calc){
     module.Shield = function(){
         this.up = true;
         this.points;
-        this.max= 20;
+        this.max= 100;
         this.recharge_rate = 1;
         this.cooldown = 3;
     }
@@ -80,7 +80,7 @@ module.exports = function(background, camera, calc){
         return turret;
     }
     module.rechargeShield = function (turret){
-        if (turret.shield.points <= turret.shield.max && 
+        if (turret.shield.points < turret.shield.max && 
             turret.shield.up == true)
             turret.shield.points += turret.shield.recharge_rate;
     };
