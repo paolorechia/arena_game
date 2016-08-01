@@ -48,7 +48,8 @@ module.exports = function(players, asteroides, blasters, calc, turret){
         for (i = 0; i < len; i++){
             if (blasters.vetor[i] != undefined){
                 blasters.vetor[i].duration -= 1;
-                if (blasters.vetor[i].duration <= 0)
+                if (blasters.vetor[i].duration <= 0 ||
+                    blasters.vetor[i].hit == true)
                     blasters.vetor.splice(i, 1);
                 else{
                     blasters.vetor[i].x += blasters.vetor[i].versor.x * blasters.vetor[i].speed;

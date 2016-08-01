@@ -450,25 +450,37 @@ module.exports = function(turret, camera, background, data, ctx_turret, calculo)
                 // (cada canyvas teu o seu sistema de data.coordenadas)
             var x1 = blaster.x - borda_esq;
             var y1 = blaster.y - borda_sup;
-            vx = blaster.versor.x * blaster.speed * 2;
-            vy = blaster.versor.y * blaster.speed * 2;
-            var y0 = y1 + vy;
-            var x0 = x1 + vx;
-            ctx_turret.beginPath();
-            ctx_turret.strokeStyle= "#FF0000";
-            ctx_turret.moveTo(x1, y1);
-            ctx_turret.lineTo(x0, y0);
-            ctx_turret.stroke();
-            var x1 = x1 - vx/3;
-            var y1 = y1 - vy/3;
-//            var y0 = y0 + vy/3;
-//            var x0 = x0 + vx/3;
-            
-            ctx_turret.beginPath();
-            ctx_turret.strokeStyle = "rgba(255, 0, 0, 0.5)";
-            ctx_turret.moveTo(x1, y1);
-            ctx_turret.lineTo(x0, y0);
-            ctx_turret.stroke();
+            if (blaster.hit == false){
+                vx = blaster.versor.x * blaster.speed * 2;
+                vy = blaster.versor.y * blaster.speed * 2;
+                var y0 = y1 + vy;
+                var x0 = x1 + vx;
+                ctx_turret.beginPath();
+                ctx_turret.strokeStyle= "#FF0000";
+                ctx_turret.moveTo(x1, y1);
+                ctx_turret.lineTo(x0, y0);
+                ctx_turret.stroke();
+                var x1 = x1 - vx/3;
+                var y1 = y1 - vy/3;
+    //            var y0 = y0 + vy/3;
+    //            var x0 = x0 + vx/3;
+                
+                ctx_turret.beginPath();
+                ctx_turret.strokeStyle = "rgba(255, 0, 0, 0.5)";
+                ctx_turret.moveTo(x1, y1);
+                ctx_turret.lineTo(x0, y0);
+                ctx_turret.stroke();
+            }
+            else{
+                ctx_turret.beginPath();
+                ctx_turret.fillStyle = "rgba(255, 255, 0, 0.5)";
+                ctx_turret.arc(x1, y1, 20, 0, Math.PI);
+                ctx_turret.fill();
+                ctx_turret.beginPath();
+                ctx_turret.fillStyle = "rgba(255, 255, 0, 1)";
+                ctx_turret.arc(x1, y1, 10, 0, Math.PI);
+                ctx_turret.fill();
+            }
         }
     };
 

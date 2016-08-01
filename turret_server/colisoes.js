@@ -166,7 +166,7 @@ module.exports = function(asteroides, background, camera, players, calc, turret,
 //                                   console.log("acertei um ast");
                                    if (players[shot.owner] != undefined){
                                    asteroides.vetor[j].hp -= players[shot.owner].blaster.damage;
-                                   blasters.vetor.splice(i, 1);
+                                   blasters.vetor[i].hit=true;
                                    if (asteroides.vetor[j].hp <= 0){
                                        asteroides.destroi(j);
                                     }
@@ -190,7 +190,7 @@ module.exports = function(asteroides, background, camera, players, calc, turret,
                                 if (dist < alvo.raio){
                                     turret.sofreDano(alvo, players[shot.owner].blaster.damage);
                                     console.log("acertei uma nave ");
-                                    blasters.vetor.splice(i, 1);
+                                    blasters.vetor[i].hit=true;
                                     if (alvo.hull.points < 0){
                                          turret.matouNave(players[shot.owner], alvo)
                                          turret.respawnInTime(alvo, 5);
