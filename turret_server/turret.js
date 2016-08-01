@@ -205,7 +205,7 @@ module.exports = function(background, camera, calc){
         if (versor_mobile.x != 0 && versor_mobile.y != 0){
                 var nave = players[id];
                 nave.versor = versor_mobile;
-                console.log(versor_mobile);
+//                console.log(versor_mobile);
   //              console.log(nave.versor);
                 nave.vel = nave.acel;
             }
