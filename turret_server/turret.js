@@ -31,8 +31,8 @@ module.exports = function(background, camera, calc){
     module.Energy = function(){
         this.overheat = false;
         this.points;
-        this.max= 100;
-        this.recharge_rate = 2;
+        this.max= 300;
+        this.recharge_rate = 5;
         this.overheat_threshold = 10;
         this.overheat_cooldown = 3;
     }

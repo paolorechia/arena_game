@@ -217,6 +217,16 @@ module.exports = function(turret, camera, background, data, ctx_turret, calculo)
             ctx_turret.moveTo(x1, y1);
             ctx_turret.lineTo(x0, y0);
             ctx_turret.stroke();
+            var x1 = x1 - vx/3;
+            var y1 = y1 - vy/3;
+//            var y0 = y0 + vy/3;
+//            var x0 = x0 + vx/3;
+            
+            ctx_turret.beginPath();
+            ctx_turret.strokeStyle = "rgba(255, 0, 0, 0.5)";
+            ctx_turret.moveTo(x1, y1);
+            ctx_turret.lineTo(x0, y0);
+            ctx_turret.stroke();
         }
     };
 
