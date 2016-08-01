@@ -91,7 +91,7 @@ module.exports = function(turret, camera, background, data, ctx_turret, calculo)
         cano(ctx, raio, angulo);
         //Se tem shield, desenha o shield----------
     };
-    module.laser = function(x0, y0, x1, y1){
+    module.laser = function(x0, y0, x1, y1, hit){
         var borda_esq = turret.x - camera.width/2;      
         var borda_dir = turret.x + camera.width/2;
         var borda_sup = turret.y - camera.height/2;
@@ -127,6 +127,13 @@ module.exports = function(turret, camera, background, data, ctx_turret, calculo)
         ctx_turret.lineTo(x1, y1);
         // desenha
         ctx_turret.stroke();
+        if (hit){
+            ctx_turret.beginPath();
+            ctx_turret.fillStyle="#00ff00";
+            ctx_turret.arc(x1, y1, 10, 0, Math.PI);
+            ctx_turret.fill();
+            ctx_turret.beginPath();
+        }
     };
 
     module.allLasers = function(){
@@ -135,7 +142,8 @@ module.exports = function(turret, camera, background, data, ctx_turret, calculo)
                //console.log(laser);
                if (laser != undefined && laser.first != undefined){
                    module.laser(laser.first.x, laser.first.y,
-                                       laser.last.x,  laser.last.y);
+                                laser.last.x,  laser.last.y,
+                                laser.hit);
                }
         }
     },
