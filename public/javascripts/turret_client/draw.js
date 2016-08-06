@@ -289,24 +289,9 @@ module.exports = function(ship, camera, background, data, ctx_ship, calculo){
         console.log("desenhando menu");
         module.camera(camera, ctx_ship);
         ctx_ship.beginPath();
-        ctx_ship.fillStyle = "rgba(255, 255, 255, 1)";
-        ctx_ship.fillRect(ctx_ship.width/4, 0, ctx_ship.width/1.2, ctx_ship.height);
-        ctx_ship.fillRect(30, 30, 300, 300);
-        ctx_ship.beginPath();
-        // strokestyle = cor da linha
-        ctx_ship.strokeStyle = "#FFFFFF";
-        // caminha um circulo nas coordenadas (x,y),
-        // de raio inimigo.tam * 5,
-        // 0??
-        // arco 2pi
-        // desenha o caminho
-        // fillstyle = cor de preenchimento
-        
-        ctx_ship.arc(200, 200, 30, 0, 2*Math.PI);
-        ctx_ship.fillStyle = "#FF0000";
-        // preenche
-        ctx_ship.stroke();
-        ctx_ship.fill();
+        ctx_ship.fillStyle = "rgba(40, 40, 120, 0.5)";
+        console.log(ctx_ship);
+        ctx_ship.fillRect(camera.width/4, 0, camera.width - camera.width/2, camera.height);
     };
 
     return module;
