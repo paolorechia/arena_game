@@ -15,7 +15,7 @@ MIT licence however all derived code is subject to the proprietary copyright des
 /*puxa dois objetos tipo canvas do HTML gerado pelo node
 o primeiro, background, eh usado para criar o espaco
 (retangulo preto + pontos brancos)
-o segundo c_turret, eh onde o jogo eh efetivamente desenhado e em varios
+o segundo c_ship, eh onde o jogo eh efetivamente desenhado e em varios
 trechos do codigo eh referenciado como camera
 */
 var stub = 0;
@@ -29,14 +29,14 @@ socket.on('myid', function(id){
 
 var input = require('./input.js')(socket, data);
 var c_background = document.getElementById("background");
-var c_turret = document.getElementById("canvas_turret");
+var c_ship = document.getElementById("canvas_ship");
 var ctx_background = c_background.getContext("2d");
-var ctx_turret = c_turret.getContext("2d");
+var ctx_ship = c_ship.getContext("2d");
 var camera = require('./camera.js')(socket);
 var background = require('./background.js')(ctx_background);
-var turret = require('./turret.js')(camera, background, data);
-var calculo = require('./calculo.js')(camera, data, turret);
-var draw = require('./draw.js')(turret, camera, background, data, ctx_turret,calculo);
+var ship = require('./ship.js')(camera, background, data);
+var calculo = require('./calculo.js')(camera, data, ship);
+var draw = require('./draw.js')(ship, camera, background, data, ctx_ship,calculo);
 
 
 socket.on('message', function(message){
@@ -54,22 +54,22 @@ socket.on('blasters', function(received_blasters){
 var sound = document.getElementById("blaster");
 console.log(sound);
 //Versão antiga -- usar quando o bug da mira for corrigido -----
-//camera.setRes(1600, 900, c_turret);
+//camera.setRes(1600, 900, c_ship);
 //--------------------------------------------------------------
-camera.setRes(window.innerWidth-10, window.innerHeight-10, c_turret);
+camera.setRes(window.innerWidth-10, window.innerHeight-10, c_ship);
 console.log(window.innerWidth, window.innerHeight);
 console.log(camera);
 
 
 background.inicia(ctx_background, c_background);
-turret.inicia();
+ship.inicia();
 
-console.log(turret);
+console.log(ship);
 socket.on('movimento', function(nova_pos){
 //    console.log(nova_pos);
-    turret.x = (nova_pos.x);
-    turret.y = (nova_pos.y);
-//    console.log(turret.x, turret.y);
+    ship.x = (nova_pos.x);
+    ship.y = (nova_pos.y);
+//    console.log(ship.x, ship.y);
 });
 socket.on('players', function(received_players){
 //    console.log(other_players);
@@ -90,11 +90,11 @@ socket.on('lasers', function(received_lasers){
 });
 
 socket.on('status', function(estado){
-    turret.vida = estado.hp;
-    turret.shield = estado.shield;
-    turret.energy = estado.energy;
-    turret.kills = estado.player_kills;
-    turret.weapon = estado.weapon;
+    ship.vida = estado.hp;
+    ship.shield = estado.shield;
+    ship.energy = estado.energy;
+    ship.kills = estado.player_kills;
+    ship.weapon = estado.weapon;
 });
 
 // funcoes de evento
@@ -119,7 +119,7 @@ A cada escuta de evento é associada uma acao + uma funcao
 /*
 var mousemove = document.createEvent('Event');
 mousemove.initEvent('mousemove', true, true);
-c_turret.addEventListener('mousemove', function(e) {
+c_ship.addEventListener('mousemove', function(e) {
   pegaCoordenadas(e);
 }, false)
 */
@@ -127,20 +127,20 @@ c_turret.addEventListener('mousemove', function(e) {
 
 var mobile_coord = [];
 //------------------------------------------------------------------------------
-c_turret.addEventListener("touchstart", pegaCoordenadasMobile, false);
-c_turret.addEventListener("touchstart", function(){ atirou(1); 
+c_ship.addEventListener("touchstart", pegaCoordenadasMobile, false);
+c_ship.addEventListener("touchstart", function(){ atirou(1); 
                                                    sound.currentTime = 0.07;
                                                    sound.play();},
                                                    false);
-c_turret.addEventListener("touchend", function(){ atirou(0)}, false);
-//c_turret.addEventListener("touchmove", pegaCoordenadasMobile, false);
-c_turret.addEventListener("touchmove", input.atualizaMobile, false);
-c_turret.addEventListener("mousemove", pegaCoordenadas, false);
-c_turret.addEventListener("mousedown", function(){ input.mousePress(1); 
+c_ship.addEventListener("touchend", function(){ atirou(0)}, false);
+//c_ship.addEventListener("touchmove", pegaCoordenadasMobile, false);
+c_ship.addEventListener("touchmove", input.atualizaMobile, false);
+c_ship.addEventListener("mousemove", pegaCoordenadas, false);
+c_ship.addEventListener("mousedown", function(){ input.mousePress(1); 
                                                    sound.currentTime = 0.07;
                                                    sound.play();},
                                                    false);
-c_turret.addEventListener("mouseup", function(){ input.mousePress(0)}, false);
+c_ship.addEventListener("mouseup", function(){ input.mousePress(0)}, false);
 window.addEventListener("keydown", function(event){ input.atualiza(event)}, false);
 
 //incializacao de variaveis do loop principal
@@ -155,7 +155,7 @@ ateh sistemas operacionais, sei lah pq chamam assim */
 function mainLoop(timestamp){
 
 
-    //c_turret.dispatchEvent(mousemove);
+    //c_ship.dispatchEvent(mousemove);
 
 
     tempo++;                // indice utilizado para criacao de asteroides
@@ -169,24 +169,24 @@ function mainLoop(timestamp){
     }
     lastFrameTimeMs = timestamp;
     // chamadas de desenho & calculo
-    draw.camera(camera, ctx_turret);           // desenha no canvas da camera
+    draw.camera(camera, ctx_ship);           // desenha no canvas da camera
     draw.allAsteroids();          // desenha todos os asteroides do vetor
     draw.allEnemies();
     draw.allLasers();
     draw.allBlasters();
-    calculo.versor(turret.versor);      // calcula vetor versor (de geometria analitica) do turret
-    draw.turret(ctx_turret, turret.raio, calculo.anguloGiro(turret, data.coord));                      // desenha o turret atualizado com a rotacao
+    calculo.versor(ship.versor);      // calcula vetor versor (de geometria analitica) do ship
+    draw.ship(ctx_ship, ship.raio, calculo.anguloGiro(ship, data.coord));                      // desenha o ship atualizado com a rotacao
 //        limob demanda que puxa esse script (e taAsteroides();
-//    console.log(turret.vetorLaser);
-//    colisoes.confere();                 // confere colisao de tudo (asteroides, turret, laser, bordas)
+//    console.log(ship.vetorLaser);
+//    colisoes.confere();                 // confere colisao de tudo (asteroides, ship, laser, bordas)
     // if abaixo calcula um versor a partir do ultimo touch n drag
     // e manda para o servidor
     if (tempo % 10 == 0){
 //        socket.emit('inputmobile', mobile_data.coord.length);
 //        socket.emit('inputmobile', mobile_data.coord);
         if (mobile_coord != undefined && mobile_coord[0] != undefined){
-            calculo.versor_mobile(turret.versor_mobile);
-            socket.emit('inputmobile', turret.versor_mobile);
+            calculo.versor_mobile(ship.versor_mobile);
+            socket.emit('inputmobile', ship.versor_mobile);
             mobile_coord = [];
         }
     }

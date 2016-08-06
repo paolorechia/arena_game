@@ -16,7 +16,7 @@ module.exports = function(camera){
     // blit -> redesenha o module no canvas menor (camera)
     // nao eh necessaria no momento
     blit = function(module){
-        ctx_turret.drawImage(module, 0, 0);
+        ctx_ship.drawImage(module, 0, 0);
     };
 
     // preenche module com pontos brancos que representam estrelas

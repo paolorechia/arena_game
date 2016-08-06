@@ -1,4 +1,4 @@
-module.exports = function(camera, data, turret){
+module.exports = function(camera, data, ship){
     var module = {};
 
     // objeto de coorenadas X, Y do cursor do mouse
@@ -14,8 +14,8 @@ module.exports = function(camera, data, turret){
     };
     module.versor = function (v){
         // pega data.coordenadas e desloca origem para o centro
-        var x = data.coord.x - turret.x;
-        var y = data.coord.y - turret.y;
+        var x = data.coord.x - ship.x;
+        var y = data.coord.y - ship.y;
 
         // calcula modulo do vetor (x,y)
         var mod = Math.sqrt((Math.pow(x, 2) + Math.pow(y, 2)));
@@ -40,13 +40,13 @@ module.exports = function(camera, data, turret){
         var y = Math.pow((y0 - y1), 2);
         return Math.sqrt(x + y);
     };
-    module.anguloGiro = function (nave, cursor){
+    module.anguloGiro = function (ship, cursor){
 
-        var cx = cursor.x + nave.x - camera.width/2;
-        var cy = cursor.y + nave.y - camera.height/2;
+        var cx = cursor.x + ship.x - camera.width/2;
+        var cy = cursor.y + ship.y - camera.height/2;
 
-        var ca = (nave.x - cx);
-        var co = (nave.y - cy);
+        var ca = (ship.x - cx);
+        var co = (ship.y - cy);
 
         tangente = (co/ca);
         atan = Math.round(Math.atan(tangente)*100)/100;
@@ -54,21 +54,21 @@ module.exports = function(camera, data, turret){
         deg = atan * 180/3.14;
      // console.log(deg);
         //Falta tratar quando cursor = background.height
-        if(cx > nave.x) {
-            if(cy >= nave.y) {
+        if(cx > ship.x) {
+            if(cy >= ship.y) {
     //            console.log('DireitaBaixo');
-            } else if(cx < nave.x){
+            } else if(cx < ship.x){
     //            console.log('DireitaCima');
             }
         } else {
             atan+=4*180/3.14;
-            if(cy >= nave.y) {
+            if(cy >= ship.y) {
     //            console.log('EsquerdaBaixo');
             } else {
     //           console.log('EsquerdaCima');
             }
         }
-        //console.log(nave);
+        //console.log(ship);
         return atan;
     };
 

@@ -3,14 +3,9 @@ module.exports = function (camera, background, data){
 
     module.versor = new data.Versor(),
     module.versor_mobile = new data.Versor(),
-    module.vetorLaser = [],
     module.raio = 15,
     module.vel = 0,
     module.acel= 4,
-    module.turn_rate= 1,
-    module.max_speed = 4,
-    module.vx = 0,
-    module.vy = 0,
     module.x = 0,
     module.y = 0,
     module.vida= 10,
@@ -19,7 +14,7 @@ module.exports = function (camera, background, data){
     module.energy= 100,
     module.weapon= 'laser',
     module.weapon_cooldown = false,
-        // inicializa posicao do turret
+        // inicializa posicao do ship
     module.inicia = function(){
             module.x = background.width/2;
             module.y = background.height/2;

@@ -22,7 +22,7 @@ module.exports = function(socket){
           });
     };
     module.setRes = function (width, height, canvas){
-            //Atua no canvas '#canvas_turret'
+            //Atua no canvas '#canvas_ship'
             canvas.width = width;
             canvas.height = height;
             //--- Para alterar a resolução mantendo a res. do jogo (buga a mira)
