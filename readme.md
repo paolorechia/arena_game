@@ -1,9 +1,9 @@
-v0.1.0
+# Space Arena - v0.1.0
 
-1. Iniciando registro de versões por branch.
-2. Funcionalidades implementadas até o momento:
+## 1. Iniciando registro de versões por branch.
+## 2. Funcionalidades implementadas até o momento:
 
-I) Servidor em node.js + socket.io.
+### I) Servidor em node.js + socket.io.
 
 a)      Asteroides circulares.
 
@@ -34,7 +34,7 @@ h)      Único mapa.
         h1)     Morte provoca respawn em 3s.
         
 
-II) Cliente portado para CommonJS
+### II) Cliente portado para CommonJS
 
 a)      Input recebido por eventos. Código cru, sem abstrações.
         a.1)    Movimento por AWSD.
@@ -64,4 +64,4 @@ b)      Desenhos. Muitos desenhos. Consiste no principal papel do cliente. A vas
                                     b.5.2.1.1) Cor aleatória
                                     b.5.2.1.2) Efeito gráfico de vários círculos com transparência para dar sensação de iluminação.
 --------------------------
-Sat Aug 6 11:34:54 BRT 2016
+Sat Aug 6 11:46:43 BRT 2016
