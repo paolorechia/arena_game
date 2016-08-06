@@ -506,6 +506,30 @@ module.exports = function(ship, camera, background, data, ctx_ship, calculo){
                 module.blaster(data.blasters[i]);
         }
     };
+    module.menu= function(){
+        console.log("desenhando menu");
+        module.camera(camera, ctx_ship);
+        ctx_ship.beginPath();
+        ctx_ship.fillStyle = "rgba(255, 255, 255, 1)";
+        ctx_ship.fillRect(ctx_ship.width/4, 0, ctx_ship.width/1.2, ctx_ship.height);
+        ctx_ship.fillRect(30, 30, 300, 300);
+        ctx_ship.beginPath();
+        // strokestyle = cor da linha
+        ctx_ship.strokeStyle = "#FFFFFF";
+        // caminha um circulo nas coordenadas (x,y),
+        // de raio inimigo.tam * 5,
+        // 0??
+        // arco 2pi
+        // desenha o caminho
+        // fillstyle = cor de preenchimento
+        
+        ctx_ship.arc(200, 200, 30, 0, 2*Math.PI);
+        ctx_ship.fillStyle = "#FF0000";
+        // preenche
+        ctx_ship.stroke();
+        ctx_ship.fill();
+    };
+
     return module;
 }
 
@@ -581,6 +605,7 @@ var background = require('./background.js')(ctx_background);
 var ship = require('./ship.js')(camera, background, data);
 var calculo = require('./calculo.js')(camera, data, ship);
 var draw = require('./draw.js')(ship, camera, background, data, ctx_ship,calculo);
+var menu = require('./menu.js')(draw);
 
 
 socket.on('message', function(message){
@@ -696,8 +721,7 @@ var tempo = 0;
 do javascript que roda assincronamente (a rigor, tudo eh assincrono,
 ateh sistemas operacionais, sei lah pq chamam assim */
 
-function mainLoop(timestamp){
-
+function gameLoop(timestamp){
 
     //c_ship.dispatchEvent(mousemove);
 
@@ -708,7 +732,6 @@ function mainLoop(timestamp){
     // condicional de controle de FPS, soh atualiza o quadro quando
     // o intervalo minimo de tempo eh passado
     if (timestamp < lastFrameTimeMs + (1000/maxFPS)){
-        requestAnimationFrame(mainLoop);
         return;
     }
     lastFrameTimeMs = timestamp;
@@ -735,8 +758,19 @@ function mainLoop(timestamp){
         }
     }
     draw.hud();      // desenha hud
-    requestAnimationFrame(mainLoop);            // chama proxima iteracao do loop
+}
 
+
+function mainLoop(timestamp){
+    var playing = false;
+    var lobby = true;
+    if (playing == true){
+        (gameLoop(timestamp));
+    }
+    if (lobby == true){
+        menu.loop(lobby);
+    }
+    requestAnimationFrame(mainLoop);
 }
 
 // testando firebug
@@ -753,7 +787,31 @@ setTimeout(function(){
    2000);
 
 
-},{"./background.js":1,"./calculo.js":2,"./camera.js":3,"./data.js":4,"./draw.js":5,"./input.js":6,"./ship.js":8}],8:[function(require,module,exports){
+},{"./background.js":1,"./calculo.js":2,"./camera.js":3,"./data.js":4,"./draw.js":5,"./input.js":6,"./menu.js":8,"./ship.js":9}],8:[function(require,module,exports){
+module.exports = function(draw){
+    var module = {};
+    module.Button = function(){;
+        this.x = 0;
+        this.y = 0;
+        this.clicked = false;
+        this.color = "rgb(127, 127, 127)";
+        this.text = "";
+    }
+    module.buttons={};
+    module.buttons.exit = new module.Button();
+    module.loop = function(rodando){
+       console.log("rodando o menu");
+       if (module.buttons.exit.clicked == true){
+            console.log("saindo do menu");
+            rodando = false;
+       }
+       draw.menu();
+    };
+     
+    return module;
+}
+
+},{}],9:[function(require,module,exports){
 module.exports = function (camera, background, data){
     var module = {};
 

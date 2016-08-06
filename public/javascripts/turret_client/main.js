@@ -37,6 +37,7 @@ var background = require('./background.js')(ctx_background);
 var ship = require('./ship.js')(camera, background, data);
 var calculo = require('./calculo.js')(camera, data, ship);
 var draw = require('./draw.js')(ship, camera, background, data, ctx_ship,calculo);
+var menu = require('./menu.js')(draw);
 
 
 socket.on('message', function(message){
@@ -152,8 +153,7 @@ var tempo = 0;
 do javascript que roda assincronamente (a rigor, tudo eh assincrono,
 ateh sistemas operacionais, sei lah pq chamam assim */
 
-function mainLoop(timestamp){
-
+function gameLoop(timestamp){
 
     //c_ship.dispatchEvent(mousemove);
 
@@ -164,7 +164,6 @@ function mainLoop(timestamp){
     // condicional de controle de FPS, soh atualiza o quadro quando
     // o intervalo minimo de tempo eh passado
     if (timestamp < lastFrameTimeMs + (1000/maxFPS)){
-        requestAnimationFrame(mainLoop);
         return;
     }
     lastFrameTimeMs = timestamp;
@@ -191,8 +190,19 @@ function mainLoop(timestamp){
         }
     }
     draw.hud();      // desenha hud
-    requestAnimationFrame(mainLoop);            // chama proxima iteracao do loop
+}
 
+
+function mainLoop(timestamp){
+    var playing = false;
+    var lobby = true;
+    if (playing == true){
+        (gameLoop(timestamp));
+    }
+    if (lobby == true){
+        menu.loop(lobby);
+    }
+    requestAnimationFrame(mainLoop);
 }
 
 // testando firebug
