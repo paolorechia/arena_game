@@ -522,12 +522,12 @@ module.exports = function(ship, camera, background, data, ctx_ship, calculo, men
         ctx_ship.font = button.font;
         ctx_ship.fillStyle=button.color;
         ctx_ship.fillText(button.text, button.x, button.y);
-        ctx_ship.fill();
     }
     module.allButtons = function(context){
         for (button in context.buttons){
-            module.button(button);
-        } 
+            console.log(context.buttons[button]);
+            module.button(context.buttons[button]);
+        }
     }
     module.menu= function(){
         ctx_ship.beginPath();
@@ -621,7 +621,7 @@ var camera = require('./camera.js')(socket);
 var background = require('./background.js')(ctx_background);
 var ship = require('./ship.js')(camera, background, data);
 var calculo = require('./calculo.js')(camera, data, ship);
-var menu = require('./menu.js')(data, camera);
+var menu = require('./menu.js')(data, camera, ctx_ship);
 var draw = require('./draw.js')(ship, camera, background, data, ctx_ship,calculo, menu);
 
 
@@ -812,7 +812,7 @@ setTimeout(function(){
 
 
 },{"./background.js":1,"./calculo.js":2,"./camera.js":3,"./data.js":4,"./draw.js":5,"./input.js":6,"./menu.js":8,"./ship.js":9}],8:[function(require,module,exports){
-module.exports = function(data, camera){
+module.exports = function(data, camera, ctx_ship){
     var module = {};
     module.Button = function(){;
         this.x = 0;
@@ -822,23 +822,31 @@ module.exports = function(data, camera){
         this.font = "30px Arial";
         this.text = "";
     }
-    module.topOffset = 50;
     module.buttons={};
     module.buttons.back = new module.Button();
     module.buttons.settings = new module.Button();
     module.buttons.lobby = new module.Button();
-    module.buttons.texts = ["Continue", "Settings", "Back to Lobby"];
+    module.texts = ["Continue", "Settings", "Back to Lobby"];
 
     module.initButton = function(button, i){
-       button.x = camera.width/3;
-       button.y = module.topOffset + 100;
-       button.text = module.buttons.texts[i];
+       var topOffset = camera.height/4;
+       button.y = topOffset + (i * 100);
+       button.text = module.texts[i];
+       var text_width = ctx_ship.measureText(button.text).width;
+       button.x = camera.width/2 - text_width;
+       window.addEventListener('resize', function(event) {
+           var topOffset = camera.height/4;
+           button.y = topOffset + (i * 100);
+           button.text = module.texts[i];
+           var text_width = ctx_ship.measureText(button.text).width;
+           button.x = camera.width/2 - text_width;
+       });
     }
     module.initButtons = function(){
         
         var i = 0;
         for (button in module.buttons){
-            module.initButton(button, i);
+            module.initButton(module.buttons[button], i);
             i++;
         }
     }

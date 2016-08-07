@@ -290,12 +290,12 @@ module.exports = function(ship, camera, background, data, ctx_ship, calculo, men
         ctx_ship.font = button.font;
         ctx_ship.fillStyle=button.color;
         ctx_ship.fillText(button.text, button.x, button.y);
-        ctx_ship.fill();
     }
     module.allButtons = function(context){
         for (button in context.buttons){
-            module.button(button);
-        } 
+            console.log(context.buttons[button]);
+            module.button(context.buttons[button]);
+        }
     }
     module.menu= function(){
         ctx_ship.beginPath();

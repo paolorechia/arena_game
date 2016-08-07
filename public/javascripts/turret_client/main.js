@@ -36,7 +36,7 @@ var camera = require('./camera.js')(socket);
 var background = require('./background.js')(ctx_background);
 var ship = require('./ship.js')(camera, background, data);
 var calculo = require('./calculo.js')(camera, data, ship);
-var menu = require('./menu.js')(data, camera);
+var menu = require('./menu.js')(data, camera, ctx_ship);
 var draw = require('./draw.js')(ship, camera, background, data, ctx_ship,calculo, menu);
 
 
