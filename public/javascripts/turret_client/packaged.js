@@ -892,6 +892,12 @@ module.exports = function (camera, background, data){
 module.exports = function(data, ship){
     var module = {};
    
+    var music = document.getElementById("music");
+    music.addEventListener('ended', function(){
+        this.currentTime = 0;
+        this.play();
+    }, false);
+    
     var sound_laser = document.getElementById("laser");
     var sound_blaster = document.getElementById("blaster");
     module.play = function(){
@@ -918,6 +924,10 @@ module.exports = function(data, ship){
                 }
             }
                 
+        }
+    
+        if (music.currentTime == 0){ 
+            music.play();
         }
     }
     return module;
