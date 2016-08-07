@@ -27,11 +27,12 @@ socket.on('myid', function(id){
    socket.emit('myid', data.my_id);
 });
 
-var input = require('./input.js')(socket, data);
 var c_background = document.getElementById("background");
 var c_ship = document.getElementById("canvas_ship");
 var ctx_background = c_background.getContext("2d");
 var ctx_ship = c_ship.getContext("2d");
+
+var input = require('./input.js')(socket, data, c_ship);
 var camera = require('./camera.js')(socket);
 var background = require('./background.js')(ctx_background);
 var ship = require('./ship.js')(camera, background, data);
@@ -117,34 +118,6 @@ A cada escuta de evento é associada uma acao + uma funcao
 
 
 
-//Nova forma de controlar o evento ---------------------------------------------
-/*
-var mousemove = document.createEvent('Event');
-mousemove.initEvent('mousemove', true, true);
-c_ship.addEventListener('mousemove', function(e) {
-  pegaCoordenadas(e);
-}, false)
-*/
-
-
-var mobile_coord = [];
-//------------------------------------------------------------------------------
-c_ship.addEventListener("touchstart", pegaCoordenadasMobile, false);
-c_ship.addEventListener("touchstart", function(){ atirou(1); 
-                                                   sound.currentTime = 0.07;
-                                                   sound.play();},
-                                                   false);
-c_ship.addEventListener("touchend", function(){ atirou(0)}, false);
-//c_ship.addEventListener("touchmove", pegaCoordenadasMobile, false);
-c_ship.addEventListener("touchmove", input.atualizaMobile, false);
-c_ship.addEventListener("mousemove", pegaCoordenadas, false);
-c_ship.addEventListener("mousedown", function(){ input.mousePress(1); 
-                                                   sound.currentTime = 0.07;
-                                                   sound.play();},
-                                                   false);
-c_ship.addEventListener("mouseup", function(){ input.mousePress(0)}, false);
-window.addEventListener("keydown", function(event){ input.atualiza(event)}, false);
-
 //incializacao de variaveis do loop principal
 var lastFrameTimeMs = 0;
 var maxFPS = 90;
@@ -181,14 +154,6 @@ function gameLoop(timestamp){
 //    colisoes.confere();                 // confere colisao de tudo (asteroides, ship, laser, bordas)
     // if abaixo calcula um versor a partir do ultimo touch n drag
     // e manda para o servidor
-    if (tempo % 10 == 0){
-//        socket.emit('inputmobile', mobile_data.coord.length);
-//        socket.emit('inputmobile', mobile_data.coord);
-        if (mobile_coord != undefined && mobile_coord[0] != undefined){
-            calculo.versor_mobile(ship.versor_mobile);
-            socket.emit('inputmobile', ship.versor_mobile);
-            mobile_coord = [];
-        }
     }
     draw.hud();      // desenha hud
 }

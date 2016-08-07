@@ -128,17 +128,20 @@ module.exports = function(background, camera, calc){
     };
     module.trocaArma = function(nave){
         console.log("pediu troca de arma");
-//        if (nave.cooldown_troca_arma == false){
-//            nave.cooldown_troca_arma = true;
-//            setTimeout(function(){nave.cooldown_troca_arma = false;
+        if (nave.cooldown_troca_arma == false){
                                   var i = nave.armas.indexOf(nave.arma_atual);
                                   i = (i + 1) % (nave.armas.length);
                                   nave.arma_atual = nave.armas[i];
                                   console.log("troquei! agora uso: ", nave.arma_atual)
- //                                ;}, 2000);
-       // }
+        }
     }
     module.atira = function (nave, atirou){
+    
+            if (atirou == 1)
+                nave.cooldown_troca_arma = true;
+            else
+                nave.cooldown_troca_arma = false;
+
             if (nave.arma_atual == "laser")
                 nave.laser.atirando = atirou;
             else if (nave.arma_atual =="blaster")
