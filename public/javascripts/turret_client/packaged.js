@@ -902,8 +902,8 @@ module.exports = function(data, ship){
                 if (sound_laser.currentTime == 0){
                     sound_laser.play();
                 }
-                if (sound_laser.currentTime > 0.15){
-                    sound_laser.currentTime = 0.1;
+                if (sound_laser.currentTime > 0.2){
+                    sound_laser.currentTime = 0.02;
                     sound_laser.play();
                 }
             }
@@ -912,8 +912,8 @@ module.exports = function(data, ship){
                     if (sound_blaster.currentTime == 0){
                         sound_blaster.play();
                     }
-                    if (sound_blaster.currentTime > 0.10){
-                        sound_blaster.currentTime = 0.05;
+                    if (sound_blaster.currentTime > 0.15){
+                        sound_blaster.currentTime = 0.1;
                         sound_blaster.play();
                 }
             }
