@@ -39,6 +39,7 @@ var ship = require('./ship.js')(camera, background, data);
 var calculo = require('./calculo.js')(camera, data, ship);
 var menu = require('./menu.js')(data, camera, ctx_ship);
 var draw = require('./draw.js')(ship, camera, background, data, ctx_ship,calculo, menu);
+var sound = require('./sound.js')(data, ship);
 
 
 socket.on('message', function(message){
@@ -53,7 +54,6 @@ socket.on('blasters', function(received_blasters){
 /* funcoes de inicializacao de variaveis*/
 
 
-var sound = document.getElementById("blaster");
 console.log(sound);
 //Versão antiga -- usar quando o bug da mira for corrigido -----
 //camera.setRes(1600, 900, c_ship);
@@ -100,22 +100,6 @@ socket.on('status', function(estado){
     ship.weapon = estado.weapon;
 });
 
-// funcoes de evento
-function pegaCoordenadas(event){
-    data.coord.x = event.clientX;
-    data.coord.y = event.clientY;
-    socket.emit('coord', data.coord);
-}
-function pegaCoordenadasMobile(event){
-    data.coord.x = event.touches[0].clientX;
-    data.coord.y = event.touches[0].clientY;
-    socket.emit('coord', data.coord);
-}
-/* conjunto de eventos lidos a partir do mouse e do teclado,
-na falta de um lugar melhor ainda estao aqui
-A cada escuta de evento é associada uma acao + uma funcao
-*/
-
 
 
 //incializacao de variaveis do loop principal
@@ -154,8 +138,8 @@ function gameLoop(timestamp){
 //    colisoes.confere();                 // confere colisao de tudo (asteroides, ship, laser, bordas)
     // if abaixo calcula um versor a partir do ultimo touch n drag
     // e manda para o servidor
-    }
     draw.hud();      // desenha hud
+    sound.play();
 }
 
 function menuLoop(timestamp){

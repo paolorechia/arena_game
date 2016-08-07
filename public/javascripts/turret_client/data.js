@@ -27,7 +27,7 @@ module.exports = function(stub){
         this.y = 0;
     }
 
-    module.atirou = 0;
+    module.atirando = 0;
     module.my_id = 0;
     return module;
 }

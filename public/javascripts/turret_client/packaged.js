@@ -224,7 +224,7 @@ module.exports = function(stub){
         this.y = 0;
     }
 
-    module.atirou = 0;
+    module.atirando = 0;
     module.my_id = 0;
     return module;
 }
@@ -547,8 +547,20 @@ module.exports = function(ship, camera, background, data, ctx_ship, calculo, men
 }
 
 },{}],6:[function(require,module,exports){
-module.exports = function(socket, data){
+module.exports = function(socket, data, c_ship){
     var module = {};
+    // funcoes de evento
+    function pegaCoordenadas(event){
+        data.coord.x = event.clientX;
+        data.coord.y = event.clientY;
+        socket.emit('coord', data.coord);
+    }
+    function pegaCoordenadasMobile(event){
+        data.coord.x = event.touches[0].clientX;
+        data.coord.y = event.touches[0].clientY;
+        socket.emit('coord', data.coord);
+    }
+
     module.atualiza = function (event){
         if (event.key == 'w'){
             socket.emit('input', 'w');
@@ -579,6 +591,52 @@ module.exports = function(socket, data){
           data.atirou = status_tiro;
           socket.emit('tiro', data.atirou);
     };
+    /* retirado do codigo principal, repensar caso suporte ao mobile
+     * for necessario
+    if (tempo % 10 == 0){
+//        socket.emit('inputmobile', mobile_data.coord.length);
+//        socket.emit('inputmobile', mobile_data.coord);
+        if (mobile_coord != undefined && mobile_coord[0] != undefined){
+            calculo.versor_mobile(ship.versor_mobile);
+            socket.emit('inputmobile', ship.versor_mobile);
+            mobile_coord = [];
+        }
+    */
+    /* conjunto de eventos lidos a partir do mouse e do teclado,
+    na falta de um lugar melhor ainda estao aqui
+    A cada escuta de evento é associada uma acao + uma funcao
+    */
+
+
+
+    //Nova forma de controlar o evento ---------------------------------------------
+    /*
+    var mousemove = document.createEvent('Event');
+    mousemove.initEvent('mousemove', true, true);
+    c_ship.addEventListener('mousemove', function(e) {
+      pegaCoordenadas(e);
+    }, false)
+    */
+
+
+    var mobile_coord = [];
+    //------------------------------------------------------------------------------
+    c_ship.addEventListener("touchstart", pegaCoordenadasMobile, false);
+    c_ship.addEventListener("touchstart", function(){ atirou(1); 
+                                                       sound.currentTime = 0.07;
+                                                       sound.play();},
+                                                       false);
+    c_ship.addEventListener("touchend", function(){ atirou(0)}, false);
+    //c_ship.addEventListener("touchmove", pegaCoordenadasMobile, false);
+    c_ship.addEventListener("touchmove", module.atualizaMobile, false);
+    c_ship.addEventListener("mousemove", pegaCoordenadas, false);
+    c_ship.addEventListener("mousedown", function(){ module.mousePress(1); 
+                                                     data.atirando = true;},
+                                                     false);
+    c_ship.addEventListener("mouseup", function(){ module.mousePress(0);
+                                                   data.atirando = false;}, 
+                                                   false);
+    window.addEventListener("keydown", function(event){ module.atualiza(event)}, false);
     return module;
 }
 
@@ -612,17 +670,19 @@ socket.on('myid', function(id){
    socket.emit('myid', data.my_id);
 });
 
-var input = require('./input.js')(socket, data);
 var c_background = document.getElementById("background");
 var c_ship = document.getElementById("canvas_ship");
 var ctx_background = c_background.getContext("2d");
 var ctx_ship = c_ship.getContext("2d");
+
+var input = require('./input.js')(socket, data, c_ship);
 var camera = require('./camera.js')(socket);
 var background = require('./background.js')(ctx_background);
 var ship = require('./ship.js')(camera, background, data);
 var calculo = require('./calculo.js')(camera, data, ship);
 var menu = require('./menu.js')(data, camera, ctx_ship);
 var draw = require('./draw.js')(ship, camera, background, data, ctx_ship,calculo, menu);
+var sound = require('./sound.js')(data, ship);
 
 
 socket.on('message', function(message){
@@ -637,7 +697,6 @@ socket.on('blasters', function(received_blasters){
 /* funcoes de inicializacao de variaveis*/
 
 
-var sound = document.getElementById("blaster");
 console.log(sound);
 //Versão antiga -- usar quando o bug da mira for corrigido -----
 //camera.setRes(1600, 900, c_ship);
@@ -684,51 +743,7 @@ socket.on('status', function(estado){
     ship.weapon = estado.weapon;
 });
 
-// funcoes de evento
-function pegaCoordenadas(event){
-    data.coord.x = event.clientX;
-    data.coord.y = event.clientY;
-    socket.emit('coord', data.coord);
-}
-function pegaCoordenadasMobile(event){
-    data.coord.x = event.touches[0].clientX;
-    data.coord.y = event.touches[0].clientY;
-    socket.emit('coord', data.coord);
-}
-/* conjunto de eventos lidos a partir do mouse e do teclado,
-na falta de um lugar melhor ainda estao aqui
-A cada escuta de evento é associada uma acao + uma funcao
-*/
 
-
-
-//Nova forma de controlar o evento ---------------------------------------------
-/*
-var mousemove = document.createEvent('Event');
-mousemove.initEvent('mousemove', true, true);
-c_ship.addEventListener('mousemove', function(e) {
-  pegaCoordenadas(e);
-}, false)
-*/
-
-
-var mobile_coord = [];
-//------------------------------------------------------------------------------
-c_ship.addEventListener("touchstart", pegaCoordenadasMobile, false);
-c_ship.addEventListener("touchstart", function(){ atirou(1); 
-                                                   sound.currentTime = 0.07;
-                                                   sound.play();},
-                                                   false);
-c_ship.addEventListener("touchend", function(){ atirou(0)}, false);
-//c_ship.addEventListener("touchmove", pegaCoordenadasMobile, false);
-c_ship.addEventListener("touchmove", input.atualizaMobile, false);
-c_ship.addEventListener("mousemove", pegaCoordenadas, false);
-c_ship.addEventListener("mousedown", function(){ input.mousePress(1); 
-                                                   sound.currentTime = 0.07;
-                                                   sound.play();},
-                                                   false);
-c_ship.addEventListener("mouseup", function(){ input.mousePress(0)}, false);
-window.addEventListener("keydown", function(event){ input.atualiza(event)}, false);
 
 //incializacao de variaveis do loop principal
 var lastFrameTimeMs = 0;
@@ -766,16 +781,8 @@ function gameLoop(timestamp){
 //    colisoes.confere();                 // confere colisao de tudo (asteroides, ship, laser, bordas)
     // if abaixo calcula um versor a partir do ultimo touch n drag
     // e manda para o servidor
-    if (tempo % 10 == 0){
-//        socket.emit('inputmobile', mobile_data.coord.length);
-//        socket.emit('inputmobile', mobile_data.coord);
-        if (mobile_coord != undefined && mobile_coord[0] != undefined){
-            calculo.versor_mobile(ship.versor_mobile);
-            socket.emit('inputmobile', ship.versor_mobile);
-            mobile_coord = [];
-        }
-    }
     draw.hud();      // desenha hud
+    sound.play();
 }
 
 function menuLoop(timestamp){
@@ -811,7 +818,7 @@ setTimeout(function(){
    2000);
 
 
-},{"./background.js":1,"./calculo.js":2,"./camera.js":3,"./data.js":4,"./draw.js":5,"./input.js":6,"./menu.js":8,"./ship.js":9}],8:[function(require,module,exports){
+},{"./background.js":1,"./calculo.js":2,"./camera.js":3,"./data.js":4,"./draw.js":5,"./input.js":6,"./menu.js":8,"./ship.js":9,"./sound.js":10}],8:[function(require,module,exports){
 module.exports = function(data, camera, ctx_ship){
     var module = {};
     module.Button = function(){;
@@ -880,5 +887,19 @@ module.exports = function (camera, background, data){
     return module;
 }
 
+
+},{}],10:[function(require,module,exports){
+module.exports = function(data, ship){
+    var module = {};
+   
+    var sound = document.getElementById("blaster");
+    module.play = function(){
+        if (data.atirando == true){    
+            sound.currentTime = 0.07;
+            sound.play();
+        }
+    }
+    return module;
+} 
 
 },{}]},{},[7]);
