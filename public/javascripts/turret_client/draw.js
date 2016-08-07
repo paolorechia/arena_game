@@ -1,4 +1,4 @@
-module.exports = function(ship, camera, background, data, ctx_ship, calculo){
+module.exports = function(ship, camera, background, data, ctx_ship, calculo, menu){
     var module = {};
     module.asteroid = function(ast){
         /* variaveis auxiliares, pega coordenadas do canvas pequeno
@@ -285,13 +285,30 @@ module.exports = function(ship, camera, background, data, ctx_ship, calculo){
                 module.blaster(data.blasters[i]);
         }
     };
+    module.button = function(button){
+        ctx_ship.beginPath();
+        ctx_ship.font = button.font;
+        ctx_ship.fillStyle=button.color;
+        ctx_ship.fillText(button.text, button.x, button.y);
+        ctx_ship.fill();
+    }
+    module.allButtons = function(context){
+        for (button in context.buttons){
+            module.button(button);
+        } 
+    }
     module.menu= function(){
-        console.log("desenhando menu");
+        ctx_ship.beginPath();
+        ctx_ship.fillStyle = "rgba(40, 40, 120, 0.5)";
+        ctx_ship.fillRect(camera.width/4, 0, camera.width - camera.width/2, camera.height);
+        module.allButtons(menu);
+    };
+    module.lobby= function(){
         module.camera(camera, ctx_ship);
         ctx_ship.beginPath();
         ctx_ship.fillStyle = "rgba(40, 40, 120, 0.5)";
-        console.log(ctx_ship);
         ctx_ship.fillRect(camera.width/4, 0, camera.width - camera.width/2, camera.height);
+        module.allButtons();
     };
 
     return module;

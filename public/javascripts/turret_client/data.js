@@ -6,6 +6,17 @@ module.exports = function(stub){
     module.players = [];
     module.players_id = [];
     module.players_pointers = [];
+    module.gameStates= ["playing", "lobby", "menu"];
+    module.gameState = module.gameStates[0];
+    module.nextState = function(){
+        if(module.gameState == module.gameStates[0])
+        {
+            module.gameState = module.gameStates[2];
+        }
+        else
+            module.gameState = module.gameStates[0];
+        console.log("trying to change State... " + module.gameState);
+    }
 
     module.coord = {
         x:0,

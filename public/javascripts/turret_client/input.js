@@ -16,6 +16,10 @@ module.exports = function(socket, data){
         if (event.key == ' '){
             socket.emit('input', ' ');
         }
+        if (event.key == 'Escape'){
+            socket.emit('input', 'Esc');
+            data.nextState();
+        }
     };
     module.atualizaMobile = function(event){
         var coord = { x: event.touches[0].clientX,

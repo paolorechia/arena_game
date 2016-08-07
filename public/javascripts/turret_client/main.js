@@ -36,8 +36,8 @@ var camera = require('./camera.js')(socket);
 var background = require('./background.js')(ctx_background);
 var ship = require('./ship.js')(camera, background, data);
 var calculo = require('./calculo.js')(camera, data, ship);
-var draw = require('./draw.js')(ship, camera, background, data, ctx_ship,calculo);
-var menu = require('./menu.js')(draw);
+var menu = require('./menu.js')(data, camera);
+var draw = require('./draw.js')(ship, camera, background, data, ctx_ship,calculo, menu);
 
 
 socket.on('message', function(message){
@@ -64,6 +64,7 @@ console.log(camera);
 
 background.inicia(ctx_background, c_background);
 ship.inicia();
+menu.initButtons();
 
 console.log(ship);
 socket.on('movimento', function(nova_pos){
@@ -192,15 +193,21 @@ function gameLoop(timestamp){
     draw.hud();      // desenha hud
 }
 
+function menuLoop(timestamp){
+       if (menu.buttons.back.clicked == true){
+            data.gameState = "playing";
+       }
+       gameLoop(timestamp);
+       draw.menu();
+};
+
 
 function mainLoop(timestamp){
-    var playing = false;
-    var lobby = true;
-    if (playing == true){
+    if (data.gameState == "playing"){
         (gameLoop(timestamp));
     }
-    if (lobby == true){
-        menu.loop(lobby);
+    if (data.gameState == "menu"){
+        menuLoop(timestamp);
     }
     requestAnimationFrame(mainLoop);
 }

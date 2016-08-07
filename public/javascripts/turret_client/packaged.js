@@ -203,6 +203,17 @@ module.exports = function(stub){
     module.players = [];
     module.players_id = [];
     module.players_pointers = [];
+    module.gameStates= ["playing", "lobby", "menu"];
+    module.gameState = module.gameStates[0];
+    module.nextState = function(){
+        if(module.gameState == module.gameStates[0])
+        {
+            module.gameState = module.gameStates[2];
+        }
+        else
+            module.gameState = module.gameStates[0];
+        console.log("trying to change State... " + module.gameState);
+    }
 
     module.coord = {
         x:0,
@@ -219,7 +230,7 @@ module.exports = function(stub){
 }
 
 },{}],5:[function(require,module,exports){
-module.exports = function(ship, camera, background, data, ctx_ship, calculo){
+module.exports = function(ship, camera, background, data, ctx_ship, calculo, menu){
     var module = {};
     module.asteroid = function(ast){
         /* variaveis auxiliares, pega coordenadas do canvas pequeno
@@ -506,13 +517,30 @@ module.exports = function(ship, camera, background, data, ctx_ship, calculo){
                 module.blaster(data.blasters[i]);
         }
     };
+    module.button = function(button){
+        ctx_ship.beginPath();
+        ctx_ship.font = button.font;
+        ctx_ship.fillStyle=button.color;
+        ctx_ship.fillText(button.text, button.x, button.y);
+        ctx_ship.fill();
+    }
+    module.allButtons = function(context){
+        for (button in context.buttons){
+            module.button(button);
+        } 
+    }
     module.menu= function(){
-        console.log("desenhando menu");
+        ctx_ship.beginPath();
+        ctx_ship.fillStyle = "rgba(40, 40, 120, 0.5)";
+        ctx_ship.fillRect(camera.width/4, 0, camera.width - camera.width/2, camera.height);
+        module.allButtons(menu);
+    };
+    module.lobby= function(){
         module.camera(camera, ctx_ship);
         ctx_ship.beginPath();
         ctx_ship.fillStyle = "rgba(40, 40, 120, 0.5)";
-        console.log(ctx_ship);
         ctx_ship.fillRect(camera.width/4, 0, camera.width - camera.width/2, camera.height);
+        module.allButtons();
     };
 
     return module;
@@ -536,6 +564,10 @@ module.exports = function(socket, data){
         }
         if (event.key == ' '){
             socket.emit('input', ' ');
+        }
+        if (event.key == 'Escape'){
+            socket.emit('input', 'Esc');
+            data.nextState();
         }
     };
     module.atualizaMobile = function(event){
@@ -589,8 +621,8 @@ var camera = require('./camera.js')(socket);
 var background = require('./background.js')(ctx_background);
 var ship = require('./ship.js')(camera, background, data);
 var calculo = require('./calculo.js')(camera, data, ship);
-var draw = require('./draw.js')(ship, camera, background, data, ctx_ship,calculo);
-var menu = require('./menu.js')(draw);
+var menu = require('./menu.js')(data, camera);
+var draw = require('./draw.js')(ship, camera, background, data, ctx_ship,calculo, menu);
 
 
 socket.on('message', function(message){
@@ -617,6 +649,7 @@ console.log(camera);
 
 background.inicia(ctx_background, c_background);
 ship.inicia();
+menu.initButtons();
 
 console.log(ship);
 socket.on('movimento', function(nova_pos){
@@ -745,15 +778,21 @@ function gameLoop(timestamp){
     draw.hud();      // desenha hud
 }
 
+function menuLoop(timestamp){
+       if (menu.buttons.back.clicked == true){
+            data.gameState = "playing";
+       }
+       gameLoop(timestamp);
+       draw.menu();
+};
+
 
 function mainLoop(timestamp){
-    var playing = false;
-    var lobby = true;
-    if (playing == true){
+    if (data.gameState == "playing"){
         (gameLoop(timestamp));
     }
-    if (lobby == true){
-        menu.loop(lobby);
+    if (data.gameState == "menu"){
+        menuLoop(timestamp);
     }
     requestAnimationFrame(mainLoop);
 }
@@ -773,26 +812,37 @@ setTimeout(function(){
 
 
 },{"./background.js":1,"./calculo.js":2,"./camera.js":3,"./data.js":4,"./draw.js":5,"./input.js":6,"./menu.js":8,"./ship.js":9}],8:[function(require,module,exports){
-module.exports = function(draw){
+module.exports = function(data, camera){
     var module = {};
     module.Button = function(){;
         this.x = 0;
         this.y = 0;
         this.clicked = false;
-        this.color = "rgb(127, 127, 127)";
+        this.color = "rgba(255, 255, 255, 1)";
+        this.font = "30px Arial";
         this.text = "";
     }
+    module.topOffset = 50;
     module.buttons={};
-    module.buttons.exit = new module.Button();
-    module.loop = function(rodando){
-       console.log("rodando o menu");
-       if (module.buttons.exit.clicked == true){
-            console.log("saindo do menu");
-            rodando = false;
-       }
-       draw.menu();
-    };
-     
+    module.buttons.back = new module.Button();
+    module.buttons.settings = new module.Button();
+    module.buttons.lobby = new module.Button();
+    module.buttons.texts = ["Continue", "Settings", "Back to Lobby"];
+
+    module.initButton = function(button, i){
+       button.x = camera.width/3;
+       button.y = module.topOffset + 100;
+       button.text = module.buttons.texts[i];
+    }
+    module.initButtons = function(){
+        
+        var i = 0;
+        for (button in module.buttons){
+            module.initButton(button, i);
+            i++;
+        }
+    }
+ 
     return module;
 }
 
