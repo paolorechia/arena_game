@@ -32,14 +32,15 @@ var c_ship = document.getElementById("canvas_ship");
 var ctx_background = c_background.getContext("2d");
 var ctx_ship = c_ship.getContext("2d");
 
-var input = require('./input.js')(socket, data, c_ship);
-var camera = require('./camera.js')(socket);
-var background = require('./background.js')(ctx_background);
-var ship = require('./ship.js')(camera, background, data);
-var calculo = require('./calculo.js')(camera, data, ship);
-var menu = require('./menu.js')(data, camera, ctx_ship);
-var draw = require('./draw.js')(ship, camera, background, data, ctx_ship,calculo, menu);
-var sound = require('./sound.js')(data, ship);
+var input           = require('./input.js')(socket, data, c_ship);
+var camera          = require('./camera.js')(socket);
+var background      = require('./background.js')(ctx_background);
+var ship            = require('./ship.js')(camera, background, data);
+var calculo         = require('./calculo.js')(camera, data, ship);
+var menu            = require('./menu.js')(data, camera, ctx_ship);
+var lobby           = require('./lobby.js')(data, camera, ctx_ship);
+var draw            = require('./draw.js')(ship, camera, background, data, ctx_ship,calculo, menu, lobby);
+var sound           = require('./sound.js')(data, ship);
 
 
 socket.on('message', function(message){
@@ -66,6 +67,7 @@ console.log(camera);
 background.inicia(ctx_background, c_background);
 ship.inicia();
 menu.initButtons();
+lobby.init();
 
 console.log(ship);
 socket.on('movimento', function(nova_pos){
@@ -150,13 +152,20 @@ function menuLoop(timestamp){
        draw.menu();
 };
 
+function lobbyLoop(timestamp){
+    draw.lobby();
+}
+
 
 function mainLoop(timestamp){
     if (data.gameState == "playing"){
         (gameLoop(timestamp));
     }
-    if (data.gameState == "menu"){
+    else if (data.gameState == "menu"){
         menuLoop(timestamp);
+    }
+    else if (data.gameState == "lobby"){
+        lobbyLoop(timestamp);
     }
     requestAnimationFrame(mainLoop);
 }

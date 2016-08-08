@@ -306,9 +306,9 @@ module.exports = function(ship, camera, background, data, ctx_ship, calculo, men
     module.lobby= function(){
         module.camera(camera, ctx_ship);
         ctx_ship.beginPath();
-        ctx_ship.fillStyle = "rgba(40, 40, 120, 0.5)";
-        ctx_ship.fillRect(camera.width/4, 0, camera.width - camera.width/2, camera.height);
-        module.allButtons();
+        ctx_ship.fillStyle = "rgba(40, 40, 120, 0.8)";
+        ctx_ship.fillRect(0, 0, camera.width, camera.height);
+        module.allButtons(lobby);
     };
 
     return module;

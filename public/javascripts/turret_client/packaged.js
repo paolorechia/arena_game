@@ -538,9 +538,9 @@ module.exports = function(ship, camera, background, data, ctx_ship, calculo, men
     module.lobby= function(){
         module.camera(camera, ctx_ship);
         ctx_ship.beginPath();
-        ctx_ship.fillStyle = "rgba(40, 40, 120, 0.5)";
-        ctx_ship.fillRect(camera.width/4, 0, camera.width - camera.width/2, camera.height);
-        module.allButtons();
+        ctx_ship.fillStyle = "rgba(40, 40, 120, 0.8)";
+        ctx_ship.fillRect(0, 0, camera.width, camera.height);
+        module.allButtons(lobby);
     };
 
     return module;
@@ -641,6 +641,63 @@ module.exports = function(socket, data, c_ship){
 }
 
 },{}],7:[function(require,module,exports){
+module.exports = function(data, camera, ctx_ship){
+    var module = {};
+    module.Button = function(){
+        this.x = 0;
+        this.y = 0;
+        this.clicked = false;
+        this.color = "rgba(255, 255, 255, 1)";
+        this.font = "30px Arial";
+        this.text = "";
+    }
+    module.box = function (){
+        this.x = 0;
+        this.y = 0;
+        this.width = 0;
+        this.height = 0;
+    }
+
+    module.buttons={};
+    module.buttons.join= new module.Button();
+    module.buttons.settings = new module.Button();
+    module.texts = ["Join Game", "Settings"];
+
+    
+
+    module.initButton = function(button, i){
+       var topOffset = camera.height/4;
+       button.y = topOffset + (i * 100);
+       button.text = module.texts[i];
+       var text_width = ctx_ship.measureText(button.text).width;
+       button.x = camera.width/2 - text_width;
+       window.addEventListener('resize', function(event) {
+           var topOffset = camera.height/4;
+           button.y = topOffset + (i * 100);
+           button.text = module.texts[i];
+           var text_width = ctx_ship.measureText(button.text).width;
+           button.x = camera.width/2 - text_width;
+       });
+    }
+    module.initButtons = function(){
+        
+        var i = 0;
+        for (button in module.buttons){
+            module.initButton(module.buttons[button], i);
+            i++;
+        }
+    }
+    module.initBox = function(){
+    }
+    module.init = function(){
+        module.initButtons();
+        module.initBox();
+    }
+ 
+    return module;
+}
+
+},{}],8:[function(require,module,exports){
 /*
 Copyright (C) 2016 PR & DM web dev, Inc - All rights reserved.
 Unauthorized copy, reproduction or distribution of this source code is strictly
@@ -675,14 +732,15 @@ var c_ship = document.getElementById("canvas_ship");
 var ctx_background = c_background.getContext("2d");
 var ctx_ship = c_ship.getContext("2d");
 
-var input = require('./input.js')(socket, data, c_ship);
-var camera = require('./camera.js')(socket);
-var background = require('./background.js')(ctx_background);
-var ship = require('./ship.js')(camera, background, data);
-var calculo = require('./calculo.js')(camera, data, ship);
-var menu = require('./menu.js')(data, camera, ctx_ship);
-var draw = require('./draw.js')(ship, camera, background, data, ctx_ship,calculo, menu);
-var sound = require('./sound.js')(data, ship);
+var input           = require('./input.js')(socket, data, c_ship);
+var camera          = require('./camera.js')(socket);
+var background      = require('./background.js')(ctx_background);
+var ship            = require('./ship.js')(camera, background, data);
+var calculo         = require('./calculo.js')(camera, data, ship);
+var menu            = require('./menu.js')(data, camera, ctx_ship);
+var lobby           = require('./lobby.js')(data, camera, ctx_ship);
+var draw            = require('./draw.js')(ship, camera, background, data, ctx_ship,calculo, menu, lobby);
+var sound           = require('./sound.js')(data, ship);
 
 
 socket.on('message', function(message){
@@ -709,6 +767,7 @@ console.log(camera);
 background.inicia(ctx_background, c_background);
 ship.inicia();
 menu.initButtons();
+lobby.init();
 
 console.log(ship);
 socket.on('movimento', function(nova_pos){
@@ -793,13 +852,20 @@ function menuLoop(timestamp){
        draw.menu();
 };
 
+function lobbyLoop(timestamp){
+    draw.lobby();
+}
+
 
 function mainLoop(timestamp){
     if (data.gameState == "playing"){
         (gameLoop(timestamp));
     }
-    if (data.gameState == "menu"){
+    else if (data.gameState == "menu"){
         menuLoop(timestamp);
+    }
+    else if (data.gameState == "lobby"){
+        lobbyLoop(timestamp);
     }
     requestAnimationFrame(mainLoop);
 }
@@ -818,7 +884,7 @@ setTimeout(function(){
    2000);
 
 
-},{"./background.js":1,"./calculo.js":2,"./camera.js":3,"./data.js":4,"./draw.js":5,"./input.js":6,"./menu.js":8,"./ship.js":9,"./sound.js":10}],8:[function(require,module,exports){
+},{"./background.js":1,"./calculo.js":2,"./camera.js":3,"./data.js":4,"./draw.js":5,"./input.js":6,"./lobby.js":7,"./menu.js":9,"./ship.js":10,"./sound.js":11}],9:[function(require,module,exports){
 module.exports = function(data, camera, ctx_ship){
     var module = {};
     module.Button = function(){;
@@ -861,7 +927,7 @@ module.exports = function(data, camera, ctx_ship){
     return module;
 }
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 module.exports = function (camera, background, data){
     var module = {};
 
@@ -888,7 +954,7 @@ module.exports = function (camera, background, data){
 }
 
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 module.exports = function(data, ship){
     var module = {};
    
@@ -933,4 +999,4 @@ module.exports = function(data, ship){
     return module;
 } 
 
-},{}]},{},[7]);
+},{}]},{},[8]);
