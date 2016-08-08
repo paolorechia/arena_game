@@ -520,7 +520,12 @@ module.exports = function(ship, camera, background, data, ctx_ship, calculo, men
     module.button = function(button){
         ctx_ship.beginPath();
         ctx_ship.font = button.font;
-        ctx_ship.fillStyle=button.color;
+        if (button.hover == true){
+            ctx_ship.fillStyle=button.hover_color;
+        }
+        else{
+            ctx_ship.fillStyle=button.color;
+        }
         ctx_ship.fillText(button.text, button.x, button.y);
     }
     module.allButtons = function(context){
@@ -850,6 +855,7 @@ function menuLoop(timestamp){
        }
        gameLoop(timestamp);
        draw.menu();
+       menu.checkHovers
 };
 
 function lobbyLoop(timestamp){
@@ -891,9 +897,12 @@ module.exports = function(data, camera, ctx_ship){
         this.x = 0;
         this.y = 0;
         this.clicked = false;
+        this.hover = false;
         this.color = "rgba(255, 255, 255, 1)";
+        this.hover_color = "rgba(0, 0, 0, 1)";
         this.font = "30px Arial";
         this.text = "";
+        this.height = 30;
     }
     module.buttons={};
     module.buttons.back = new module.Button();
@@ -906,6 +915,7 @@ module.exports = function(data, camera, ctx_ship){
        button.y = topOffset + (i * 100);
        button.text = module.texts[i];
        var text_width = ctx_ship.measureText(button.text).width;
+       button.width = text_width;
        button.x = camera.width/2 - text_width;
        window.addEventListener('resize', function(event) {
            var topOffset = camera.height/4;
@@ -923,7 +933,26 @@ module.exports = function(data, camera, ctx_ship){
             i++;
         }
     }
- 
+    module.checkHover= function(button){
+        console.log(button);
+        var xboundary = button.x + button.width;
+        var yboundary = button.y + button.height;
+        if (data.coord.x > button.x && data.coord.x < xboundary)
+            if (data.coord.y > button.y && data.coord.y < yboundary)
+            {
+                button.hover = true;
+            } 
+        else
+            button.hover = false;
+        
+    }
+    module.onClick = function(button){
+    }
+    module.checkHovers = function(){
+        for (button in module.buttons){
+           module.checkHover(module.buttons[button]);
+        }
+    }
     return module;
 }
 

@@ -150,6 +150,7 @@ function menuLoop(timestamp){
        }
        gameLoop(timestamp);
        draw.menu();
+       menu.checkHovers
 };
 
 function lobbyLoop(timestamp){

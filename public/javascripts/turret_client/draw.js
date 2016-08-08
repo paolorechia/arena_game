@@ -288,7 +288,12 @@ module.exports = function(ship, camera, background, data, ctx_ship, calculo, men
     module.button = function(button){
         ctx_ship.beginPath();
         ctx_ship.font = button.font;
-        ctx_ship.fillStyle=button.color;
+        if (button.hover == true){
+            ctx_ship.fillStyle=button.hover_color;
+        }
+        else{
+            ctx_ship.fillStyle=button.color;
+        }
         ctx_ship.fillText(button.text, button.x, button.y);
     }
     module.allButtons = function(context){
