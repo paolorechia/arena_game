@@ -11,9 +11,9 @@ module.exports = function(data, ship){
     var sound_blaster = document.getElementById("blaster");
     module.play = function(){
         if (data.atirando == true){    
-            console.log(ship.weapon);
+//            console.log(ship.weapon);
             if (ship.weapon == 'laser'){
-                console.log(sound_laser.currentTime);
+//                console.log(sound_laser.currentTime);
                 if (sound_laser.currentTime == 0){
                     sound_laser.play();
                 }

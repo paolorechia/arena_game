@@ -9,7 +9,7 @@ module.exports = function(data, camera, ctx_ship){
         this.hover_color = "rgba(0, 0, 0, 1)";
         this.font = "30px Arial";
         this.text = "";
-        this.height = 30;
+        this.height = 25;
     }
     module.buttons={};
     module.buttons.back = new module.Button();
@@ -41,11 +41,11 @@ module.exports = function(data, camera, ctx_ship){
         }
     }
     module.checkHover= function(button){
-        console.log(button);
-        var xboundary = button.x + button.width;
-        var yboundary = button.y + button.height;
-        if (data.coord.x > button.x && data.coord.x < xboundary)
-            if (data.coord.y > button.y && data.coord.y < yboundary)
+        var xboundary = button.x + button.width * 3;
+        var ybot= button.y + button.height/3;
+        var ytop= button.y - button.height;
+        if (data.coord.x > button.x && data.coord.x < xboundary
+        && data.coord.y > ytop && data.coord.y < ybot)
             {
                 button.hover = true;
             } 

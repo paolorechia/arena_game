@@ -298,7 +298,6 @@ module.exports = function(ship, camera, background, data, ctx_ship, calculo, men
     }
     module.allButtons = function(context){
         for (button in context.buttons){
-            console.log(context.buttons[button]);
             module.button(context.buttons[button]);
         }
     }

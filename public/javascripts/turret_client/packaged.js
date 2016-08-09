@@ -530,7 +530,6 @@ module.exports = function(ship, camera, background, data, ctx_ship, calculo, men
     }
     module.allButtons = function(context){
         for (button in context.buttons){
-            console.log(context.buttons[button]);
             module.button(context.buttons[button]);
         }
     }
@@ -855,7 +854,7 @@ function menuLoop(timestamp){
        }
        gameLoop(timestamp);
        draw.menu();
-       menu.checkHovers
+       menu.checkHovers();
 };
 
 function lobbyLoop(timestamp){
@@ -902,7 +901,7 @@ module.exports = function(data, camera, ctx_ship){
         this.hover_color = "rgba(0, 0, 0, 1)";
         this.font = "30px Arial";
         this.text = "";
-        this.height = 30;
+        this.height = 25;
     }
     module.buttons={};
     module.buttons.back = new module.Button();
@@ -934,11 +933,11 @@ module.exports = function(data, camera, ctx_ship){
         }
     }
     module.checkHover= function(button){
-        console.log(button);
-        var xboundary = button.x + button.width;
-        var yboundary = button.y + button.height;
-        if (data.coord.x > button.x && data.coord.x < xboundary)
-            if (data.coord.y > button.y && data.coord.y < yboundary)
+        var xboundary = button.x + button.width * 3;
+        var ybot= button.y + button.height/3;
+        var ytop= button.y - button.height;
+        if (data.coord.x > button.x && data.coord.x < xboundary
+        && data.coord.y > ytop && data.coord.y < ybot)
             {
                 button.hover = true;
             } 
@@ -997,9 +996,9 @@ module.exports = function(data, ship){
     var sound_blaster = document.getElementById("blaster");
     module.play = function(){
         if (data.atirando == true){    
-            console.log(ship.weapon);
+//            console.log(ship.weapon);
             if (ship.weapon == 'laser'){
-                console.log(sound_laser.currentTime);
+//                console.log(sound_laser.currentTime);
                 if (sound_laser.currentTime == 0){
                     sound_laser.play();
                 }
