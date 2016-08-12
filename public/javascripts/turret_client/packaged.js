@@ -547,12 +547,29 @@ module.exports = function(ship, camera, background, data, ctx_ship, calculo, men
             module.button(context.buttons[button]);
         }
     }
+    module.volBar = function(bar){
+        ctx_ship.beginPath();
+        if (bar.hover == true){
+            ctx_ship.strokeStyle=bar.hover_color;
+        }
+        else{
+            ctx_ship.strokeStyle=bar.color;
+        }
+        ctx_ship.lineWidth = bar.width;
+        ctx_ship.moveTo(bar.x, bar.y);
+        ctx_ship.lineTo(bar.x + bar.size, bar.y);
+        ctx_ship.moveTo(bar.point, bar.y - bar.size/5);
+        ctx_ship.lineTo(bar.point, bar.y + bar.size/5);
+        ctx_ship.stroke();
+    }
+        
     module.volButton = function(volButton){
         ctx_ship.beginPath();
         ctx_ship.font = volButton.font;
         ctx_ship.fillStyle = volButton.color;
         var text = volButton.text + ": " + volButton.value * 100;
         ctx_ship.fillText(text, volButton.x, volButton.y);
+        module.volBar(volButton.bar);
     }
     module.allVolButtons = function(context){
         for (button in context.volumeButtons){
@@ -1054,7 +1071,18 @@ module.exports = function(data, camera, ctx_ship, sound){
         this.text = "";
         this.height = 25;
     }
-    module.volumeButton = function(){;
+    module.Bar = function(){
+        this.hover = false;
+        this.color = "rgba(255, 255, 255, 1)";
+        this.hover_color = "rgba(0, 0, 0, 1)";
+        this.x = 0;
+        this.y = 0;
+        this.size = 100;
+        this.width = 5;
+        this.point = 0;
+    }
+    
+    module.VolumeButton = function(){;
         this.x = 0;
         this.y = 0;
         this.clicked = false;
@@ -1065,11 +1093,12 @@ module.exports = function(data, camera, ctx_ship, sound){
         this.text = "unknown";
         this.height = 25;
         this.value = 1.0;
+        this.bar = new module.Bar();
     }
 
     module.volumeButtons = {};
-    module.volumeButtons.sfx = new module.volumeButton();
-    module.volumeButtons.music= new module.volumeButton();
+    module.volumeButtons.sfx = new module.VolumeButton();
+    module.volumeButtons.music= new module.VolumeButton();
 
     module.volumeTexts = ["SFX", "Music"];
     module.buttons={};
@@ -1093,6 +1122,11 @@ module.exports = function(data, camera, ctx_ship, sound){
            button.x = camera.width/2 - text_width;
        });
     }
+    module.initBar = function(button){
+        button.bar.x = camera.width/2 - button.bar.size/2;
+        button.bar.y = button.y + button.bar.size/3;
+        button.bar.point = button.bar.x  + button.value * 100;
+    }
     module.initVolumeButton = function(button, i){
        var topOffset = module.buttons["volume"].y;
        button.y = topOffset + (i * 100);
@@ -1100,6 +1134,8 @@ module.exports = function(data, camera, ctx_ship, sound){
        var text_width = ctx_ship.measureText(button.text).width;
        button.width = text_width;
        button.x = camera.width/2 - text_width * 3;
+       module.initBar(button);
+       /* 
        window.addEventListener('resize', function(event) {
            var topOffset = module.volumeButtons["volume"];
            button.y = topOffset + (i * 100);
@@ -1107,7 +1143,10 @@ module.exports = function(data, camera, ctx_ship, sound){
            var text_width = ctx_ship.measureText(button.text).width;
            button.width = text_width;
            button.x = camera.width/2 - text_width * 3;
+           module.initBar(button);
+        
        });
+        */
        console.log(button);
     }
     module.initVolButtons = function(){

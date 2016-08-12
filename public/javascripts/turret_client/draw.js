@@ -303,12 +303,29 @@ module.exports = function(ship, camera, background, data, ctx_ship, calculo, men
             module.button(context.buttons[button]);
         }
     }
+    module.volBar = function(bar){
+        ctx_ship.beginPath();
+        if (bar.hover == true){
+            ctx_ship.strokeStyle=bar.hover_color;
+        }
+        else{
+            ctx_ship.strokeStyle=bar.color;
+        }
+        ctx_ship.lineWidth = bar.width;
+        ctx_ship.moveTo(bar.x, bar.y);
+        ctx_ship.lineTo(bar.x + bar.size, bar.y);
+        ctx_ship.moveTo(bar.point, bar.y - bar.size/5);
+        ctx_ship.lineTo(bar.point, bar.y + bar.size/5);
+        ctx_ship.stroke();
+    }
+        
     module.volButton = function(volButton){
         ctx_ship.beginPath();
         ctx_ship.font = volButton.font;
         ctx_ship.fillStyle = volButton.color;
         var text = volButton.text + ": " + volButton.value * 100;
         ctx_ship.fillText(text, volButton.x, volButton.y);
+        module.volBar(volButton.bar);
     }
     module.allVolButtons = function(context){
         for (button in context.volumeButtons){

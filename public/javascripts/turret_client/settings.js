@@ -11,7 +11,18 @@ module.exports = function(data, camera, ctx_ship, sound){
         this.text = "";
         this.height = 25;
     }
-    module.volumeButton = function(){;
+    module.Bar = function(){
+        this.hover = false;
+        this.color = "rgba(255, 255, 255, 1)";
+        this.hover_color = "rgba(0, 0, 0, 1)";
+        this.x = 0;
+        this.y = 0;
+        this.size = 100;
+        this.width = 5;
+        this.point = 0;
+    }
+    
+    module.VolumeButton = function(){;
         this.x = 0;
         this.y = 0;
         this.clicked = false;
@@ -22,11 +33,12 @@ module.exports = function(data, camera, ctx_ship, sound){
         this.text = "unknown";
         this.height = 25;
         this.value = 1.0;
+        this.bar = new module.Bar();
     }
 
     module.volumeButtons = {};
-    module.volumeButtons.sfx = new module.volumeButton();
-    module.volumeButtons.music= new module.volumeButton();
+    module.volumeButtons.sfx = new module.VolumeButton();
+    module.volumeButtons.music= new module.VolumeButton();
 
     module.volumeTexts = ["SFX", "Music"];
     module.buttons={};
@@ -50,6 +62,11 @@ module.exports = function(data, camera, ctx_ship, sound){
            button.x = camera.width/2 - text_width;
        });
     }
+    module.initBar = function(button){
+        button.bar.x = camera.width/2 - button.bar.size/2;
+        button.bar.y = button.y + button.bar.size/3;
+        button.bar.point = button.bar.x  + button.value * 100;
+    }
     module.initVolumeButton = function(button, i){
        var topOffset = module.buttons["volume"].y;
        button.y = topOffset + (i * 100);
@@ -57,6 +74,8 @@ module.exports = function(data, camera, ctx_ship, sound){
        var text_width = ctx_ship.measureText(button.text).width;
        button.width = text_width;
        button.x = camera.width/2 - text_width * 3;
+       module.initBar(button);
+       /* 
        window.addEventListener('resize', function(event) {
            var topOffset = module.volumeButtons["volume"];
            button.y = topOffset + (i * 100);
@@ -64,7 +83,10 @@ module.exports = function(data, camera, ctx_ship, sound){
            var text_width = ctx_ship.measureText(button.text).width;
            button.width = text_width;
            button.x = camera.width/2 - text_width * 3;
+           module.initBar(button);
+        
        });
+        */
        console.log(button);
     }
     module.initVolButtons = function(){
