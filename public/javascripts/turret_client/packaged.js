@@ -547,6 +547,18 @@ module.exports = function(ship, camera, background, data, ctx_ship, calculo, men
             module.button(context.buttons[button]);
         }
     }
+    module.volButton = function(volButton){
+        ctx_ship.beginPath();
+        ctx_ship.font = volButton.font;
+        ctx_ship.fillStyle = volButton.color;
+        var text = volButton.text + ": " + volButton.value;
+        ctx_ship.fillText(text, volButton.x, volButton.y);
+    }
+    module.allVolButtons = function(context){
+        for (button in context.volumeButtons){
+            module.volButton(context.volumeButtons[button]);
+        }
+    }
     module.menu= function(){
         ctx_ship.beginPath();
         ctx_ship.fillStyle = "rgba(40, 40, 120, 0.5)";
@@ -566,6 +578,7 @@ module.exports = function(ship, camera, background, data, ctx_ship, calculo, men
         ctx_ship.fillStyle = "rgba(40, 40, 120, 0.8)";
         ctx_ship.fillRect(0, 0, camera.width, camera.height);
         module.allButtons(settings);
+        module.allVolButtons(settings);
     }
 
     return module;
@@ -787,9 +800,9 @@ var ship            = require('./ship.js')(camera, background, data);
 var calculo         = require('./calculo.js')(camera, data, ship);
 var menu            = require('./menu.js')(data, camera, ctx_ship);
 var lobby           = require('./lobby.js')(data, camera, ctx_ship);
-var settings        = require('./settings.js')(data, camera, ctx_ship);
-var draw            = require('./draw.js')(ship, camera, background, data, ctx_ship,calculo, menu, lobby, settings);
 var sound           = require('./sound.js')(data, ship); 
+var settings        = require('./settings.js')(data, camera, ctx_ship, sound);
+var draw            = require('./draw.js')(ship, camera, background, data, ctx_ship,calculo, menu, lobby, settings);
 socket.on('message', function(message){
 //    console.log(message);
 });
@@ -815,7 +828,7 @@ background.inicia(ctx_background, c_background);
 ship.inicia();
 menu.initButtons();
 lobby.initButtons();
-settings.initButtons();
+settings.init();
 
 console.log(ship);
 socket.on('movimento', function(nova_pos){
@@ -1028,7 +1041,7 @@ module.exports = function(data, camera, ctx_ship){
 }
 
 },{}],10:[function(require,module,exports){
-module.exports = function(data, camera, ctx_ship){
+module.exports = function(data, camera, ctx_ship, sound){
     var module = {};
     module.Button = function(){;
         this.x = 0;
@@ -1041,10 +1054,29 @@ module.exports = function(data, camera, ctx_ship){
         this.text = "";
         this.height = 25;
     }
+    module.volumeButton = function(){;
+        this.x = 0;
+        this.y = 0;
+        this.clicked = false;
+        this.hover = false;
+        this.color = "rgba(255, 255, 255, 1)";
+        this.hover_color = "rgba(0, 0, 0, 1)";
+        this.font = "30px Arial";
+        this.text = "unknown";
+        this.height = 25;
+        this.value = 1.0;
+    }
+
+    module.volumeButtons = {};
+    module.volumeButtons.sfx = new module.volumeButton();
+    module.volumeButtons.music= new module.volumeButton();
+
+    module.volumeTexts = ["SFX", "Music"];
     module.buttons={};
     module.buttons.back = new module.Button();
     module.buttons.volume= new module.Button();
-    module.texts = ["Back", "Volume: "];
+    module.buttons.volume.hover_color = "rgba(255, 255, 255, 1)";
+    module.texts = ["Back", "Sound"];
 
     module.initButton = function(button, i){
        var topOffset = camera.height/4;
@@ -1061,6 +1093,30 @@ module.exports = function(data, camera, ctx_ship){
            button.x = camera.width/2 - text_width;
        });
     }
+    module.initVolumeButton = function(button, i){
+       var topOffset = module.buttons["volume"].y;
+       button.y = topOffset + (i * 100);
+       button.text = module.volumeTexts[i - 1];
+       var text_width = ctx_ship.measureText(button.text).width;
+       button.width = text_width;
+       button.x = camera.width/2 - text_width * 8;
+       window.addEventListener('resize', function(event) {
+           var topOffset = module.volumeButtons["volume"];
+           button.y = topOffset + (i * 100);
+           button.text = module.volumeTexts[i - 1];
+           var text_width = ctx_ship.measureText(button.text).width;
+           button.width = text_width;
+           button.x = camera.width/2 - text_width * 3;
+       });
+       console.log(button);
+    }
+    module.initVolButtons = function(){
+        var i = 1;
+        for (button in module.volumeButtons){
+            module.initVolumeButton(module.volumeButtons[button], i);
+            i++;
+        }
+    }
     module.initButtons = function(){
         
         var i = 0;
@@ -1068,6 +1124,10 @@ module.exports = function(data, camera, ctx_ship){
             module.initButton(module.buttons[button], i);
             i++;
         }
+    }
+    module.init = function (){
+        module.initButtons();
+        module.initVolButtons();
     }
     module.checkHover= function(button){
         var xboundary = button.x + button.width * 3;
@@ -1131,35 +1191,51 @@ module.exports = function (camera, background, data){
 module.exports = function(data, ship){
     var module = {};
    
+    var SFX = {};
+    module.raiseVolume = function(sound){
+       sound.volume += 0.1;
+    }
+    module.lowerVolume = function(sound){
+        sound.volume -= 0.1;
+    }
+    module.changeSFX = function(f){
+        for (each in SFX){
+            f(SFX[each]);
+        }
+    }
     var music = document.getElementById("music");
     music.addEventListener('ended', function(){
         this.currentTime = 0;
         this.play();
     }, false);
     
-    var sound_laser = document.getElementById("laser");
-    var sound_blaster = document.getElementById("blaster");
+    music.volume = 1.0;
+
+    SFX.laser = document.getElementById("laser");
+    SFX.laser.volume = 0.5;
+    SFX.blaster = document.getElementById("blaster");
+    SFX.blaster.volume = 0.5;
     module.play = function(){
         if (data.atirando == true){    
 //            console.log(ship.weapon);
             if (ship.weapon == 'laser'){
-//                console.log(sound_laser.currentTime);
-                if (sound_laser.currentTime == 0){
-                    sound_laser.play();
+//                console.log(SFX.laser.currentTime);
+                if (SFX.laser.currentTime == 0){
+                    SFX.laser.play();
                 }
-                if (sound_laser.currentTime > 0.2){
-                    sound_laser.currentTime = 0.02;
-                    sound_laser.play();
+                if (SFX.laser.currentTime > 0.2){
+                    SFX.laser.currentTime = 0.02;
+                    SFX.laser.play();
                 }
             }
             else
                 if (ship.weapon == 'blaster'){
-                    if (sound_blaster.currentTime == 0){
-                        sound_blaster.play();
+                    if (SFX.blaster.currentTime == 0){
+                        SFX.blaster.play();
                     }
-                    if (sound_blaster.currentTime > 0.15){
-                        sound_blaster.currentTime = 0.1;
-                        sound_blaster.play();
+                    if (SFX.blaster.currentTime > 0.15){
+                        SFX.blaster.currentTime = 0.1;
+                        SFX.blaster.play();
                 }
             }
                 

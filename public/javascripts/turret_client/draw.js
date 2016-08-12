@@ -303,6 +303,18 @@ module.exports = function(ship, camera, background, data, ctx_ship, calculo, men
             module.button(context.buttons[button]);
         }
     }
+    module.volButton = function(volButton){
+        ctx_ship.beginPath();
+        ctx_ship.font = volButton.font;
+        ctx_ship.fillStyle = volButton.color;
+        var text = volButton.text + ": " + volButton.value;
+        ctx_ship.fillText(text, volButton.x, volButton.y);
+    }
+    module.allVolButtons = function(context){
+        for (button in context.volumeButtons){
+            module.volButton(context.volumeButtons[button]);
+        }
+    }
     module.menu= function(){
         ctx_ship.beginPath();
         ctx_ship.fillStyle = "rgba(40, 40, 120, 0.5)";
@@ -322,6 +334,7 @@ module.exports = function(ship, camera, background, data, ctx_ship, calculo, men
         ctx_ship.fillStyle = "rgba(40, 40, 120, 0.8)";
         ctx_ship.fillRect(0, 0, camera.width, camera.height);
         module.allButtons(settings);
+        module.allVolButtons(settings);
     }
 
     return module;
