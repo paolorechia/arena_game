@@ -54,6 +54,7 @@ module.exports = function(data, camera, ctx_ship, sound){
        var text_width = ctx_ship.measureText(button.text).width;
        button.width = text_width;
        button.x = camera.width/2 - text_width;
+        /*
        window.addEventListener('resize', function(event) {
            var topOffset = camera.height/4;
            button.y = topOffset + (i * 100);
@@ -61,6 +62,7 @@ module.exports = function(data, camera, ctx_ship, sound){
            var text_width = ctx_ship.measureText(button.text).width;
            button.x = camera.width/2 - text_width;
        });
+        */
     }
     module.initBar = function(button){
         button.bar.x = camera.width/2 - button.bar.size/2;
@@ -107,6 +109,10 @@ module.exports = function(data, camera, ctx_ship, sound){
     module.init = function (){
         module.initButtons();
         module.initVolButtons();
+       window.addEventListener('resize', function(event) {
+            module.initButtons();
+            module.initVolButtons();
+        });
     }
     module.checkHover= function(button){
         var xboundary = button.x + button.width * 3;
