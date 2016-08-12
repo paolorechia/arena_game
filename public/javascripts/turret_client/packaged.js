@@ -939,6 +939,8 @@ function lobbyLoop(timestamp){
 
 function settingsLoop(timestamp){
     draw.settings();
+    settings.checkBarHovers();
+    settings.updateVolume();
     settings.checkHovers();
     settings.checkClicks();
     data.resetClick();
@@ -1088,10 +1090,9 @@ module.exports = function(data, camera, ctx_ship, sound){
         this.clicked = false;
         this.hover = false;
         this.color = "rgba(255, 255, 255, 1)";
-        this.hover_color = "rgba(0, 0, 0, 1)";
+        this.hover_color = "rgba(255, 255, 255, 1)";
         this.font = "30px Arial";
         this.text = "unknown";
-        this.height = 25;
         this.value = 1.0;
         this.bar = new module.Bar();
     }
@@ -1105,6 +1106,7 @@ module.exports = function(data, camera, ctx_ship, sound){
     module.buttons.back = new module.Button();
     module.buttons.volume= new module.Button();
     module.buttons.volume.hover_color = "rgba(255, 255, 255, 1)";
+     
     module.texts = ["Back", "Sound"];
 
     module.initButton = function(button, i){
@@ -1137,18 +1139,6 @@ module.exports = function(data, camera, ctx_ship, sound){
        button.width = text_width;
        button.x = camera.width/2 - text_width * 3;
        module.initBar(button);
-       /* 
-       window.addEventListener('resize', function(event) {
-           var topOffset = module.volumeButtons["volume"];
-           button.y = topOffset + (i * 100);
-           button.text = module.volumeTexts[i - 1];
-           var text_width = ctx_ship.measureText(button.text).width;
-           button.width = text_width;
-           button.x = camera.width/2 - text_width * 3;
-           module.initBar(button);
-        
-       });
-        */
        console.log(button);
     }
     module.initVolButtons = function(){
@@ -1174,6 +1164,40 @@ module.exports = function(data, camera, ctx_ship, sound){
             module.initVolButtons();
         });
     }
+    module.checkBarHover = function(bar){
+        var xboundary = bar.x + bar.size;
+        var ybot= bar.y + bar.size/5;
+        var ytop= bar.y - bar.size/5;
+        if (data.coord.x > bar.x && data.coord.x < xboundary
+        && data.coord.y > ytop && data.coord.y < ybot)
+            {
+//                console.log("hovering a bar...");
+                bar.hover = true;
+                if (data.atirou == true){
+                    bar.point = data.coord.x;
+//                    console.log("clicking a bar...");
+                    var value = (bar.point - bar.x) / 100;
+                    value = value.toFixed(1); 
+                    console.log(value);
+                    return value;
+                }
+            }
+        else{ 
+            bar.hover = false;
+            return undefined;
+        }
+        
+    }
+    module.checkBarHovers = function(){
+        for (button in module.volumeButtons){
+            var value = module.checkBarHover(module.volumeButtons[button].bar);
+            console.log(value);
+            if (value != undefined){
+                module.volumeButtons[button].value = value;
+            } 
+        }
+    }
+
     module.checkHover= function(button){
         var xboundary = button.x + button.width * 3;
         var ybot= button.y + button.height/3;
@@ -1191,6 +1215,16 @@ module.exports = function(data, camera, ctx_ship, sound){
             button.clicked = false;
         }
         
+    }
+    module.updateVolume = function(){
+        for (button in module.volumeButtons){
+            if (button == "sfx"){
+                sound.setSFX(module.volumeButtons[button].value); 
+            }
+            else if (button == "music"){
+                sound.music.volume = module.volumeButtons[button].value;
+            }
+        }
     }
     module.checkHovers = function(){
         for (button in module.buttons){
@@ -1236,58 +1270,66 @@ module.exports = function (camera, background, data){
 module.exports = function(data, ship){
     var module = {};
    
-    var SFX = {};
+    module.SFX = {};
     module.raiseVolume = function(sound){
        sound.volume += 0.1;
     }
     module.lowerVolume = function(sound){
         sound.volume -= 0.1;
     }
+    module.setVolume = function(sound, value){
+        sound.volume = value;
+    }
     module.changeSFX = function(f){
-        for (each in SFX){
-            f(SFX[each]);
+        for (each in module.SFX){
+            f(module.SFX[each]);
         }
     }
-    var music = document.getElementById("music");
-    music.addEventListener('ended', function(){
+    module.setSFX = function(value){
+        for (each in module.SFX){
+            module.setVolume(module.SFX[each], value);
+        }
+    } 
+    module.music = document.getElementById("music");
+    module.music.addEventListener('ended', function(){
         this.currentTime = 0;
         this.play();
     }, false);
     
-    music.volume = 1.0;
+    module.music.volume = 1.0;
 
-    SFX.laser = document.getElementById("laser");
-    SFX.laser.volume = 0.5;
-    SFX.blaster = document.getElementById("blaster");
-    SFX.blaster.volume = 0.5;
+    module.SFX.laser = document.getElementById("laser");
+    module.SFX.laser.volume = 1.0;
+    module.SFX.blaster = document.getElementById("blaster");
+    module.SFX.blaster.volume = 1.0;
     module.play = function(){
         if (data.atirando == true){    
 //            console.log(ship.weapon);
             if (ship.weapon == 'laser'){
-//                console.log(SFX.laser.currentTime);
-                if (SFX.laser.currentTime == 0){
-                    SFX.laser.play();
+//                console.log(module.SFX.laser.currentTime);
+                if (module.SFX.laser.currentTime == 0){
+                    module.SFX.laser.play();
                 }
-                if (SFX.laser.currentTime > 0.2){
-                    SFX.laser.currentTime = 0.02;
-                    SFX.laser.play();
+                if (module.SFX.laser.currentTime > 0.2){
+                    module.SFX.laser.currentTime = 0.02;
+                    module.SFX.laser.play();
                 }
             }
             else
                 if (ship.weapon == 'blaster'){
-                    if (SFX.blaster.currentTime == 0){
-                        SFX.blaster.play();
+                    if (module.SFX.blaster.currentTime == 0){
+                        module.SFX.blaster.play();
                     }
-                    if (SFX.blaster.currentTime > 0.15){
-                        SFX.blaster.currentTime = 0.1;
-                        SFX.blaster.play();
+                    if (module.SFX.blaster.currentTime > 0.15){
+                        module.SFX.blaster.currentTime = 0.1;
+                        module.SFX.blaster.play();
                 }
             }
                 
         }
     
-        if (music.currentTime == 0){ 
-            music.play();
+        if (module.music.currentTime == 0){ 
+            module.music.play();
         }
     }
     return module;

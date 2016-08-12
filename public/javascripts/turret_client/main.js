@@ -161,6 +161,8 @@ function lobbyLoop(timestamp){
 
 function settingsLoop(timestamp){
     draw.settings();
+    settings.checkBarHovers();
+    settings.updateVolume();
     settings.checkHovers();
     settings.checkClicks();
     data.resetClick();
