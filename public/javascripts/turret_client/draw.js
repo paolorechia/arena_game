@@ -155,12 +155,12 @@ module.exports = function(ship, camera, background, data, ctx_ship, calculo, men
             ctx_ship.fillText("Weapon: " + ship.weapon, camera.width/22, camera.height/9)
             ctx_ship.fillStyle='red';
             var width = ctx_ship.measureText("Kills: X").width;
-            ctx_ship.fillText('Kills: '+ ship.kills, camera.width/2 - width/2, camera.height/18)
+            ctx_ship.fillText('Kills: '+ ship.kills, camera.width/2 - width/3, camera.height/18)
             ctx_ship.fillStyle='blue';
             ctx_ship.fillText('SH: ' + ship.shield, camera.width/22, camera.height/6)
             ctx_ship.fillStyle='#1244AA';
             width = ctx_ship.measureText("Energy: XXX").width;
-            ctx_ship.fillText('Energy: ' + ship.energy, camera.width/2 - width/2, camera.height/1.05)
+            ctx_ship.fillText('Energy: ' + ship.energy, camera.width/2 - width/3, camera.height/1.05)
     };
     module.camera = function(camera, ctx){
         ctx.drawImage(background.imagem, ship.x - camera.width/2, ship.y - camera.height/2, camera.width, camera.height,0, 0, camera.width, camera.height);
@@ -307,7 +307,7 @@ module.exports = function(ship, camera, background, data, ctx_ship, calculo, men
         ctx_ship.beginPath();
         ctx_ship.font = volButton.font;
         ctx_ship.fillStyle = volButton.color;
-        var text = volButton.text + ": " + volButton.value;
+        var text = volButton.text + ": " + volButton.value * 100;
         ctx_ship.fillText(text, volButton.x, volButton.y);
     }
     module.allVolButtons = function(context){

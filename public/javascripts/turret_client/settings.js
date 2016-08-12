@@ -56,7 +56,7 @@ module.exports = function(data, camera, ctx_ship, sound){
        button.text = module.volumeTexts[i - 1];
        var text_width = ctx_ship.measureText(button.text).width;
        button.width = text_width;
-       button.x = camera.width/2 - text_width * 8;
+       button.x = camera.width/2 - text_width * 3;
        window.addEventListener('resize', function(event) {
            var topOffset = module.volumeButtons["volume"];
            button.y = topOffset + (i * 100);
