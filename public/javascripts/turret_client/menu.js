@@ -69,6 +69,7 @@ module.exports = function(data, camera, ctx_ship){
         }
         else if (module.buttons.settings.clicked == true){
             data.gameState = "settings";
+            data.previousState = "menu";
         }
         else if (module.buttons.lobby.clicked == true){
             data.gameState = "lobby";

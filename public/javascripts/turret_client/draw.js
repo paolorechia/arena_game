@@ -1,4 +1,4 @@
-module.exports = function(ship, camera, background, data, ctx_ship, calculo, menu, lobby){
+module.exports = function(ship, camera, background, data, ctx_ship, calculo, menu, lobby, settings){
     var module = {};
     module.asteroid = function(ast){
         /* variaveis auxiliares, pega coordenadas do canvas pequeno
@@ -316,6 +316,13 @@ module.exports = function(ship, camera, background, data, ctx_ship, calculo, men
         ctx_ship.fillRect(0, 0, camera.width, camera.height);
         module.allButtons(lobby);
     };
+    module.settings = function(){
+        module.camera(camera, ctx_ship);
+        ctx_ship.beginPath();
+        ctx_ship.fillStyle = "rgba(40, 40, 120, 0.8)";
+        ctx_ship.fillRect(0, 0, camera.width, camera.height);
+        module.allButtons(settings);
+    }
 
     return module;
 }

@@ -12,9 +12,9 @@ module.exports = function(data, camera, ctx_ship){
         this.height = 25;
     }
     module.buttons={};
-    module.buttons.join= new module.Button();
-    module.buttons.settings= new module.Button();
-    module.texts = ["Join Game", "Settings"];
+    module.buttons.back = new module.Button();
+    module.buttons.volume= new module.Button();
+    module.texts = ["Back", "Volume: "];
 
     module.initButton = function(button, i){
        var topOffset = camera.height/4;
@@ -63,12 +63,8 @@ module.exports = function(data, camera, ctx_ship){
         }
     }
     module.checkClicks = function(){
-        if (module.buttons.join.clicked == true){
-            data.gameState = "playing";
-        }
-        else if (module.buttons.settings.clicked == true){
-            data.gameState = "settings";
-            data.previousState = "lobby";
+        if (module.buttons.back.clicked == true){
+            data.gameState = data.previousState;
         }
     }
     return module;

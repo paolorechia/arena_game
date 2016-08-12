@@ -39,10 +39,9 @@ var ship            = require('./ship.js')(camera, background, data);
 var calculo         = require('./calculo.js')(camera, data, ship);
 var menu            = require('./menu.js')(data, camera, ctx_ship);
 var lobby           = require('./lobby.js')(data, camera, ctx_ship);
-var draw            = require('./draw.js')(ship, camera, background, data, ctx_ship,calculo, menu, lobby);
-var sound           = require('./sound.js')(data, ship);
-
-
+var settings        = require('./settings.js')(data, camera, ctx_ship);
+var draw            = require('./draw.js')(ship, camera, background, data, ctx_ship,calculo, menu, lobby, settings);
+var sound           = require('./sound.js')(data, ship); 
 socket.on('message', function(message){
 //    console.log(message);
 });
@@ -67,7 +66,8 @@ console.log(camera);
 background.inicia(ctx_background, c_background);
 ship.inicia();
 menu.initButtons();
-lobby.init();
+lobby.initButtons();
+settings.initButtons();
 
 console.log(ship);
 socket.on('movimento', function(nova_pos){
@@ -154,9 +154,16 @@ function menuLoop(timestamp){
 
 function lobbyLoop(timestamp){
     draw.lobby();
+    lobby.checkHovers();
+    lobby.checkClicks();
+    data.resetClick();
 }
 
 function settingsLoop(timestamp){
+    draw.settings();
+    settings.checkHovers();
+    settings.checkClicks();
+    data.resetClick();
 }
 
 

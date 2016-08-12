@@ -203,15 +203,22 @@ module.exports = function(stub){
     module.players = [];
     module.players_id = [];
     module.players_pointers = [];
-    module.gameStates= ["playing", "lobby", "menu"];
+    module.gameStates= ["playing", "lobby", "menu", "settings"];
     module.gameState = module.gameStates[0];
+    module.previousState = module.gameState;
     module.nextState = function(){
-        if(module.gameState == module.gameStates[0])
-        {
+        if(module.gameState == module.gameStates[0]){
             module.gameState = module.gameStates[2];
         }
-        else
+        else if (module.gameState == module.gameStates[1]){
+            console.log("stub!");
+        }
+        else if (module.gameState == module.gameStates[2]){
             module.gameState = module.gameStates[0];
+        }
+        else if (module.gameState == module.gameStates[3]){
+            module.gameState = module.previousState; 
+        }
         console.log("trying to change State... " + module.gameState);
     }
 
@@ -235,7 +242,7 @@ module.exports = function(stub){
 }
 
 },{}],5:[function(require,module,exports){
-module.exports = function(ship, camera, background, data, ctx_ship, calculo, menu, lobby){
+module.exports = function(ship, camera, background, data, ctx_ship, calculo, menu, lobby, settings){
     var module = {};
     module.asteroid = function(ast){
         /* variaveis auxiliares, pega coordenadas do canvas pequeno
@@ -553,6 +560,13 @@ module.exports = function(ship, camera, background, data, ctx_ship, calculo, men
         ctx_ship.fillRect(0, 0, camera.width, camera.height);
         module.allButtons(lobby);
     };
+    module.settings = function(){
+        module.camera(camera, ctx_ship);
+        ctx_ship.beginPath();
+        ctx_ship.fillStyle = "rgba(40, 40, 120, 0.8)";
+        ctx_ship.fillRect(0, 0, camera.width, camera.height);
+        module.allButtons(settings);
+    }
 
     return module;
 }
@@ -657,33 +671,28 @@ module.exports = function(socket, data, c_ship){
 },{}],7:[function(require,module,exports){
 module.exports = function(data, camera, ctx_ship){
     var module = {};
-    module.Button = function(){
+    module.Button = function(){;
         this.x = 0;
         this.y = 0;
         this.clicked = false;
+        this.hover = false;
         this.color = "rgba(255, 255, 255, 1)";
+        this.hover_color = "rgba(0, 0, 0, 1)";
         this.font = "30px Arial";
         this.text = "";
+        this.height = 25;
     }
-    module.box = function (){
-        this.x = 0;
-        this.y = 0;
-        this.width = 0;
-        this.height = 0;
-    }
-
     module.buttons={};
     module.buttons.join= new module.Button();
-    module.buttons.settings = new module.Button();
+    module.buttons.settings= new module.Button();
     module.texts = ["Join Game", "Settings"];
-
-    
 
     module.initButton = function(button, i){
        var topOffset = camera.height/4;
        button.y = topOffset + (i * 100);
        button.text = module.texts[i];
        var text_width = ctx_ship.measureText(button.text).width;
+       button.width = text_width;
        button.x = camera.width/2 - text_width;
        window.addEventListener('resize', function(event) {
            var topOffset = camera.height/4;
@@ -701,13 +710,38 @@ module.exports = function(data, camera, ctx_ship){
             i++;
         }
     }
-    module.initBox = function(){
+    module.checkHover= function(button){
+        var xboundary = button.x + button.width * 3;
+        var ybot= button.y + button.height/3;
+        var ytop= button.y - button.height;
+        if (data.coord.x > button.x && data.coord.x < xboundary
+        && data.coord.y > ytop && data.coord.y < ybot)
+            {
+                button.hover = true;
+                if (data.clicou == true){
+                    button.clicked = true;
+                }
+            }
+        else{ 
+            button.hover = false;
+            button.clicked = false;
+        }
+        
     }
-    module.init = function(){
-        module.initButtons();
-        module.initBox();
+    module.checkHovers = function(){
+        for (button in module.buttons){
+           module.checkHover(module.buttons[button]);
+        }
     }
- 
+    module.checkClicks = function(){
+        if (module.buttons.join.clicked == true){
+            data.gameState = "playing";
+        }
+        else if (module.buttons.settings.clicked == true){
+            data.gameState = "settings";
+            data.previousState = "lobby";
+        }
+    }
     return module;
 }
 
@@ -753,10 +787,9 @@ var ship            = require('./ship.js')(camera, background, data);
 var calculo         = require('./calculo.js')(camera, data, ship);
 var menu            = require('./menu.js')(data, camera, ctx_ship);
 var lobby           = require('./lobby.js')(data, camera, ctx_ship);
-var draw            = require('./draw.js')(ship, camera, background, data, ctx_ship,calculo, menu, lobby);
-var sound           = require('./sound.js')(data, ship);
-
-
+var settings        = require('./settings.js')(data, camera, ctx_ship);
+var draw            = require('./draw.js')(ship, camera, background, data, ctx_ship,calculo, menu, lobby, settings);
+var sound           = require('./sound.js')(data, ship); 
 socket.on('message', function(message){
 //    console.log(message);
 });
@@ -781,7 +814,8 @@ console.log(camera);
 background.inicia(ctx_background, c_background);
 ship.inicia();
 menu.initButtons();
-lobby.init();
+lobby.initButtons();
+settings.initButtons();
 
 console.log(ship);
 socket.on('movimento', function(nova_pos){
@@ -868,9 +902,16 @@ function menuLoop(timestamp){
 
 function lobbyLoop(timestamp){
     draw.lobby();
+    lobby.checkHovers();
+    lobby.checkClicks();
+    data.resetClick();
 }
 
 function settingsLoop(timestamp){
+    draw.settings();
+    settings.checkHovers();
+    settings.checkClicks();
+    data.resetClick();
 }
 
 
@@ -905,7 +946,7 @@ setTimeout(function(){
    2000);
 
 
-},{"./background.js":1,"./calculo.js":2,"./camera.js":3,"./data.js":4,"./draw.js":5,"./input.js":6,"./lobby.js":7,"./menu.js":9,"./ship.js":10,"./sound.js":11}],9:[function(require,module,exports){
+},{"./background.js":1,"./calculo.js":2,"./camera.js":3,"./data.js":4,"./draw.js":5,"./input.js":6,"./lobby.js":7,"./menu.js":9,"./settings.js":10,"./ship.js":11,"./sound.js":12}],9:[function(require,module,exports){
 module.exports = function(data, camera, ctx_ship){
     var module = {};
     module.Button = function(){;
@@ -977,6 +1018,7 @@ module.exports = function(data, camera, ctx_ship){
         }
         else if (module.buttons.settings.clicked == true){
             data.gameState = "settings";
+            data.previousState = "menu";
         }
         else if (module.buttons.lobby.clicked == true){
             data.gameState = "lobby";
@@ -986,6 +1028,79 @@ module.exports = function(data, camera, ctx_ship){
 }
 
 },{}],10:[function(require,module,exports){
+module.exports = function(data, camera, ctx_ship){
+    var module = {};
+    module.Button = function(){;
+        this.x = 0;
+        this.y = 0;
+        this.clicked = false;
+        this.hover = false;
+        this.color = "rgba(255, 255, 255, 1)";
+        this.hover_color = "rgba(0, 0, 0, 1)";
+        this.font = "30px Arial";
+        this.text = "";
+        this.height = 25;
+    }
+    module.buttons={};
+    module.buttons.back = new module.Button();
+    module.buttons.volume= new module.Button();
+    module.texts = ["Back", "Volume: "];
+
+    module.initButton = function(button, i){
+       var topOffset = camera.height/4;
+       button.y = topOffset + (i * 100);
+       button.text = module.texts[i];
+       var text_width = ctx_ship.measureText(button.text).width;
+       button.width = text_width;
+       button.x = camera.width/2 - text_width;
+       window.addEventListener('resize', function(event) {
+           var topOffset = camera.height/4;
+           button.y = topOffset + (i * 100);
+           button.text = module.texts[i];
+           var text_width = ctx_ship.measureText(button.text).width;
+           button.x = camera.width/2 - text_width;
+       });
+    }
+    module.initButtons = function(){
+        
+        var i = 0;
+        for (button in module.buttons){
+            module.initButton(module.buttons[button], i);
+            i++;
+        }
+    }
+    module.checkHover= function(button){
+        var xboundary = button.x + button.width * 3;
+        var ybot= button.y + button.height/3;
+        var ytop= button.y - button.height;
+        if (data.coord.x > button.x && data.coord.x < xboundary
+        && data.coord.y > ytop && data.coord.y < ybot)
+            {
+                button.hover = true;
+                if (data.clicou == true){
+                    button.clicked = true;
+                }
+            }
+        else{ 
+            button.hover = false;
+            button.clicked = false;
+        }
+        
+    }
+    module.checkHovers = function(){
+        for (button in module.buttons){
+           module.checkHover(module.buttons[button]);
+        }
+    }
+    module.checkClicks = function(){
+        if (module.buttons.back.clicked == true){
+            data.gameState = data.previousState;
+        }
+    }
+    return module;
+}
+
+},{}],11:[function(require,module,exports){
 module.exports = function (camera, background, data){
     var module = {};
 
@@ -1012,7 +1127,7 @@ module.exports = function (camera, background, data){
 }
 
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 module.exports = function(data, ship){
     var module = {};
    

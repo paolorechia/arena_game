@@ -1,6 +1,6 @@
 module.exports = function(data, camera, ctx_ship){
     var module = {};
-    module.Button = function(){;
+    module.Button = function(){
         this.x = 0;
         this.y = 0;
         this.clicked = false;
@@ -11,17 +11,25 @@ module.exports = function(data, camera, ctx_ship){
         this.text = "";
         this.height = 25;
     }
+    module.box = function (){
+        this.x = 0;
+        this.y = 0;
+        this.width = 0;
+        this.height = 0;
+    }
+
     module.buttons={};
     module.buttons.join= new module.Button();
-    module.buttons.settings= new module.Button();
+    module.buttons.settings = new module.Button();
     module.texts = ["Join Game", "Settings"];
+
+    
 
     module.initButton = function(button, i){
        var topOffset = camera.height/4;
        button.y = topOffset + (i * 100);
        button.text = module.texts[i];
        var text_width = ctx_ship.measureText(button.text).width;
-       button.width = text_width;
        button.x = camera.width/2 - text_width;
        window.addEventListener('resize', function(event) {
            var topOffset = camera.height/4;
@@ -38,6 +46,12 @@ module.exports = function(data, camera, ctx_ship){
             module.initButton(module.buttons[button], i);
             i++;
         }
+    }
+    module.initBox = function(){
+    }
+    module.init = function(){
+        module.initButtons();
+        module.initBox();
     }
     module.checkHover= function(button){
         var xboundary = button.x + button.width * 3;
@@ -71,5 +85,6 @@ module.exports = function(data, camera, ctx_ship){
             data.previousState = "lobby";
         }
     }
+ 
     return module;
 }

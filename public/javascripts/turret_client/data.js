@@ -6,15 +6,22 @@ module.exports = function(stub){
     module.players = [];
     module.players_id = [];
     module.players_pointers = [];
-    module.gameStates= ["playing", "lobby", "menu"];
+    module.gameStates= ["playing", "lobby", "menu", "settings"];
     module.gameState = module.gameStates[0];
+    module.previousState = module.gameState;
     module.nextState = function(){
-        if(module.gameState == module.gameStates[0])
-        {
+        if(module.gameState == module.gameStates[0]){
             module.gameState = module.gameStates[2];
         }
-        else
+        else if (module.gameState == module.gameStates[1]){
+            console.log("stub!");
+        }
+        else if (module.gameState == module.gameStates[2]){
             module.gameState = module.gameStates[0];
+        }
+        else if (module.gameState == module.gameStates[3]){
+            module.gameState = module.previousState; 
+        }
         console.log("trying to change State... " + module.gameState);
     }
 
