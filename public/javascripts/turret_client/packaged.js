@@ -225,7 +225,12 @@ module.exports = function(stub){
     }
 
     module.atirando = 0;
+    module.atirou = false;
+    module.clicou = false;
     module.my_id = 0;
+    module.resetClick = function(){
+        module.clicou = false;
+    }
     return module;
 }
 
@@ -642,6 +647,9 @@ module.exports = function(socket, data, c_ship){
     c_ship.addEventListener("mouseup", function(){ module.mousePress(0);
                                                    data.atirando = false;}, 
                                                    false);
+    c_ship.addEventListener("click", function(){data.clicou = true;
+                                                console.log("click!");},
+                                                false);
     window.addEventListener("keydown", function(event){ module.atualiza(event)}, false);
     return module;
 }
@@ -857,6 +865,8 @@ function menuLoop(timestamp){
        gameLoop(timestamp);
        draw.menu();
        menu.checkHovers();
+       menu.checkClicks();
+       data.resetClick();
 };
 
 function lobbyLoop(timestamp){
@@ -942,7 +952,8 @@ module.exports = function(data, camera, ctx_ship){
         && data.coord.y > ytop && data.coord.y < ybot)
             {
                 button.hover = true;
-            } 
+                console.log(data.clicou);
+            }
         else
             button.hover = false;
         
@@ -952,6 +963,17 @@ module.exports = function(data, camera, ctx_ship){
     module.checkHovers = function(){
         for (button in module.buttons){
            module.checkHover(module.buttons[button]);
+        }
+    }
+    module.checkClicks = function(){
+        for (button in module.buttons){
+           if (module.buttons[button].hover == true
+               && data.clicou == true){
+               module.buttons[button].clicked = true;
+               console.log(button);
+           }
+           else
+               module.buttons[button].clicked = false;
         }
     }
     return module;

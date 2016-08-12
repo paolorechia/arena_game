@@ -87,6 +87,9 @@ module.exports = function(socket, data, c_ship){
     c_ship.addEventListener("mouseup", function(){ module.mousePress(0);
                                                    data.atirando = false;}, 
                                                    false);
+    c_ship.addEventListener("click", function(){data.clicou = true;
+                                                console.log("click!");},
+                                                false);
     window.addEventListener("keydown", function(event){ module.atualiza(event)}, false);
     return module;
 }

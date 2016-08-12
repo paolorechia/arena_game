@@ -151,6 +151,8 @@ function menuLoop(timestamp){
        gameLoop(timestamp);
        draw.menu();
        menu.checkHovers();
+       menu.checkClicks();
+       data.resetClick();
 };
 
 function lobbyLoop(timestamp){

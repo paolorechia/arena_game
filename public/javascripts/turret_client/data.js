@@ -28,6 +28,11 @@ module.exports = function(stub){
     }
 
     module.atirando = 0;
+    module.atirou = false;
+    module.clicou = false;
     module.my_id = 0;
+    module.resetClick = function(){
+        module.clicou = false;
+    }
     return module;
 }

@@ -48,7 +48,8 @@ module.exports = function(data, camera, ctx_ship){
         && data.coord.y > ytop && data.coord.y < ybot)
             {
                 button.hover = true;
-            } 
+                console.log(data.clicou);
+            }
         else
             button.hover = false;
         
@@ -58,6 +59,17 @@ module.exports = function(data, camera, ctx_ship){
     module.checkHovers = function(){
         for (button in module.buttons){
            module.checkHover(module.buttons[button]);
+        }
+    }
+    module.checkClicks = function(){
+        for (button in module.buttons){
+           if (module.buttons[button].hover == true
+               && data.clicou == true){
+               module.buttons[button].clicked = true;
+               console.log(button);
+           }
+           else
+               module.buttons[button].clicked = false;
         }
     }
     return module;
