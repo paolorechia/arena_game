@@ -1,17 +1,13 @@
-# Space Arena - v0.1.1
+# Space Arena - v0.1.2
 
-### I) Servidor
+### I) Cliente 
 
-1. Bug do disparo infinito corrigido.
+1. Janelas navegáveis (jogo, escape menu, settings, lobby) programadas de maneira rudimentar, sem escalabilidade.
+1.1 Escape menu agora utiliza estado previo para retornar para a última janela, ou para nenhuma quando está no lobby.
+1.2 Settings recebeu interface apropriada para ajustar o volume do jogo, com barras de click n' drag.
+1.3 Lobby incompleto, depende de implementação em conjunto no server-side. Por enquanto o "Join game" retorna para o jogo apenas.
 
-
-### II) Cliente 
-
-1. Fluxo do cliente alterado para ser possível navegar por janelas diferentes.
-2. Adicionado gráfico de menu ao pressionar ESC, ainda sem funcionalidades.
-3. Sons e música criadas a partir de ferramenta online (ChipTone).
-3.1 Sons programados para se comportar de acordo com os tiros.
-3.2 Música de fundo tocando em loop
+2. Som ajustável. Funções de ajustar volume incluídas no sound.js. São utilizadas por settings.js.
  
 --------------------------
-Mon Aug 8 16:40:40 BRT 2016
+Fri Aug 12 03:02:30 BRT 2016
