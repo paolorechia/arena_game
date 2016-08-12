@@ -235,7 +235,7 @@ module.exports = function(stub){
 }
 
 },{}],5:[function(require,module,exports){
-module.exports = function(ship, camera, background, data, ctx_ship, calculo, menu){
+module.exports = function(ship, camera, background, data, ctx_ship, calculo, menu, lobby){
     var module = {};
     module.asteroid = function(ast){
         /* variaveis auxiliares, pega coordenadas do canvas pequeno
@@ -859,9 +859,6 @@ function gameLoop(timestamp){
 }
 
 function menuLoop(timestamp){
-       if (menu.buttons.back.clicked == true){
-            data.gameState = "playing";
-       }
        gameLoop(timestamp);
        draw.menu();
        menu.checkHovers();
@@ -873,6 +870,9 @@ function lobbyLoop(timestamp){
     draw.lobby();
 }
 
+function settingsLoop(timestamp){
+}
+
 
 function mainLoop(timestamp){
     if (data.gameState == "playing"){
@@ -881,9 +881,13 @@ function mainLoop(timestamp){
     else if (data.gameState == "menu"){
         menuLoop(timestamp);
     }
+    else if (data.gameState == "settings"){
+        settingsLoop(timestamp);
+    }
     else if (data.gameState == "lobby"){
         lobbyLoop(timestamp);
     }
+    console.log(data.gameState);
     requestAnimationFrame(mainLoop);
 }
 
@@ -952,13 +956,15 @@ module.exports = function(data, camera, ctx_ship){
         && data.coord.y > ytop && data.coord.y < ybot)
             {
                 button.hover = true;
-                console.log(data.clicou);
+                if (data.clicou == true){
+                    button.clicked = true;
+                }
             }
-        else
+        else{ 
             button.hover = false;
+            button.clicked = false;
+        }
         
-    }
-    module.onClick = function(button){
     }
     module.checkHovers = function(){
         for (button in module.buttons){
@@ -966,14 +972,14 @@ module.exports = function(data, camera, ctx_ship){
         }
     }
     module.checkClicks = function(){
-        for (button in module.buttons){
-           if (module.buttons[button].hover == true
-               && data.clicou == true){
-               module.buttons[button].clicked = true;
-               console.log(button);
-           }
-           else
-               module.buttons[button].clicked = false;
+        if (module.buttons.back.clicked == true){
+            data.gameState = "playing";
+        }
+        else if (module.buttons.settings.clicked == true){
+            data.gameState = "settings";
+        }
+        else if (module.buttons.lobby.clicked == true){
+            data.gameState = "lobby";
         }
     }
     return module;

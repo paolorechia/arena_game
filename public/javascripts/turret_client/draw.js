@@ -1,4 +1,4 @@
-module.exports = function(ship, camera, background, data, ctx_ship, calculo, menu){
+module.exports = function(ship, camera, background, data, ctx_ship, calculo, menu, lobby){
     var module = {};
     module.asteroid = function(ast){
         /* variaveis auxiliares, pega coordenadas do canvas pequeno

@@ -145,9 +145,6 @@ function gameLoop(timestamp){
 }
 
 function menuLoop(timestamp){
-       if (menu.buttons.back.clicked == true){
-            data.gameState = "playing";
-       }
        gameLoop(timestamp);
        draw.menu();
        menu.checkHovers();
@@ -159,6 +156,9 @@ function lobbyLoop(timestamp){
     draw.lobby();
 }
 
+function settingsLoop(timestamp){
+}
+
 
 function mainLoop(timestamp){
     if (data.gameState == "playing"){
@@ -167,9 +167,13 @@ function mainLoop(timestamp){
     else if (data.gameState == "menu"){
         menuLoop(timestamp);
     }
+    else if (data.gameState == "settings"){
+        settingsLoop(timestamp);
+    }
     else if (data.gameState == "lobby"){
         lobbyLoop(timestamp);
     }
+    console.log(data.gameState);
     requestAnimationFrame(mainLoop);
 }
 

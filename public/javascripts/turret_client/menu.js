@@ -48,13 +48,15 @@ module.exports = function(data, camera, ctx_ship){
         && data.coord.y > ytop && data.coord.y < ybot)
             {
                 button.hover = true;
-                console.log(data.clicou);
+                if (data.clicou == true){
+                    button.clicked = true;
+                }
             }
-        else
+        else{ 
             button.hover = false;
+            button.clicked = false;
+        }
         
-    }
-    module.onClick = function(button){
     }
     module.checkHovers = function(){
         for (button in module.buttons){
@@ -62,14 +64,14 @@ module.exports = function(data, camera, ctx_ship){
         }
     }
     module.checkClicks = function(){
-        for (button in module.buttons){
-           if (module.buttons[button].hover == true
-               && data.clicou == true){
-               module.buttons[button].clicked = true;
-               console.log(button);
-           }
-           else
-               module.buttons[button].clicked = false;
+        if (module.buttons.back.clicked == true){
+            data.gameState = "playing";
+        }
+        else if (module.buttons.settings.clicked == true){
+            data.gameState = "settings";
+        }
+        else if (module.buttons.lobby.clicked == true){
+            data.gameState = "lobby";
         }
     }
     return module;
